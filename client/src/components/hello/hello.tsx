@@ -1,5 +1,5 @@
-import * as React from "react";
-import "./hello.scss";
+import * as React from 'react';
+import './hello.scss';
 
 export interface HelloProps { compiler: string; framework: string; }
 
