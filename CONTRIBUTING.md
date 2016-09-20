@@ -4,7 +4,7 @@
 - Track your work and make it public on the ZenHub board.
 
 ### Master branch
-The master branch is protected by [lgtm.co](https://lgtm.co). It requires 2 maintainers to comment "LGTM" on a PR into master for it to get merged. As progress on the project ramps up, more checks will get put in place through [circleci.com](https://circleci.com/).
+The master branch is protected by githubs review system. And tests are configured in the circle.yml
 
 ### Branch maintenance
 Naming convention is `<username>/<english-description>`, this is to make it clear branch owners and what it's for. After a PR is merged, delete the branch.
