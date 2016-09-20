@@ -18,7 +18,7 @@ npm-debug.log
 .byebug_history
 
 # Ignore environment variables
-/config/env_vars.rb
+.env
 
 # Ignore node modules
 /client/node_modules/*
