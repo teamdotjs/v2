@@ -1,9 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
-import { Hello } from './components/hello/hello';
+import {Provider} from 'react-redux';
+import store from './store/exampleStore';
+import SmartCounter from './containers/SmartCounter';
 
 ReactDOM.render(
-    <Hello compiler='TypeScript' framework='React' />,
+    <Provider store={store}>
+        <SmartCounter />
+    </Provider>,
     document.getElementById('app')
 );
