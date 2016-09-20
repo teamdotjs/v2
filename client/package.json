@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "test": "NODE_TEST=1 npm run build"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,8 @@
   },
   "dependencies": {
     "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "react-dom": "^15.3.1",
+    "tslint": "^3.15.1",
+    "tslint-loader": "^2.1.5"
   }
 }
