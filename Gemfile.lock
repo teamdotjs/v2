@@ -93,7 +93,7 @@ DEPENDENCIES
   tzinfo-data
 
 RUBY VERSION
-   ruby 2.3.1p112
+   ruby 2.2.5p319
 
 BUNDLED WITH
-   1.13.0
+   1.13.1

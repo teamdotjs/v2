@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.2.5'
 
 # Only use Active Record, Active Support, and Railties from rails
 gem 'activerecord', '~> 5.0.0', '>= 5.0.0.1'
