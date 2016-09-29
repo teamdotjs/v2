@@ -1,6 +1,8 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
+var webpack = require('webpack');
+
 module.exports = {
     entry: "./src/index.tsx",
     output: {
@@ -40,7 +42,7 @@ module.exports = {
     // dependencies, which allows browsers to cache those libraries between builds.
     externals: {
         "react": "React",
-        "react-dom": "ReactDOM"
+        "react-dom": "ReactDOM",
     },
 
     sassLoader: {
@@ -48,9 +50,13 @@ module.exports = {
     },
 
     plugins: [
+        new webpack.ProvidePlugin({
+            'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+        }),
         new ExtractTextPlugin('dist/style.css', {
             allChunks: true
         }),
+       
         new CopyWebpackPlugin([{from: '*', to: 'dist/', context: 'public'}])
     ]
 };

@@ -5,6 +5,7 @@ export interface ExampleState {
 };
 
 export function exampleReducer(state: ExampleState, action: ExampleAction) {
+    if (state === undefined) return {sum: 10};
    switch (action.type) {
    case 'Example':
       return {

@@ -1,0 +1,1 @@
+export const sessionReducer = (state = [], _action: any) => state;
