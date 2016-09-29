@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import Counter from '../components/Counter/Counter';
 import { exampleAction } from '../actions/example';
-import { ExampleState } from '../reducers/exampleReducer';
 
-function mapStateToProps(state: ExampleState) {
+function mapStateToProps(state: any) {
     return {
-        count: state.sum
+        count: state.exampleReducer.sum
     };
 }
 

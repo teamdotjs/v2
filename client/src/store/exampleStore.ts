@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
-import { exampleReducer } from '../reducers/exampleReducer';
+import { app } from '../reducers/index';
 
 
-let store = createStore(exampleReducer, {sum: 0});
+let store = createStore(app);
 
 export default store;
