@@ -17,7 +17,7 @@ test:
 
 deployment:
   production:
-    branch: timbrook/deployment
+    branch: master
     commands:
       - git add --force client/dist/
       - git commit --amend -m "Auto Commit $CIRCLE_SHA1"
