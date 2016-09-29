@@ -21,7 +21,7 @@ deployment:
     commands:
       - git add --force client/dist/
       - git commit --amend -m "Auto Commit $CIRCLE_SHA1"
-      - git push -f git@heroku.com:vocab-v2.git $CIRCLE_SHA1:refs/heads/master
+      - git push -f git@heroku.com:vocab-v2.git HEAD:refs/heads/master
 
 
 
