@@ -1,7 +1,27 @@
 machine:
   node:
     version: 6.4.0
+  ruby:
+    version: 2.2.5
 
-general:
-  build_dir: client
+checkout:
+  post:
+    - git config user.name "Circle CI"
+    - git config user.email "circle@sse.rit.edu"
+
+test:
+  pre:
+    - cd client/ && npm install
+    - cd client/ && npm run build
+    - cd client/ && npm test
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - git add --force client/dist/
+      - git commit --amend -m "Auto Commit $CIRCLE_SHA1"
+      - git push -f git@heroku.com:vocab-v2.git HEAD:refs/heads/master
+
+
 
