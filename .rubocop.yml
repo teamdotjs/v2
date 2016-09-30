@@ -1,0 +1,11 @@
+# Uses defaults from https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+# which is based on this ruby style guide https://github.com/bbatsov/ruby-style-guide
+
+AllCops:
+  Exclude:
+    - 'client/**/*'
+    - 'tmp/**/*'
+  TargetRubyVersion: 2.2
+
+Metrics/LineLength:
+  Enabled: false
