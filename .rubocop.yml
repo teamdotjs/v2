@@ -5,6 +5,7 @@ AllCops:
   Exclude:
     - 'client/**/*'
     - 'tmp/**/*'
+    - 'vendor/**/*'
   TargetRubyVersion: 2.2
 
 Metrics/LineLength:
