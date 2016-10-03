@@ -36,17 +36,17 @@ export class LoginForm extends React.Component<LoginProps, LoginState> {
 
     render() {
         return (
-            <form>
+            <form onSubmit={this.submit.bind(this)}>
                 <TextField hintText='Username' value={this.state.user} ref={(e: any) => this._unameField = e} onChange={this.handleTextChange.bind(this)} />
                 <br />
-                <TextField hintText='Password'  value={this.state.password} ref={(e: any) => this._passField = e} onChange={this.handleTextChange.bind(this)} />
+                <TextField hintText='Password' type='password' value={this.state.password} ref={(e: any) => this._passField = e} onChange={this.handleTextChange.bind(this)} />
                 <br />
-                <RaisedButton style={{marginTop: '20px'}} label='Login' onClick={() => this.submit()}/>
+                <RaisedButton type='submit' style={{marginTop: '20px'}} label='Login' />
             </form>
         );
     }
 
-    submit() {
+    submit(ev: Event) {
         const uname = this._unameField.getValue();
         const pass = this._passField.getValue();
         this.setState({
@@ -56,6 +56,8 @@ export class LoginForm extends React.Component<LoginProps, LoginState> {
         if (this.props.onSubmit !== undefined) {
             this.props.onSubmit(uname, pass);
         }
+        ev.preventDefault();
+        return false;
     }
 }
 export default LoginForm;

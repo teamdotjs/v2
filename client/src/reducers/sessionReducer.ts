@@ -1,4 +1,8 @@
-export const sessionReducer = (state = {uname: undefined}, _action: any) => {
+export interface SessionState {
+    uname?: string;
+}
+
+export const sessionReducer = (state: SessionState, _action: any): SessionState => {
     if (state === undefined) {
         return {uname: undefined};
     }
