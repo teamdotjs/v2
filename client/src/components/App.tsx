@@ -12,15 +12,17 @@ const style = {
 
 export interface AppProps {
     isLoggedIn: boolean;
+    children?: Element[];
 }
 
 const App = (props: AppProps) => {
     let contents: any;
-    if (!props.isLoggedIn) {
+    if (!props.isLoggedIn && window.location.pathname !== '/register') {
         contents = <LoginFormContainer />;
     } else {
-        contents = 'You are currently logged in';
+        contents = props.children;
     }
+    console.log(contents);
     return (
         <div style={{position: 'absolute', width: '100%', margin: 0}}>
             <Paper style={style}>
