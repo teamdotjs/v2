@@ -1,4 +1,7 @@
 import * as React from 'react';
+import BindingComponent from '../BindingComponent';
+import {Link} from 'react-router';
+
 import {
     RaisedButton,
     TextField
@@ -6,19 +9,9 @@ import {
 
 export interface LoginProps {
     onSubmit?: (u: String, p: String) => void;
-    defaultUser?: String;
-    defaultPass?: String;
 }
 
-interface LoginState {
-    user: string;
-    password: string;
-}
-
-export class LoginForm extends React.Component<LoginProps, LoginState> {
-    _unameField: TextField;
-    _passField: TextField;
-
+export class LoginForm extends BindingComponent<LoginProps> {
     constructor(_: LoginProps) {
         super();
         this.state = {
@@ -27,28 +20,27 @@ export class LoginForm extends React.Component<LoginProps, LoginState> {
         };
     }
 
-    handleTextChange(): void {
-        this.setState({
-            user: this._unameField.getValue(),
-            password: this._passField.getValue()
-        });
-    }
-
     render() {
         return (
             <form onSubmit={this.submit.bind(this)}>
-                <TextField hintText='Username' value={this.state.user} ref={(e: any) => this._unameField = e} onChange={this.handleTextChange.bind(this)} />
+                <TextField hintText='Username' name='user'
+                            value={this.state['user']}
+                            onChange={this.bindValue.bind(this)} />
                 <br />
-                <TextField hintText='Password' type='password' value={this.state.password} ref={(e: any) => this._passField = e} onChange={this.handleTextChange.bind(this)} />
+                <TextField hintText='Password' name='password'
+                            type='password' value={this.state['password']}
+                            onChange={this.bindValue.bind(this)} />
                 <br />
                 <RaisedButton type='submit' style={{marginTop: '20px'}} label='Login' />
+                <br /> <br />
+                <Link to='/register'>Register</Link>
             </form>
         );
     }
 
     submit(ev: Event) {
-        const uname = this._unameField.getValue();
-        const pass = this._passField.getValue();
+        const uname = this.state['user'];
+        const pass = this.state['password'];
         this.setState({
             user: '',
             password: ''
