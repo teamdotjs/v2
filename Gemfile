@@ -11,6 +11,10 @@ gem 'puma', '~> 3.0'
 gem 'rack-cors'
 # Ruby linter
 gem 'rubocop', '~> 0.43.0'
+# JSON web tokens
+gem 'jwt', '~> 1.5', '>= 1.5.6'
+# Hash passwords
+gem 'bcrypt', '~> 3.1', '>= 3.1.11'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
