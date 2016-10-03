@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import { app } from '../reducers/index';
 
-
-let store = createStore(app);
+declare var window: any;
+let store = createStore(app, window.devToolsExtension ? window.devToolsExtension() : undefined);
 
 export default store;
