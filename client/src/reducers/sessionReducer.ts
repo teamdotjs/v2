@@ -4,18 +4,20 @@ export interface SessionState {
     error?: string;
 }
 
-export const sessionReducer = (state: SessionState, _action: any): SessionState => {
-    if (state === undefined) {
-        return {
-            uname: undefined,
-            pending: false
-        };
-    }
-    switch (_action.type) {
+export const sessionReducer = (state: SessionState, action: any): SessionState => {
+    if (state === undefined) return {};
+    switch (action.type) {
+        case '@@INIT':
+            console.log('checking login state');
+            return {
+                uname: undefined,
+                pending: false,
+                error: undefined
+            };
         case 'login':
             return {
                 pending: false,
-                uname: _action.uname
+                uname: action.uname
             };
         case 'login_request':
             return {
@@ -24,7 +26,7 @@ export const sessionReducer = (state: SessionState, _action: any): SessionState 
         case 'login_failure':
             return {
                 pending: false,
-                error: _action.error
+                error: action.error
             };
         default:
             return state;
