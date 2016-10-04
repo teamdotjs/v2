@@ -9,10 +9,7 @@ class AuthController < ApplicationController
         value: payload(user),
         expires: 1.day.from_now
       }
-      render json: { 
-        'logged_in': true,
-        email: user.email
-      }
+      render json: { 'logged_in': true, email: user.email }
     else
       render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized
     end
