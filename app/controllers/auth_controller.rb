@@ -1,4 +1,7 @@
 class AuthController < ApplicationController
+  before_action :not_signed_in?, only: :authenticate_user
+  before_action :signed_in?, only: :invalidate_user
+
   def authenticate_user
     user = User.find_by_email(params[:email].downcase)
     if user && user.authenticate(params[:password])
@@ -19,15 +22,5 @@ class AuthController < ApplicationController
 
   def signed_in
     render json: { 'logged_in': !session[:jwt].nil? }
-  end
-
-  private
-
-  def payload(user)
-    return nil unless user && user.id
-    {
-      auth_token: JsonWebToken.encode(user_id: user.id),
-      user: { id: user.id, name: user.name, email: user.email }
-    }
   end
 end
