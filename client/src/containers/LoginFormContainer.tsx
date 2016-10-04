@@ -3,13 +3,16 @@ import { LoginForm, LoginProps} from '../components/LoginForm/LoginForm';
 import { login } from '../actions/user';
 
 function mapStateToProps(_state: any): LoginProps {
-    return {};
+    return {
+        lock: _state.session.pending,
+        error: _state.session.error
+    };
 }
 
 function mapDispatchToProps(dispatch: any): LoginProps {
     return {
-        onSubmit(uname: string, _pass: string) {
-            dispatch(login(uname));
+        onSubmit(uname: string, pass: string) {
+            dispatch(login(uname, pass));
         }
     };
 }

@@ -27,3 +27,6 @@ npm-debug.log
 
 # Ignore dist folder
 /client/dist/*
+
+# Ignore timbrooks stuff
+docker_dev.sh
