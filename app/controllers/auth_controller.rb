@@ -3,8 +3,6 @@ class AuthController < ApplicationController
 
   def authenticate_user
     user = User.find_by_email(params[:email].downcase)
-    puts "USER.PASSWORD: #{user}"
-    puts "PARAMS[:password]: #{params[:password]}"
     if user && user.authenticate(params[:password])
       render json: payload(user)
     else
@@ -12,7 +10,7 @@ class AuthController < ApplicationController
     end
   end
 
-  def home
+  def check
     render json: { 'logged_in': true }
   end
 
