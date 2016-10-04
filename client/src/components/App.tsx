@@ -22,7 +22,6 @@ const App = (props: AppProps) => {
     } else {
         contents = props.children;
     }
-    console.log(contents);
     return (
         <div style={{position: 'absolute', width: '100%', margin: 0}}>
             <Paper style={style}>

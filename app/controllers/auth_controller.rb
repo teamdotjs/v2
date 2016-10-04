@@ -9,7 +9,7 @@ class AuthController < ApplicationController
         value: payload(user),
         expires: 1.day.from_now
       }
-      render json: { 'logged_in': true }
+      render json: { 'logged_in': true, email: user.email }
     else
       render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized
     end
@@ -21,6 +21,13 @@ class AuthController < ApplicationController
   end
 
   def signed_in
-    render json: { 'logged_in': !session[:jwt].nil? }
+    if !session[:jwt].nil?
+      render json: {
+        'logged_in': true,
+        email: session[:jwt][:value][:user][:email]
+      }
+    else
+      render json: { 'logged_in': false }
+    end
   end
 end
