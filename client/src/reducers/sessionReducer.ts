@@ -7,13 +7,6 @@ export interface SessionState {
 export const sessionReducer = (state: SessionState, action: any): SessionState => {
     if (state === undefined) return {};
     switch (action.type) {
-        case '@@INIT':
-            console.log('checking login state');
-            return {
-                uname: undefined,
-                pending: false,
-                error: undefined
-            };
         case 'login':
             return {
                 pending: false,

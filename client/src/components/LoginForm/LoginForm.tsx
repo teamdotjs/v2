@@ -60,10 +60,6 @@ export class LoginForm extends BindingComponent<LoginProps> {
     submit(ev: Event) {
         const uname = this.state['user'];
         const pass = this.state['password'];
-        // this.setState({
-        //     user: '',
-        //     password: ''
-        // });
         if (this.props.onSubmit !== undefined) {
             this.props.onSubmit(uname, pass);
         }

@@ -45,6 +45,10 @@ export function loginCheck(): any {
         .then((body: LoginCheckResponse) => {
             dispatcher(loginSuccess(body.email));
         });
+
+        return dispatcher({
+            type: 'login_request'
+        });
     };
 }
 
