@@ -6,6 +6,10 @@ Rails.application.routes.draw do
       match '/logout' => 'auth#invalidate_user', via: [:post]
       match '/signed_in' => 'auth#signed_in', via: [:get]
     end
+
+    scope '/user' do
+      match '/create' => 'users#create', via: [:post]
+    end
   end
   #  Send static files
   match '/*path' => 'static#base', via: [:get]

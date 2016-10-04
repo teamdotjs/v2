@@ -13,6 +13,22 @@ class ApplicationController < ActionController::API
     render json: { errors: ['Not Authenticated'] }, status: :unauthroized
   end
 
+  def payload(user)
+    return nil unless user && user.id
+    {
+      auth_token: JsonWebToken.encode(user_id: user.id),
+      user: { id: user.id, name: user.name, email: user.email }
+    }
+  end
+
+  def signed_in?
+    render json: { 'logged_in': false } if session[:jwt].nil?
+  end
+
+  def not_signed_in?
+    render json: { 'logged_in': true } unless session[:jwt].nil?
+  end
+
   private
 
   def http_token
