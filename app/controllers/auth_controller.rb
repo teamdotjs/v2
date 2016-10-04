@@ -1,17 +1,24 @@
 class AuthController < ApplicationController
-  before_action :authenticate_request!, except: [:authenticate_user]
-
   def authenticate_user
     user = User.find_by_email(params[:email].downcase)
     if user && user.authenticate(params[:password])
-      render json: payload(user)
+      session[:jwt] = {
+        value: payload(user),
+        expires: 1.day.from_now
+      }
+      render json: { 'logged_in': true }
     else
       render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized
     end
   end
 
-  def check
-    render json: { 'logged_in': true }
+  def invalidate_user
+    session.delete(:jwt)
+    render json: { 'logged_in': false }
+  end
+
+  def signed_in
+    render json: { 'logged_in': !session[:jwt].nil? }
   end
 
   private
