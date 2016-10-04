@@ -6,7 +6,11 @@ AllCops:
     - 'client/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
+    - 'db/schema.rb'
   TargetRubyVersion: 2.2
 
 Metrics/LineLength:
+  Enabled: false
+
+Style/Documentation:
   Enabled: false
