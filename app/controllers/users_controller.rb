@@ -14,6 +14,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def email_taken
+    user = User.find_by_email(params[:email].downcase)
+    render json: !user.nil?
+  end
+
   private
 
   def user_params
