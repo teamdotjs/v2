@@ -10,7 +10,7 @@ class UsersController < ApplicationController
       }
       render json: { 'logged_in': true }
     else
-      render json: { errors: user.errors.full_messages }
+      render json: { errors: user.errors.full_messages }, status: :conflict
     end
   end
 
