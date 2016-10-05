@@ -14,6 +14,16 @@ export interface LoginActionFailure {
     error: string;
 }
 
+export interface RegisterFailure {
+    type: 'register_failure';
+    errors: string[];
+}
+
+export interface RegisterSuccess {
+    type: 'register_success';
+    next: string;
+}
+
 interface LoginCheckResponse {
     logged_in: boolean;
 }
@@ -21,6 +31,10 @@ interface LoginCheckResponse {
 interface LoginCheckResponse {
     logged_in: boolean;
     email: string;
+}
+
+interface RegisterResponse {
+    errors: string[];
 }
 
 function errorCheck(response: Response): any {
@@ -93,9 +107,49 @@ export function loginFailure(error: string): LoginActionFailure {
     };
 }
 
-// TODO: Actually register. For now we just log in.
-export function register (uname: string, password: string): LoginActionPending {
-    return login(uname, password);
+export function registerFailure(errors: string[]): RegisterFailure {
+    return {
+        type: 'register_failure',
+        errors
+    };
+}
+
+export function registerSuccess(): RegisterSuccess {
+    return {
+        type: 'register_success',
+        next: '/'
+    };
+}
+
+
+export function register(name: string, password: string, email: string, _birthday: string): any {
+    return (dispatcher: any) => {
+        fetch('/api/user/create', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user: {
+                    name, email, password
+                }
+            })
+        })
+        .then(errorCheck)
+        .then((res: RegisterResponse) => {
+            if (res.errors && res.errors.length > 0) {
+                dispatcher(registerFailure(res.errors));
+            } else {
+                dispatcher(registerSuccess());
+                dispatcher(loginCheck());
+            }
+        });
+
+        return dispatcher({
+            type: 'register_request'
+        });
+    };
 }
 
 

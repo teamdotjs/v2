@@ -1,17 +1,19 @@
 import { connect } from 'react-redux';
-import { RegistrationForm, RegistrationProps} from '../components/RegistrationForm';
+import { RegistrationForm, RegistrationProps} from '../components/RegistrationForm/RegistrationForm';
 import { register } from '../actions/user';
-import { browserHistory } from 'react-router';
+import { State } from '../reducers';
 
-function mapStateToProps(_state: any): RegistrationProps {
-    return {};
+function mapStateToProps(state: State): RegistrationProps {
+    return {
+        pending: state.registration.pending,
+        errors: state.registration.errors
+    };
 }
 
 function mapDispatchToProps(dispatch: any): RegistrationProps {
     return {
-        onSubmit(uname: string, pass: string) {
-            dispatch(register(uname, pass));
-            browserHistory.push('/');
+        onSubmit(uname: string, pass: string, email: string, birthday: string) {
+            dispatch(register(uname, pass, email, birthday));
         }
     };
 }
