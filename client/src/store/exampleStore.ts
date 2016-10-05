@@ -12,7 +12,7 @@ let store = createStore(
     app,
     compose(
         applyMiddleware(thunk),
-        window.devToolsExtension ? window.devToolsExtension() : undefined
+        window.devToolsExtension ? window.devToolsExtension() : f => f
     )
 );
 
