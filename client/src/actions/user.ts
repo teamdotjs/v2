@@ -142,7 +142,7 @@ export function register(name: string, password: string, email: string, _birthda
                 dispatcher(registerFailure(res.errors));
             } else {
                 dispatcher(registerSuccess());
-                dispatcher(loginCheck());
+                dispatcher(login(email, password));
             }
         });
 
