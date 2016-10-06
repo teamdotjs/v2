@@ -1,6 +1,6 @@
 import * as React from 'react';
-import BindingComponent from './BindingComponent';
-
+import BindingComponent from './util/BindingComponent';
+import Page from './util/Page';
 import {
     RaisedButton,
     TextField
@@ -29,6 +29,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
                         this.state['password1'] !== '' &&
                         this.state['password2'] !== '';
         return (
+            <Page>
             <form onSubmit={this.submit.bind(this)}>
                 <TextField hintText='Username' name='user'
                             value={this.state['user']}
@@ -48,6 +49,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
                 <br />
                 <RaisedButton disabled={!submittable} type='submit' style={{marginTop: '20px'}} label='Register' />
             </form>
+            </Page>
         );
     }
 
