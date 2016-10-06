@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
     scope '/user' do
       match '/create' => 'users#create', via: [:post]
-      match '/email_taken' => 'users#email_taken', via: [:post]
+      match '/email_taken' => 'users#email_taken', via: [:get]
     end
   end
   #  Send static files
