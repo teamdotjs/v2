@@ -9,8 +9,10 @@ class UsersController < ApplicationController
         expires: 1.day.from_now
       }
       render json: { 'logged_in': true }
+    elsif user.errors.full_messages.include? 'Email has already been taken'
+      render json: { errors: user.errors.full_messages }, status: :conflict # 409
     else
-      render json: { errors: user.errors.full_messages }, status: :conflict
+      render json: { errors: user.errors.full_messages }, status: :bad_request # 400
     end
   end
 
