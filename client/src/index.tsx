@@ -2,9 +2,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import store from './store/exampleStore';
-import AppContainer from './containers/AppContainer';
+import App from './components/App';
+import DashboardContainer from './containers/DashboardContainer';
 import RegistrationFormContainer from './containers/RegistrationFormContainer';
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, IndexRoute, Route, browserHistory } from 'react-router';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { loginCheck } from './actions/user';
 
@@ -20,8 +21,9 @@ ReactDOM.render(
     <MuiThemeProvider>
         <Provider store={store}>
             <Router history={browserHistory}>
-                <Route path='/' component={AppContainer}>
-                    <Route path='/register' component={RegistrationFormContainer} />
+                <Route path='/' component={App}>
+                    <Route path='register' component={RegistrationFormContainer} />
+                    <IndexRoute component={DashboardContainer} />
                 </Route>
             </Router>
         </Provider>
