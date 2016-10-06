@@ -16,6 +16,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def email_taken
+    if !params[:email].nil?
+      user = User.find_by_email(params[:email].downcase)
+      render json: !user.nil?
+    else
+      render json: { errors: ['Email not provided'] }, status: :bad_request # 400
+    end
+  end
+
   private
 
   def user_params
