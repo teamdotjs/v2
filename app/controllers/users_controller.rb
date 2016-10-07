@@ -1,21 +1,45 @@
 class UsersController < ApplicationController
   before_action :not_signed_in?, only: :create
 
+  # POST /api/user/create
+  # Request body params:
+  #   name (string)
+  #   email (string)
+  #   password (string)
+  #   password_confirmation (string)
+  #   birthday (isodate)
+  # Success response:
+  #   Code: 200
+  #   Content: { 'logged_in': true, user: { id: int, name: string, email: string, birthday: date } }
+  # Error response:
+  #   (1) Code: 409
+  #   Content: { errors: { 'email': ['has already been taken', ...], ... } }
+  #   (2) Code: 400
+  #   Content: { errors: { 'name': [...], 'email': [...], 'password': [...], 'birthday': [...] } }
   def create
     user = User.new(user_params)
-    if user.save
-      session[:jwt] = {
-        value: payload(user),
+    if user.save && user.authenticate(params[:password])
+      session[:user] = {
+        value: user.as_json(only: [:id, :name, :email, :birthday]),
         expires: 1.day.from_now
       }
-      render json: { 'logged_in': true }
-    elsif user.errors.full_messages.include? 'Email has already been taken'
-      render json: { errors: user.errors.full_messages }, status: :conflict # 409
+      render json: { 'logged_in': true, user: session[:user] }
+    elsif user.errors['email'] && user.errors['email'].include?('has already been taken')
+      render json: { errors: user.errors }, status: :conflict # 409
     else
-      render json: { errors: user.errors.full_messages }, status: :bad_request # 400
+      render json: { errors: user.errors }, status: :bad_request # 400
     end
   end
 
+  # GET /api/user/email_taken
+  # Query params:
+  #   email (string)
+  # Success response:
+  #   Code: 200
+  #   Content: { true/false }
+  # Error response:
+  #   (1) Code: 400
+  #   Content: { errors: ['Email not provided'] }
   def email_taken
     if !params[:email].nil?
       user = User.find_by_email(params[:email].downcase)
