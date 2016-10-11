@@ -17,8 +17,6 @@ class UsersController < ApplicationController
   #   (2) Code: 400
   #   Content: { errors: { 'name': [...], 'email': [...], 'password': [...], 'birthday': [...] } }
   def create
-    birthday = params[:user][:birthday]
-    params[:user][:birthday] = Date.strptime(birthday, '%m/%d/%Y') unless birthday.nil?
     user = User.new(user_params)
     if user.save && user.authenticate(params[:password])
       session[:user] = {
