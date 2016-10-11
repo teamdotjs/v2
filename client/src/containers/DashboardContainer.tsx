@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
-import App, { AppProps } from '../components/App';
+import Dashboard, { DashboardProps } from '../components/Dashboard';
 import { State } from '../reducers/index';
 
-
-function mapStateToProps(state: State): AppProps {
+function mapStateToProps(state: State): DashboardProps {
     return {isLoggedIn: state.session.uname !== undefined};
 }
 
@@ -11,9 +10,9 @@ function mapDispatchToProps(_dispatch: any): {} {
     return {};
 }
 
-const AppContainer = connect(
+const DashboardContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(App);
+)(Dashboard);
 
-export default AppContainer;
+export default DashboardContainer;
