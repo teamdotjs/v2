@@ -1,32 +1,16 @@
 import * as React from 'react';
-import LoginFormContainer from '../containers/LoginFormContainer';
-import Paper from 'material-ui/Paper';
-
-const style = {
-    margin: '0 auto',
-    padding: '40px',
-    textAlign: 'center',
-    display: 'block',
-    maxWidth: '400px'
-};
-
+import AppBar from 'material-ui/AppBar';
 export interface AppProps {
-    isLoggedIn: boolean;
     children?: Element[];
 }
 
 const App = (props: AppProps) => {
-    let contents: any;
-    if (!props.isLoggedIn && window.location.pathname !== '/register') {
-        contents = <LoginFormContainer />;
-    } else {
-        contents = props.children;
-    }
     return (
         <div style={{position: 'absolute', width: '100%', margin: 0}}>
-            <Paper style={style}>
-                {contents}
-            </Paper>
+        <AppBar
+                    title='NTID Vocab Program'
+                    iconClassNameRight='muidocs-icon-navigation-expand-more'/>
+            {props.children}
         </div>
     );
 };
