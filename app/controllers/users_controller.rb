@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :not_signed_in?, only: :create
 
-  # POST /api/user/create
+  # POST /api/user/
   # Request body params:
   #   name (string)
   #   email (string)
