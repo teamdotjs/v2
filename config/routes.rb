@@ -8,13 +8,13 @@ Rails.application.routes.draw do
     end
 
     scope '/user' do
-      match '/create' => 'users#create', via: [:post]
+      match '/' => 'users#create', via: [:post]
       match '/email_taken' => 'users#email_taken', via: [:get]
     end
 
     scope '/lesson' do
       match '/all' => 'lessons#all', via: [:get]
-      match '/create' => 'lessons#create', via: [:post]
+      match '/' => 'lessons#create', via: [:post]
       match '/:lesson_id/add_word/:word_id' => 'lessons#add_word', via: [:get]
       match '/:lesson_id/remove_word/:word_id' => 'lessons#remove_word', via: [:get]
       match '/:id' => 'lessons#show', via: [:get]
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
     scope '/wordinfo' do
       match '/all' => 'wordinfo#all', via: [:get]
-      match '/create' => 'wordinfo#create', via: [:post]
+      match '/' => 'wordinfo#create', via: [:post]
       match '/:id' => 'wordinfo#show', via: [:get]
       match '/:id' => 'wordinfo#update', via: [:patch]
       match '/:id' => 'wordinfo#delete', via: [:delete]

@@ -15,7 +15,7 @@ class LessonsController < ApplicationController
     render json: { 'lesson': 'all' }
   end
 
-  # POST /api/lesson/create
+  # POST /api/lesson/
   # Desc: creates a new lesson for the current user
   # Request body params:
   #   title (string)

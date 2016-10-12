@@ -16,7 +16,7 @@ class WordinfoController < ApplicationController
     render json: { 'wordinfo': 'all' }
   end
 
-  # POST /api/wordinfo/create
+  # POST /api/wordinfo/
   # Desc: creates a new word info for the current user
   # Request body params:
   #   word (string)
