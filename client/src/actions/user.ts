@@ -39,6 +39,10 @@ interface RegisterResponse {
 
 function errorCheck(response: Response): any {
     switch (response.status) {
+        case 400:
+            throw new Error('Bad Request');
+        case 409:
+            throw new Error('Conflict');
         case 401:
             throw new Error('Unauthorized');
         case 500:
@@ -122,9 +126,15 @@ export function registerSuccess(): RegisterSuccess {
 }
 
 
-export function register(name: string, password: string, email: string, _birthday: string): any {
+export function register(name: string, password: string, email: string, birthday: string): any {
     return (dispatcher: any) => {
-        fetch('/api/user/create', {
+        const bvalue = birthday.split('/');
+        const bday = new Date(
+            parseInt(bvalue[2]),
+            parseInt(bvalue[1]),
+            parseInt(bvalue[0])
+        );
+        fetch('/api/user', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -132,18 +142,18 @@ export function register(name: string, password: string, email: string, _birthda
             },
             body: JSON.stringify({
                 user: {
-                    name, email, password
+                    name, email, password, birthday: bday.toISOString()
                 }
             })
         })
         .then(errorCheck)
         .then((res: RegisterResponse) => {
-            if (res.errors && res.errors.length > 0) {
-                dispatcher(registerFailure(res.errors));
-            } else {
-                dispatcher(registerSuccess());
-                dispatcher(login(email, password));
-            }
+            console.log(res);
+            dispatcher(registerSuccess());
+            dispatcher(login(email, password));
+        })
+        .catch((error: Error) => {
+            dispatcher(registerFailure([error.message]));
         });
 
         return dispatcher({

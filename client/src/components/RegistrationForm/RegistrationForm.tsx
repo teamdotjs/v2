@@ -1,5 +1,6 @@
 import * as React from 'react';
 import BindingComponent from '../util/BindingComponent';
+import Page from '../util/Page';
 
 import {
     RaisedButton,
@@ -39,7 +40,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
     }
 
     validBirthday(birthday: string): boolean {
-        return birthday.match(/\d{2}\/\d{2}\/\d{4}$/) !== null;
+        return birthday.match(/^\d{2}\/\d{2}\/\d{4}$/) !== null;
     }
 
     formatBirthday(event: any) {
@@ -97,6 +98,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
         }
 
         return (
+            <Page>
             <form onSubmit={this.submit.bind(this)}>
                 {errors}
                 <TextField hintText='Email' name='user'
@@ -137,6 +139,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
                 <br />
                 {action}
             </form>
+            </Page>
         );
     }
 
