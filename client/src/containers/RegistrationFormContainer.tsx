@@ -9,8 +9,8 @@ function mapStateToProps(_state: any): RegistrationProps {
 
 function mapDispatchToProps(dispatch: any): RegistrationProps {
     return {
-        onSubmit(uname: string, pass: string) {
-            dispatch(register(uname, pass));
+        onSubmit(email: string, pass: string) {
+            dispatch(register(email, pass));
             browserHistory.push('/');
         }
     };

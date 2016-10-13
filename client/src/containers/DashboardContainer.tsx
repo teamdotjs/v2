@@ -3,7 +3,7 @@ import Dashboard, { DashboardProps } from '../components/Dashboard';
 import { State } from '../reducers/index';
 
 function mapStateToProps(state: State): DashboardProps {
-    return {isLoggedIn: state.session.uname !== undefined};
+    return {isLoggedIn: state.session.isLoggedIn};
 }
 
 function mapDispatchToProps(_dispatch: any): {} {

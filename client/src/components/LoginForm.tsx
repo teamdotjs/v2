@@ -19,7 +19,7 @@ export class LoginForm extends BindingComponent<LoginProps> {
     constructor(_: LoginProps) {
         super();
         this.state = {
-            user: '',
+            email: '',
             password: ''
         };
     }
@@ -39,8 +39,8 @@ export class LoginForm extends BindingComponent<LoginProps> {
         return (
             <Page>
             <form onSubmit={this.submit.bind(this)}>
-                <TextField hintText='Username' name='user'
-                            value={this.state['user']}
+                <TextField hintText='email' name='email'
+                            value={this.state['email']}
                             onChange={this.bindValue.bind(this)}
                             disabled={this.props.lock} />
                 <br />
@@ -61,10 +61,10 @@ export class LoginForm extends BindingComponent<LoginProps> {
     }
 
     submit(ev: Event) {
-        const uname = this.state['user'];
+        const email = this.state['email'];
         const pass = this.state['password'];
         if (this.props.onSubmit !== undefined) {
-            this.props.onSubmit(uname, pass);
+            this.props.onSubmit(email, pass);
         }
         ev.preventDefault();
         return false;
