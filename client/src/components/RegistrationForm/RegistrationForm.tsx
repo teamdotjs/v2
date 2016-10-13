@@ -1,5 +1,5 @@
 import * as React from 'react';
-import BindingComponent from '../BindingComponent';
+import BindingComponent from '../util/BindingComponent';
 
 import {
     RaisedButton,
