@@ -148,7 +148,6 @@ export function register(name: string, password: string, email: string, birthday
         })
         .then(errorCheck)
         .then((res: RegisterResponse) => {
-            console.log(res);
             dispatcher(registerSuccess());
             dispatcher(login(email, password));
         })
