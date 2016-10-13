@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   #   Content: { errors: { 'name': [...], 'email': [...], 'password': [...], 'birthday': [...] } }
   def create
     user = User.new(user_params)
-    if user.save && user.authenticate(params[:password])
+    if user.save
       session[:user] = {
         value: user.as_json(only: [:id, :name, :email, :birthday]),
         expires: 1.day.from_now

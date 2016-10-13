@@ -54,6 +54,12 @@ export function loginCheck(): any {
         .then(errorCheck)
         .then((_body: LoginCheckResponse) => {
             dispatcher(loginSuccess());
+        })
+        .catch(() => {
+            dispatcher({
+                type: 'login_failure',
+                errors: []
+            });
         });
 
         return dispatcher({
