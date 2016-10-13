@@ -11,8 +11,8 @@ function mapStateToProps(state: any): LoginProps {
 
 function mapDispatchToProps(dispatch: any): LoginProps {
     return {
-        onSubmit(uname: string, pass: string) {
-            dispatch(login(uname, pass));
+        onSubmit(email: string, pass: string) {
+            dispatch(login(email, pass));
         }
     };
 }

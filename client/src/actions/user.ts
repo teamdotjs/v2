@@ -6,7 +6,6 @@ export interface LoginActionPending {
 
 export interface LoginActionSuccess {
     type: 'login';
-    uname: string;
 }
 
 export interface LoginActionFailure {
@@ -28,11 +27,6 @@ interface LoginCheckResponse {
     logged_in: boolean;
 }
 
-interface LoginCheckResponse {
-    logged_in: boolean;
-    email: string;
-}
-
 interface RegisterResponse {
     errors: string[];
 }
@@ -46,7 +40,7 @@ function errorCheck(response: Response): any {
         case 401:
             throw new Error('Unauthorized');
         case 500:
-            throw new Error('The server failed to response');
+            throw new Error('The server failed to respond');
         default:
             return response.json();
     }
@@ -57,11 +51,9 @@ export function loginCheck(): any {
         fetch('/api/auth/signed_in', {
             credentials: 'same-origin'
         })
-        .then((res: Response) => {
-            return res.json();
-        })
-        .then((body: LoginCheckResponse) => {
-            dispatcher(loginSuccess(body.email));
+        .then(errorCheck)
+        .then((_body: LoginCheckResponse) => {
+            dispatcher(loginSuccess());
         });
 
         return dispatcher({
@@ -84,8 +76,8 @@ export function login(email: string, password: string): any {
             })
         })
         .then(errorCheck)
-        .then((res: LoginCheckResponse) => {
-            dispatcher(loginSuccess(res.email));
+        .then((_res: LoginCheckResponse) => {
+            dispatcher(loginSuccess());
         })
         .catch((err: Error) => {
             dispatcher(loginFailure(err.message));
@@ -97,10 +89,9 @@ export function login(email: string, password: string): any {
     };
 }
 
-export function loginSuccess(uname: string): LoginActionSuccess {
+export function loginSuccess(): LoginActionSuccess {
     return {
-        type: 'login',
-        uname
+        type: 'login'
     };
 }
 
@@ -147,7 +138,7 @@ export function register(name: string, password: string, email: string, birthday
             })
         })
         .then(errorCheck)
-        .then((res: RegisterResponse) => {
+        .then((_res: RegisterResponse) => {
             dispatcher(registerSuccess());
             dispatcher(login(email, password));
         })
