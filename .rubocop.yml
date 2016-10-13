@@ -7,7 +7,7 @@ AllCops:
     - 'client/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
-    - 'db/schema.rb'
+    - 'db/**/*'
   TargetRubyVersion: 2.2
 
 Metrics/LineLength:
@@ -21,3 +21,6 @@ Metrics/MethodLength:
 
 Style/Documentation:
   Enabled: false
+
+Style/NumericLiterals:
+  MinDigits: 7
