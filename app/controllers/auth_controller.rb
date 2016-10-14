@@ -48,7 +48,7 @@ class AuthController < ApplicationController
     if !session[:user].nil?
       render json: { 'logged_in': true, user: session[:user] }
     else
-      render json: { 'logged_in': false }
+      render json: { 'logged_in': false }, status: :unauthorized # 401
     end
   end
 end

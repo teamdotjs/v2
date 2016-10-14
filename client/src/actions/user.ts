@@ -13,12 +13,30 @@ export interface LoginActionFailure {
     error: string;
 }
 
+export interface RegisterFailure {
+    type: 'register_failure';
+    errors: string[];
+}
+
+export interface RegisterSuccess {
+    type: 'register_success';
+    next: string;
+}
+
 interface LoginCheckResponse {
     logged_in: boolean;
 }
 
+interface RegisterResponse {
+    errors: string[];
+}
+
 function errorCheck(response: Response): any {
     switch (response.status) {
+        case 400:
+            throw new Error('Bad Request');
+        case 409:
+            throw new Error('Conflict');
         case 401:
             throw new Error('Unauthorized');
         case 500:
@@ -33,11 +51,15 @@ export function loginCheck(): any {
         fetch('/api/auth/signed_in', {
             credentials: 'same-origin'
         })
-        .then((res: Response) => {
-            return res.json();
-        })
+        .then(errorCheck)
         .then((_body: LoginCheckResponse) => {
             dispatcher(loginSuccess());
+        })
+        .catch(() => {
+            dispatcher({
+                type: 'login_failure',
+                errors: []
+            });
         });
 
         return dispatcher({
@@ -86,9 +108,54 @@ export function loginFailure(error: string): LoginActionFailure {
     };
 }
 
-// TODO: Actually register. For now we just log in.
-export function register (uname: string, password: string): LoginActionPending {
-    return login(uname, password);
+export function registerFailure(errors: string[]): RegisterFailure {
+    return {
+        type: 'register_failure',
+        errors
+    };
+}
+
+export function registerSuccess(): RegisterSuccess {
+    return {
+        type: 'register_success',
+        next: '/'
+    };
+}
+
+
+export function register(name: string, password: string, email: string, birthday: string): any {
+    return (dispatcher: any) => {
+        const bvalue = birthday.split('/');
+        const bday = new Date(
+            parseInt(bvalue[2]),
+            parseInt(bvalue[1]),
+            parseInt(bvalue[0])
+        );
+        fetch('/api/user', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user: {
+                    name, email, password, birthday: bday.toISOString()
+                }
+            })
+        })
+        .then(errorCheck)
+        .then((_res: RegisterResponse) => {
+            dispatcher(registerSuccess());
+            dispatcher(login(email, password));
+        })
+        .catch((error: Error) => {
+            dispatcher(registerFailure([error.message]));
+        });
+
+        return dispatcher({
+            type: 'register_request'
+        });
+    };
 }
 
 
