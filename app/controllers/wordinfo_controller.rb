@@ -1,6 +1,7 @@
 class WordinfoController < ApplicationController
   # { wordinfo } = { 'id': int, 'word': '', 'definition': '', 'roots': [''], 'forms': [{wordinfo}],
   #                  'synonyms': [''], 'antonyms': [''], sentences: [''] }
+  before_action :signed_in?
 
   # GET /api/wordinfo/all
   # Desc: return all word infos created by current user
