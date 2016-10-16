@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-
+import { push } from 'react-router-redux';
 export interface LoginActionPending {
     type: 'login_request';
 }
@@ -20,7 +20,6 @@ export interface RegisterFailure {
 
 export interface RegisterSuccess {
     type: 'register_success';
-    next: string;
 }
 
 interface LoginCheckResponse {
@@ -47,29 +46,29 @@ function errorCheck(response: Response): any {
 }
 
 export function loginCheck(): any {
-    return (dispatcher: any) => {
+    return (dispatch: any) => {
         fetch('/api/auth/signed_in', {
             credentials: 'same-origin'
         })
         .then(errorCheck)
         .then((_body: LoginCheckResponse) => {
-            dispatcher(loginSuccess());
+            dispatch(loginSuccess());
         })
         .catch(() => {
-            dispatcher({
+            dispatch({
                 type: 'login_failure',
                 errors: []
             });
         });
 
-        return dispatcher({
+        return dispatch({
             type: 'login_request'
         });
     };
 }
 
 export function login(email: string, password: string): any {
-    return (dispatcher: any) => {
+    return (dispatch: any) => {
         fetch('/api/auth/login', {
             method: 'POST',
             headers: {
@@ -83,13 +82,13 @@ export function login(email: string, password: string): any {
         })
         .then(errorCheck)
         .then((_res: LoginCheckResponse) => {
-            dispatcher(loginSuccess());
+            dispatch(loginSuccess());
         })
         .catch((err: Error) => {
-            dispatcher(loginFailure(err.message));
+            dispatch(loginFailure(err.message));
         });
 
-        return dispatcher({
+        return dispatch({
             type: 'login_request'
         });
     };
@@ -117,14 +116,13 @@ export function registerFailure(errors: string[]): RegisterFailure {
 
 export function registerSuccess(): RegisterSuccess {
     return {
-        type: 'register_success',
-        next: '/'
+        type: 'register_success'
     };
 }
 
 
 export function register(name: string, password: string, email: string, birthday: string): any {
-    return (dispatcher: any) => {
+    return (dispatch: any) => {
         const bvalue = birthday.split('/');
         const bday = new Date(
             parseInt(bvalue[2]),
@@ -145,14 +143,15 @@ export function register(name: string, password: string, email: string, birthday
         })
         .then(errorCheck)
         .then((_res: RegisterResponse) => {
-            dispatcher(registerSuccess());
-            dispatcher(login(email, password));
+            dispatch(registerSuccess());
+            dispatch(login(email, password));
+            dispatch(push('/'));
         })
         .catch((error: Error) => {
-            dispatcher(registerFailure([error.message]));
+            dispatch(registerFailure([error.message]));
         });
 
-        return dispatcher({
+        return dispatch({
             type: 'register_request'
         });
     };
