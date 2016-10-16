@@ -1,5 +1,3 @@
-import { browserHistory } from 'react-router';
-
 export interface RegistrationState {
     pending?: boolean;
     errors?: string[];
@@ -19,7 +17,6 @@ export const registrationReducer = (state: RegistrationState, action: any): Regi
                 pending: true
             };
         case 'register_success':
-            browserHistory.push(action.next || '/');
             return {
                 pending: false
             };
