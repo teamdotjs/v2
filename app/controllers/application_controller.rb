@@ -2,10 +2,17 @@ class ApplicationController < ActionController::API
   protected
 
   def signed_in?
-    render json: { errors: ['Not Authenticated'] }, status: :unauthorized if session[:user_id].nil?
+    return if session_not_expired?
+    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
   end
 
   def not_signed_in?
-    render json: { 'logged_in': true } unless session[:user_id].nil?
+    return unless session_not_expired?
+    render json: { 'logged_in': true }
+  end
+
+  def session_not_expired?
+    user_session = session[:user_id]
+    user_session && user_session[:expires] >= 1.day.ago
   end
 end

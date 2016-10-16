@@ -41,13 +41,12 @@ class AuthController < ApplicationController
   #   none
   # Success response:
   #   (1) Code: 200
-  #   Content: { 'logged_in': true, user: { id: int, name: string, email: string, birthday: date } }
+  #   Content: { 'logged_in': true, user_id: int }
   #   (2) Code: 200
   #   Content: { 'logged_in': false }
   def signed_in
-    user_session = session[:user_id]
-    if user_session && user_session[:expires] >= 1.day.ago
-      render json: { 'logged_in': true, user_id: user_session[:value] }
+    if session_not_expired?
+      render json: { 'logged_in': true, user_id: session[:user_id][:value] }
     else
       render json: { 'logged_in': false }, status: :unauthorized # 401
     end
