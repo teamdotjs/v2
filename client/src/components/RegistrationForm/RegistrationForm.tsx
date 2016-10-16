@@ -104,7 +104,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
                 <TextField hintText='Email' name='user'
                             floatingLabelText='Email'
                             value={this.state['user']}
-                            onChange={this.bindValue.bind(this)}
+                            onChange={this.bindValueToName.bind(this)}
                             errorText={error_email}
                             disabled={this.props.pending} />
                 <br />
@@ -112,21 +112,21 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
                 <TextField hintText='Full Name' name='name'
                             floatingLabelText='Full Name'
                             value={this.state['name']}
-                            onChange={this.bindValue.bind(this)}
+                            onChange={this.bindValueToName.bind(this)}
                             disabled={this.props.pending} />
                 <br />
 
                 <TextField hintText='Password' name='password1'
                             floatingLabelText='Password'
                             type='password' value={this.state['password1']}
-                            onChange={this.bindValue.bind(this)}
+                            onChange={this.bindValueToName.bind(this)}
                             errorText={error_password}
                             disabled={this.props.pending} />
                 <br />
 
                 <TextField hintText='Confirm Password' name='password2'
                             type='password' value={this.state['password2']}
-                            onChange={this.bindValue.bind(this)}
+                            onChange={this.bindValueToName.bind(this)}
                             errorText={error_password}
                             disabled={this.props.pending} />
                 <br />
