@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {WordInfo, WordInput} from './WordInput';
+import {WordInput} from './WordInput';
+import {WordInfo} from '../../reducers/lessonReducer';
 
 export interface WordCreatorProps {
     name?: string;

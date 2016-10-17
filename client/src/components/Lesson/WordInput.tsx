@@ -2,14 +2,11 @@ import * as React from 'react';
 import {
     TextField,
 } from 'material-ui';
+import {WordInfo} from '../../reducers/lessonReducer';
 
 export interface WordCreatorProps {
     value?: WordInfo;
     onChange?: () => void;
-}
-
-export interface WordInfo {
-    word: string;
 }
 
 export class WordInput extends React.Component<WordCreatorProps, WordInfo> {

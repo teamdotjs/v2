@@ -1,13 +1,15 @@
 import {RaisedButton} from 'material-ui';
 import Page from './util/Page';
 import * as React from 'react';
-import { browserHistory } from 'react-router';
 
+export interface HomeProps {
+    onCreateLessonClick?: () => void;
+}
 
-export const Home = (_: any) => {
+export const Home = (props: HomeProps) => {
     return (<Page>
         <RaisedButton primary={true} label='New Lesson'
-            onClick={() => browserHistory.push('/lesson/1')}/>
+            onClick={props.onCreateLessonClick}/>
     </Page>);
 };
 
