@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161014171914) do
+ActiveRecord::Schema.define(version: 20161017045808) do
 
   create_table "antonyms", force: :cascade do |t|
     t.string   "word"
@@ -39,11 +39,11 @@ ActiveRecord::Schema.define(version: 20161014171914) do
   end
 
   create_table "lessons", force: :cascade do |t|
-    t.string   "title",         default: "Untitled"
-    t.integer  "instructor_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.index ["instructor_id"], name: "index_lessons_on_instructor_id"
+    t.string   "title",      default: "Untitled"
+    t.integer  "owner_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.index ["owner_id"], name: "index_lessons_on_owner_id"
   end
 
   create_table "roots", force: :cascade do |t|
