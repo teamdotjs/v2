@@ -1,6 +1,13 @@
 class WordinfoController < ApplicationController
-  # { wordinfo } = { 'id': int, 'word': '', 'definition': '', 'roots': [''], 'forms': [{wordinfo}],
-  #                  'synonyms': [''], 'antonyms': [''], sentences: [''] }
+  # { wordinfo } = {
+  #   'id': int,
+  #   'word': '',
+  #   'definition': '',
+  #   'roots': [{ 'id': int, 'word': '' }],
+  #   'forms': [{ 'id': int, 'associated_word': { 'id': int, 'word': '' } }],
+  #   'synonyms': [{ 'id': int, 'word': '' }],
+  #   'antonyms': [{ 'id': int, 'word': '' }],
+  #   'sentences': [{ 'id': int, 'context_sentence': '' }] }
   before_action :signed_in?
 
   # GET /api/wordinfo/all
@@ -9,12 +16,12 @@ class WordinfoController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: { [{ wordinfo }] }
+  #   Content: [{ wordinfo }]
   # Error response:
   #   Code: 401
   #   Content: { 'errors': ['Not Authorized'] }
   def all
-    render json: { 'wordinfo': 'all' }
+    render json: Wordinfo.where(user_id: session[:user_id][:value])
   end
 
   # POST /api/wordinfo/
@@ -52,7 +59,7 @@ class WordinfoController < ApplicationController
   #   (2) Code: 404
   #   Content: { 'errors': ['Not Found'] }
   def show
-    render json: { 'wordinfo': 'show' }
+    render json: Wordinfo.find(params[:id])
   end
 
   # PATCH /api/wordinfo/:id
