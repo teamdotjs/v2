@@ -7,16 +7,17 @@ interface BindingState {
 export class BindingComponent<P> extends React.Component<P, BindingState> {
     state: BindingState;
 
-    updateState(valueField: string, ev: any) {
-        let field = ev.target.name;
-        let value = ev.target[valueField];
-        this.setState({
-            [field]: value
-        });
+    updateState(stateField: string, valueField: string) {
+        return (ev: any) => {
+            let value = ev.target[valueField];
+            this.setState({
+                [stateField]: value
+            });
+        };
     }
 
-    bindValue(ev: any) {
-        this.updateState('value', ev);
+    bindValueToName(ev: any) {
+        return this.updateState(ev.target.name, 'value')(ev);
     }
 }
 export default BindingComponent;
