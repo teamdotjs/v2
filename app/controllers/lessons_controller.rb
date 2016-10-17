@@ -1,5 +1,5 @@
 class LessonsController < ApplicationController
-  # { lesson } = { 'id': int, 'title': '', 'wordinfo': { wordinfo } }
+  # { lesson } = { 'id': int, 'title': '', 'wordinfos': [{ wordinfo }] }
   before_action :signed_in?
 
   # GET /api/lesson/all
@@ -8,12 +8,12 @@ class LessonsController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: { [{ lesson }] }
+  #   Content: [{ lesson }]
   # Error response:
   #   Code: 401
   #   Content: { 'errors': ['Not Authorized'] }
   def all
-    render json: { 'lesson': 'all' }
+    render json: Lesson.where(instructor_id: session[:user_id][:value])
   end
 
   # POST /api/lesson/
@@ -72,14 +72,14 @@ class LessonsController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: { [{ lesson }] }
+  #   Content: { lesson }
   # Error response:
   #   (1) Code: 401
   #   Content: { 'errors': ['Not Authorized'] }
   #   (2) Code: 404
   #   Content: { 'errors': ['Not Found'] }
   def show
-    render json: { 'lesson': 'show' }
+    render json: Lesson.find(params[:id])
   end
 
   # PATCH /api/lesson/:id
