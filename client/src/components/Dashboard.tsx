@@ -9,11 +9,10 @@ export interface DashboardProps {
 export class Dashboard extends React.Component<DashboardProps, {}> {
 
     render() {
-        const loginForm = this.props.isLoggedIn ? null : <LoginFormContainer />;
+        const content = this.props.isLoggedIn ? this.props.children : <LoginFormContainer />;
         return  (
             <div>
-            {loginForm}
-            {this.props.children}
+            {content}
             </div>
         );
     }
