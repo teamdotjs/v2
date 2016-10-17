@@ -6,7 +6,6 @@ class UsersController < ApplicationController
   #   name (string)
   #   email (string)
   #   password (string)
-  #   password_confirmation (string)
   #   birthday (isodate)
   # Success response:
   #   Code: 200
@@ -19,11 +18,11 @@ class UsersController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
-      session[:user] = {
-        value: user.as_json(only: [:id, :name, :email, :birthday]),
+      session[:user_id] = {
+        value: user.id,
         expires: 1.day.from_now
       }
-      render json: { 'logged_in': true, user: session[:user] }
+      render json: { 'logged_in': true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
     elsif user.errors['email'] && user.errors['email'].include?('has already been taken')
       render json: { errors: user.errors }, status: :conflict # 409
     else
@@ -52,6 +51,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :birthday)
+    params.require(:user).permit(:name, :email, :password, :birthday)
   end
 end

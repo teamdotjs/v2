@@ -1,5 +1,6 @@
 class LessonsController < ApplicationController
   # { lesson } = { 'id': int, 'title': '', 'wordinfo': { wordinfo } }
+  before_action :signed_in?
 
   # GET /api/lesson/all
   # Desc: return all lessons created by current user
