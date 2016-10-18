@@ -105,9 +105,11 @@ class LessonsController < ApplicationController
   end
 
   # PATCH /api/lesson/:id
-  # Desc: updates lesson specified by id
+  # Desc: updates title of lesson specified by id and/or
+  # creates a wordinfo and associates it with this lesson
   # Request body params:
-  #   title (string)
+  #   title (string - optional)
+  #   word (string - optional)
   # Success response:
   #   Code: 200
   #   Content: { lesson }
@@ -120,12 +122,20 @@ class LessonsController < ApplicationController
   #   Content: { 'errors': ['Not Found'] }
   def update
     lesson = Lesson.find(params[:id])
-    lesson.title = params[:title]
-    if lesson.save
-      render json: lesson
-    else
-      render json: { errors: lesson.errors }, status: :bad_request # 400
+    title = params[:title]
+    word = params[:word]
+
+    unless title.nil?
+      lesson.title = title
+      unless lesson.save
+        render json: { 'errors': lesson.errors }, status: :bad_request # 400
+        return
+      end
     end
+
+    rendered = create_and_associate_wordinfo(lesson, word) unless word.nil?
+    return if rendered
+    render json: Lesson.find(params[:id])
   end
 
   # DELETE /api/lesson/:id
@@ -144,5 +154,22 @@ class LessonsController < ApplicationController
     lesson = Lesson.find(params[:id])
     lesson.destroy
     render json: { 'deleted': true }
+  end
+
+  private
+
+  def create_and_associate_wordinfo(lesson, word)
+    wordinfo = Wordinfo.new(user_id: session[:user_id][:value], word: word)
+    unless wordinfo.save
+      render json: { 'errors': wordinfo.errors }, status: :bad_request # 400
+      return true # rendered errors
+    end
+    begin
+      lesson.wordinfos << wordinfo
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { 'errors': e.record.errors }, status: :bad_request # 400
+      return true # rendered errors
+    end
+    false # did not render
   end
 end
