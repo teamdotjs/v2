@@ -19,16 +19,29 @@ export interface CreateLessonFailure {
     type: 'create_lesson_failure';
 }
 
-interface LessonAPIResponse {
-    id: number;
-    title: string;
-    wordinfos: any[];
-}
-
 const headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
 };
+
+export function loadLesson(id: number) {
+    return (dispatch: any) => {
+        dispatch({
+            type: 'load_lesson_pending'
+        });
+        fetch('/api/lesson/' + id, {
+            headers,
+            credentials: 'same-origin'
+        })
+        .then(errorCheck)
+        .then((res: Lesson) => {
+            dispatch({
+                type: 'save_lesson_local',
+                lesson: res
+            });
+        });
+    };
+}
 
 export function createLesson() {
     return (dispatch: any) => {
@@ -41,7 +54,7 @@ export function createLesson() {
             credentials: 'same-origin'
         })
         .then(errorCheck)
-        .then((res: LessonAPIResponse) => {
+        .then((res: Lesson) => {
             dispatch({
                 type: 'create_lesson_success',
                 id: res.id
@@ -69,7 +82,7 @@ export function saveLesson(l: Lesson) {
                 body: JSON.stringify(l)
             })
             .then(errorCheck)
-            .then((_res: LessonAPIResponse) => {
+            .then((_res: Lesson) => {
                 dispatch({
                     type: 'save_lesson_success',
                 });

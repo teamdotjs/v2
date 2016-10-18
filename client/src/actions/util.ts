@@ -1,6 +1,9 @@
 import 'whatwg-fetch';
 
 export function errorCheck(response: Response): any {
+    if (response.status >= 200 && response.status < 400) {
+        return response.json();
+    }
     switch (response.status) {
         case 400:
             throw new Error('Bad Request');
@@ -11,7 +14,7 @@ export function errorCheck(response: Response): any {
         case 500:
             throw new Error('The server failed to respond');
         default:
-            return response.json();
+            return new Error('Unknown error');
     }
 }
 
