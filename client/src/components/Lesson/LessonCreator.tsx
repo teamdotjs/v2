@@ -44,12 +44,15 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
             content = 'Lesson Not Found';
         } else {
             content = (
-                <div>
-                <TextField style={{fontWeight: 'bold', fontSize: '1.5em'}} hintText='Lesson Title' name='title'
-                                value={this.state['title']}
-                                onChange={this.bindValueToName.bind(this)}/>
-                <h2>Words</h2>
-                <WordCreator name='word_infos' value={this.state['word_infos']} onChange={this.updateState('word_infos', 'value')}/>
+                <div style={{textAlign: 'left'}}>
+                <TextField
+                    style={{width: '100%'}}
+                    inputStyle={{fontSize: '1.5em'}}
+                    floatingLabelText='Lesson Title'
+                    name='title'
+                    value={this.state['title']}
+                    onChange={this.bindValueToName.bind(this)}/>
+                <WordCreator name='word_infos' value={this.state['word_infos']} onChange={this.updateState('word_infos')}/>
                 </div>
             );
         }
