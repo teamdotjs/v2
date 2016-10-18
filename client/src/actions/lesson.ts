@@ -1,5 +1,11 @@
+import 'whatwg-fetch';
+import {
+    errorCheck,
+    throttle
+} from './util';
 import { push } from 'react-router-redux';
 import { Lesson } from '../reducers/lessonReducer';
+
 export interface CreateLessonPending {
     type: 'create_lesson_pending';
 }
@@ -13,19 +19,35 @@ export interface CreateLessonFailure {
     type: 'create_lesson_failure';
 }
 
+interface LessonAPIResponse {
+    id: number;
+    title: string;
+    wordinfos: any[];
+}
+
+const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+};
+
 export function createLesson() {
     return (dispatch: any) => {
         dispatch({
             type: 'create_lesson_pending'
         });
-        setTimeout(() => {
+        fetch('/api/lesson', {
+            method: 'POST',
+            headers,
+            credentials: 'same-origin'
+        })
+        .then(errorCheck)
+        .then((res: LessonAPIResponse) => {
             dispatch({
                 type: 'create_lesson_success',
-                id: 1
+                id: res.id
             });
-
-            dispatch(push('/lesson/1'));
-        }, 100);
+            dispatch(push('/lesson/' + res.id));
+        });
     };
 }
 
@@ -36,14 +58,22 @@ export function saveLesson(l: Lesson) {
             lesson: l
         });
 
-        dispatch({
-            type: 'save_lesson_pending'
-        });
-
-        setTimeout(() => {
+        throttle(() => {
             dispatch({
-                type: 'save_lesson_success',
+                type: 'save_lesson_pending'
             });
-        }, 100);
+            fetch('/api/lesson/' + l.id, {
+                method: 'PATCH',
+                headers,
+                credentials: 'same-origin',
+                body: JSON.stringify(l)
+            })
+            .then(errorCheck)
+            .then((_res: LessonAPIResponse) => {
+                dispatch({
+                    type: 'save_lesson_success',
+                });
+            });
+        }, 1000);
     };
 }
