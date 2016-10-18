@@ -11,9 +11,8 @@ export class BindingComponent<P> extends React.Component<P, BindingState> {
 
     }
 
-    updateState(stateField: string, valueField: string) {
-        return (ev: any) => {
-            let value = ev.target[valueField];
+    updateState(stateField: string) {
+        return (value: any) => {
             this.setState({
                 [stateField]: value
             }, this.componentStateChange.bind(this));
@@ -21,7 +20,7 @@ export class BindingComponent<P> extends React.Component<P, BindingState> {
     }
 
     bindValueToName(ev: any) {
-        return this.updateState(ev.target.name, 'value')(ev);
+        return this.updateState(ev.target.name)(ev.target.value);
     }
 }
 export default BindingComponent;
