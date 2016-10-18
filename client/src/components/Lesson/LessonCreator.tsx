@@ -10,6 +10,7 @@ import {
 export interface LessonCreatorProps {
     children?: Element[];
     onChange?: (l: Lesson) => void;
+    loadLession?: () => void;
     value?: Lesson;
     notFound: boolean;
 }
@@ -24,6 +25,14 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         };
     }
 
+    componentWillReceiveProps(newProps: LessonCreatorProps) {
+        this.setState(newProps.value || {
+            'id': 0,
+            'title': '',
+            'word_infos': []
+        });
+    }
+
     get value(): Lesson {
         return {
             id: this.state['id'],
@@ -32,7 +41,15 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         };
     }
 
-    componentDidUpdate() {
+    componentWillMount() {
+        if (this.props.notFound) {
+            if (this.props.loadLession !== undefined) {
+                this.props.loadLession();
+            }
+        }
+    }
+
+    componentStateChange() {
         if (this.props.onChange !== undefined) {
             this.props.onChange(this.value);
         }
