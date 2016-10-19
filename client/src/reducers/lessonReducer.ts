@@ -26,6 +26,11 @@ export const lessonReducer = (state: LessonState, action: any): LessonState => {
                     word_infos: []
                 }
             }, state);
+        case 'load_all_lesssons_success':
+            return action.lessons.reduce((s: any, lesson: Lesson) => {
+                s[lesson.id] = lesson;
+                return s;
+            }, {});
         default:
             return state;
     }

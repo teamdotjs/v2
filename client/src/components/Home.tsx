@@ -13,11 +13,18 @@ import * as React from 'react';
 export interface HomeProps {
     lessons?: Lesson[];
     onCreateLessonClick?: () => void;
+    onClickLesson?: (id: number) => void;
 }
 
 export const Home = (props: HomeProps) => {
     let lessons = (props.lessons || []).map((l) =>
-        <ListItem primaryText={l.title} />
+        <ListItem onClick={
+                () => props.onClickLesson ?
+                    props.onClickLesson(parseInt(l.id)) :
+                    undefined
+            }
+            key={l.id}
+            primaryText={l.title} />
     );
 
     let content: any;
