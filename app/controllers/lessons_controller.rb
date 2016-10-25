@@ -34,60 +34,6 @@ class LessonsController < ApplicationController
     render json: lesson
   end
 
-  # GET /api/lesson/:lesson_id/add_word/:word_id
-  # Desc: adds a word to a lesson
-  # Request body params:
-  #   none
-  # Success response:
-  #   Code: 200
-  #   Content: { lesson }
-  # Error response:
-  #   (1) Code: 400
-  #   Content: { 'errors': { 'wordinfo': [''] } }
-  #   (2) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
-  #   (3) Code: 404
-  #   Content: { 'errors': ['Lesson not found'] }
-  #   (4) Code: 404
-  #   Content: { 'errors': ['Word not found'] }
-  def add_word
-    begin
-      lesson = Lesson.find(params[:lesson_id])
-    rescue ActiveRecord::RecordNotFound
-      render json: { 'errors': ['Lesson not found'] }, status: :not_found # 404
-      return
-    end
-    begin
-      word = Wordinfo.find(params[:word_id])
-    rescue ActiveRecord::RecordNotFound
-      render json: { 'errors': ['Word not found'] }, status: :not_found # 404
-      return
-    end
-    begin
-      lesson.wordinfos << word
-    rescue ActiveRecord::RecordInvalid => e
-      render json: { 'errors': e.record.errors }, status: :bad_request # 400
-      return
-    end
-    render json: Lesson.find(lesson.id)
-  end
-
-  # GET /api/lesson/:lesson_id/remove_word/:word_id
-  # Desc: removes a word from a lesson
-  # Request body params:
-  #   none
-  # Success response:
-  #   Code: 200
-  #   Content: { lesson }
-  # Error response:
-  #   (1) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
-  #   (2) Code: 404
-  #   Content: { 'errors': ['Lesson/word pair not found'] }
-  def remove_word
-    render json: { 'lesson': 'remove_word' }
-  end
-
   # GET /api/lesson/:id
   # Desc: return lesson specified by id
   # Request body params:
@@ -106,8 +52,11 @@ class LessonsController < ApplicationController
 
   # PATCH /api/lesson/:id
   # Desc: updates lesson specified by id
+  #   if a wordinfo, root, form, etc. has an id, it is updated
+  #   if it doesn't have an id, it is created
+  #   include '_destroy': true to destroy a wordinfo, root, form, etc.
   # Request body params:
-  #   title (string)
+  #   { 'lesson': { lesson } }
   # Success response:
   #   Code: 200
   #   Content: { lesson }
@@ -120,12 +69,12 @@ class LessonsController < ApplicationController
   #   Content: { 'errors': ['Not Found'] }
   def update
     lesson = Lesson.find(params[:id])
-    lesson.title = params[:title]
-    if lesson.save
-      render json: lesson
-    else
-      render json: { errors: lesson.errors }, status: :bad_request # 400
+    lesson.attributes = lesson_params
+    unless lesson.save
+      render json: { 'errors': lesson.errors }, status: :bad_request # 400
+      return
     end
+    render json: lesson.reload
   end
 
   # DELETE /api/lesson/:id
@@ -144,5 +93,35 @@ class LessonsController < ApplicationController
     lesson = Lesson.find(params[:id])
     lesson.destroy
     render json: { 'deleted': true }
+  end
+
+  private
+
+  def lesson_params
+    params[:lesson][:wordinfos_attributes] = params[:lesson][:wordinfos]
+    params[:lesson][:wordinfos_attributes].each do |info|
+      info[:user_id] = session[:user_id][:value]
+      info[:roots_attributes] = info[:roots]
+      info[:forms_attributes] = info[:forms]
+      info[:synonyms_attributes] = info[:synonyms]
+      info[:antonyms_attributes] = info[:antonyms]
+      info[:sentences_attributes] = info[:sentences]
+    end
+    params.require(:lesson).permit(
+      :id,
+      :title,
+      wordinfos_attributes: [
+        :id,
+        :word,
+        :definition,
+        :user_id,
+        :_destroy,
+        roots_attributes: [:id, :word, :_destroy],
+        forms_attributes: [:id, :wordinfo_id, :associated_word_id, :_destroy],
+        synonyms_attributes: [:id, :word, :_destroy],
+        antonyms_attributes: [:id, :word, :_destroy],
+        sentences_attributes: [:id, :context_sentence, :_destroy]
+      ]
+    )
   end
 end
