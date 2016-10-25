@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {WordInput} from './WordInput';
 import {WordInfo} from '../../reducers/lessonReducer';
-
+import { List, ListItem, Subheader } from 'material-ui';
 export interface WordCreatorProps {
     name?: string;
     value?: WordInfo[];
-    onChange?: (ev?: any) => void;
+    onChange?: (w: WordInfo[]) => void;
 }
 
 export interface WordCreatorState {
@@ -29,12 +29,12 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         return this.state.word_infos.slice(0, this.state.word_infos.length - 1);
     }
 
-    onWordChanged(i: number, _ev: any) {
+    onWordChanged(i: number, word_info: WordInfo) {
         let word_infos = [] as WordInfo[];
 
-        for (let i = 0; i < this.state.word_infos.length; i++) {
-            word_infos.push(this.inputs[i].value);
-        }
+        word_infos = Object.assign(this.state.word_infos, {
+            [i]: word_info
+        });
 
         if (i === word_infos.length - 1 && word_infos[i].word !== '') {
             // Create a new empty word
@@ -51,20 +51,23 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         });
 
         if (this.props.onChange) {
-            this.props.onChange({
-                target: this
-            });
+            this.props.onChange(word_infos);
         }
     }
 
     render() {
+        this.inputs = [];
         let inputs = this.state.word_infos.map((w, i) =>
-           (<WordInput key={i} value={w} onChange={this.onWordChanged.bind(this, i)} ref={(e) => this.inputs[i] = e}/>));
+            <ListItem key={i} disabled={true} style={{paddingTop: 0}}>
+                <WordInput key={i} value={w} onChange={this.onWordChanged.bind(this, i)} ref={(e) => this.inputs[i] = e}/>
+            </ListItem>
+        );
 
         return (
-            <div>
+            <List>
+                <Subheader>Words</Subheader>
                 {inputs}
-            </div>
+            </List>
         );
     }
 }
