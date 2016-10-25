@@ -20,7 +20,7 @@ export const Home = (props: HomeProps) => {
     let lessons = (props.lessons || []).map((l) =>
         <ListItem onClick={
                 () => props.onClickLesson ?
-                    props.onClickLesson(parseInt(l.id)) :
+                    props.onClickLesson(l.id) :
                     undefined
             }
             key={l.id}

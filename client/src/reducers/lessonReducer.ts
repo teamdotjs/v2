@@ -4,12 +4,12 @@ export interface WordInfo {
 }
 
 export interface Lesson {
-    id: string;
+    id: number;
     title: string;
     word_infos: WordInfo[];
 }
 
-export type LessonState = {[id: string]: Lesson};
+export type LessonState = {[id: number]: Lesson};
 
 export const lessonReducer = (state: LessonState, action: any): LessonState => {
     if (state === undefined) return {};

@@ -6,7 +6,7 @@ import { push } from 'react-router-redux';
 
 function mapStateToProps(state: State): HomeProps {
     return {
-        lessons: Object.keys(state.lesson).map((idx: string) => state.lesson[idx])
+        lessons: Object.keys(state.lesson).map((idx: any) => state.lesson[idx])
     };
 }
 
