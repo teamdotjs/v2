@@ -6,7 +6,7 @@ import {WordInfo} from '../../reducers/lessonReducer';
 
 export interface WordCreatorProps {
     value?: WordInfo;
-    onChange?: () => void;
+    onChange?: (w: WordInfo) => void;
 }
 
 export class WordInput extends React.Component<WordCreatorProps, WordInfo> {
@@ -21,17 +21,18 @@ export class WordInput extends React.Component<WordCreatorProps, WordInfo> {
     }
 
     onWordChanged(ev: any) {
-        this.setState({
+        let state = {
             word: ev.target.value
-        });
+        };
+        this.setState(state);
         if (this.props.onChange !== undefined) {
-            this.props.onChange();
+            this.props.onChange(state);
         }
     }
 
     render() {
         return (
-            <TextField value={this.state.word} hintText='New Word' onChange={this.onWordChanged.bind(this)} />
+            <TextField style={{margin: 0}} value={this.state.word} hintText='New Word' onChange={this.onWordChanged.bind(this)} />
         );
     }
 }

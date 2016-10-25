@@ -1,5 +1,7 @@
 import 'whatwg-fetch';
 import { push } from 'react-router-redux';
+import { errorCheck } from './util';
+
 export interface LoginActionPending {
     type: 'login_request';
 }
@@ -28,21 +30,6 @@ interface LoginCheckResponse {
 
 interface RegisterResponse {
     errors: string[];
-}
-
-function errorCheck(response: Response): any {
-    switch (response.status) {
-        case 400:
-            throw new Error('Bad Request');
-        case 409:
-            throw new Error('Conflict');
-        case 401:
-            throw new Error('Unauthorized');
-        case 500:
-            throw new Error('The server failed to respond');
-        default:
-            return response.json();
-    }
 }
 
 export function loginCheck(): any {

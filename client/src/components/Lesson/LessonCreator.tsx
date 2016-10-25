@@ -10,6 +10,7 @@ import {
 export interface LessonCreatorProps {
     children?: Element[];
     onChange?: (l: Lesson) => void;
+    loadLession?: () => void;
     value?: Lesson;
     notFound: boolean;
 }
@@ -24,6 +25,14 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         };
     }
 
+    componentWillReceiveProps(newProps: LessonCreatorProps) {
+        this.setState(newProps.value || {
+            'id': 0,
+            'title': '',
+            'word_infos': []
+        });
+    }
+
     get value(): Lesson {
         return {
             id: this.state['id'],
@@ -32,7 +41,15 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         };
     }
 
-    componentDidUpdate() {
+    componentWillMount() {
+        if (this.props.notFound) {
+            if (this.props.loadLession !== undefined) {
+                this.props.loadLession();
+            }
+        }
+    }
+
+    componentStateChange() {
         if (this.props.onChange !== undefined) {
             this.props.onChange(this.value);
         }
@@ -44,12 +61,15 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
             content = 'Lesson Not Found';
         } else {
             content = (
-                <div>
-                <TextField style={{fontWeight: 'bold', fontSize: '1.5em'}} hintText='Lesson Title' name='title'
-                                value={this.state['title']}
-                                onChange={this.bindValueToName.bind(this)}/>
-                <h2>Words</h2>
-                <WordCreator name='word_infos' value={this.state['word_infos']} onChange={this.updateState('word_infos', 'value')}/>
+                <div style={{textAlign: 'left'}}>
+                <TextField
+                    style={{width: '100%'}}
+                    inputStyle={{fontSize: '1.5em'}}
+                    floatingLabelText='Lesson Title'
+                    name='title'
+                    value={this.state['title']}
+                    onChange={this.bindValueToName.bind(this)}/>
+                <WordCreator name='word_infos' value={this.state['word_infos']} onChange={this.updateState('word_infos')}/>
                 </div>
             );
         }
