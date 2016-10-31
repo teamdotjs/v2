@@ -1,8 +1,9 @@
 import { SessionState, sessionReducer } from './sessionReducer';
-import { LessonState, lessonReducer } from './lessonReducer';
+import { lessonReducer } from './lessonReducer';
 import { RegistrationState, registrationReducer } from './registrationReducer';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { LessonState } from 'datatypes/lessonTypes';
 
 export interface State {
     session: SessionState;

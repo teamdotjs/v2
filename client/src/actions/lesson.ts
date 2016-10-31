@@ -4,7 +4,7 @@ import {
     throttle
 } from './util';
 import { push } from 'react-router-redux';
-import { Lesson } from '../reducers/lessonReducer';
+import { Lesson } from 'datatypes/lessonTypes';
 
 export interface CreateLessonPending {
     type: 'create_lesson_pending';
