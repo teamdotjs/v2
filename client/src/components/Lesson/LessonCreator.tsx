@@ -2,7 +2,7 @@ import * as React from 'react';
 import WordCreator from './WordCreator';
 import Page from '../util/Page';
 import BindingComponent from '../util/BindingComponent';
-import { Lesson } from 'datatypes/lessonTypes';
+import {Lesson} from '../../reducers/lessonReducer';
 import {
     TextField,
 } from 'material-ui';

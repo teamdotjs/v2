@@ -11,8 +11,7 @@
         "sourceMap": true,
         "jsx": "react",
         "lib": ["dom", "es6", "es2015.promise"],
-        "types": ["whatwg-fetch", "material-ui", "history"],
-        "baseUrl": "src"
+        "types": ["whatwg-fetch", "material-ui", "history"]
     },
     "include": [
         "src/**/*.{tsx,ts}"

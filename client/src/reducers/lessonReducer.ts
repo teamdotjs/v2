@@ -1,20 +1,15 @@
-import {
-    LessonState,
-    Lesson
-} from 'datatypes/lessonTypes';
+export interface WordInfo {
+    id?: number;
+    word: string;
+}
 
-// export interface WordInfo {
-//     id?: number;
-//     word: string;
-// }
+export interface Lesson {
+    id: number;
+    title: string;
+    word_infos: WordInfo[];
+}
 
-// export interface Lesson {
-//     id: number;
-//     title: string;
-//     word_infos: WordInfo[];
-// }
-
-// export type LessonState = {[id: number]: Lesson};
+export type LessonState = {[id: number]: Lesson};
 
 export const lessonReducer = (state: LessonState, action: any): LessonState => {
     if (state === undefined) return {};

@@ -6,9 +6,7 @@ import {
 } from 'material-ui';
 
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import {
-    Lesson
-} from 'datatypes/lessonTypes';
+import {Lesson} from '../reducers/lessonReducer';
 import Page from './util/Page';
 import * as React from 'react';
 
