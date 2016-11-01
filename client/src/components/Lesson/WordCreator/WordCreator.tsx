@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {WordInfo} from '../../../reducers/lessonReducer';
-import { TextField, List, ListItem, Subheader } from 'material-ui';
+import { TextField, List, ListItem } from 'material-ui';
 import { WordListItem } from './WordListItem';
 import { WordDetails } from './WordDetails';
-import { makeSelectable } from 'material-ui/List';
-let SelectableList = makeSelectable(List);
+import * as listUtil from 'material-ui/List';
+
+let SelectableList = (listUtil as any).makeSelectable(List);
 
 export interface WordCreatorProps {
     name?: string;
@@ -24,7 +25,7 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         super(props);
         this.state = {
             wordInfos: props.value || [],
-            currentWordIndex: 0
+            currentWordIndex: -1
         };
     }
 
@@ -46,26 +47,41 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             currentWordIndex: this.state.currentWordIndex
         });
 
+        // TODO state callback
         if (this.props.onChange) {
             this.props.onChange(wordInfos);
         }
     }
 
     onWordSelect(_: any, i: number) {
-        console.log("HUH");
         this.setState({
             wordInfos: this.state.wordInfos,
             currentWordIndex: i
-        })
+        });
+    }
+
+    isValidWord(word: string): boolean {
+        return word !== '' &&
+            word.indexOf(' ') < 0 && // TODO regex
+            this.state.wordInfos.map((w: WordInfo) => w.word).indexOf(word) < 0;
     }
 
     onNewWordSubmit(ev: any) {
+        ev.preventDefault();
+        if (!this.isValidWord(this.newInput.getValue())) {
+            // TODO, show error
+            return;
+        }
+
         this.setState({
             currentWordIndex: this.state.currentWordIndex,
             wordInfos: this.state.wordInfos.concat([{word: this.newInput.getValue()}])
+        }, () => {
+            if (this.props.onChange !== undefined) {
+                this.props.onChange(this.state.wordInfos);
+            }
         });
         ev.target.reset();
-        ev.preventDefault();
         return false;
     }
 
@@ -76,24 +92,28 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             </ListItem>
         );
 
+        const wordInfo = <WordDetails
+            wordInfo={this.state.wordInfos[this.state.currentWordIndex]}
+            value={this.state.currentWordIndex}
+            onChange={this.onWordChanged.bind(this)} />;
+
         return (
-            <div>
-             <div style={{display: 'inline-block', width: '30%'}}>
+            <div style={{display: 'flex'}}>
+                <div style={{width: '30%'}}>
                      <form onSubmit={this.onNewWordSubmit.bind(this)}>
                         <TextField  style={{width: '100%'}}
                                     floatingLabelText='New Word'
                                     ref={(e: TextField) => this.newInput = e}/>
                     </form>
                     <SelectableList value={this.state.currentWordIndex}
-                                    onChange={this.onWordSelect.bind(this)}
-                                    requestChange={this.onWordSelect.bind(this)}>
+                                    onChange={this.onWordSelect.bind(this)} >
                         {wordItems}
                     </SelectableList>
-            </div>
+                </div>
 
-            <div style={{display:'inline-block', width: '70%'}}>
-                <WordDetails />
-            </div>
+                <div style={{width: '70%', padding: '15px'}}>
+                    { this.state.currentWordIndex >= 0 ? wordInfo : undefined }
+                </div>
             </div>
         );
     }
