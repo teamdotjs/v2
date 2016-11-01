@@ -10,7 +10,9 @@ const App = (props: AppProps) => {
         <AppBar
                     title='NTID Vocab Program'
                     iconClassNameRight='muidocs-icon-navigation-expand-more'/>
+            <div style={{maxWidth: '800px', margin: '0 auto'}}>
             {props.children}
+            </div>
         </div>
     );
 };
