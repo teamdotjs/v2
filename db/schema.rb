@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161017045808) do
+ActiveRecord::Schema.define(version: 20161024194154) do
 
   create_table "antonyms", force: :cascade do |t|
     t.string   "word"
@@ -27,15 +27,6 @@ ActiveRecord::Schema.define(version: 20161017045808) do
     t.datetime "updated_at",         null: false
     t.index ["associated_word_id"], name: "index_forms_on_associated_word_id"
     t.index ["wordinfo_id"], name: "index_forms_on_wordinfo_id"
-  end
-
-  create_table "lesson_wordinfos", id: false, force: :cascade do |t|
-    t.integer  "wordinfo_id"
-    t.integer  "lesson_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["lesson_id"], name: "index_lesson_wordinfos_on_lesson_id"
-    t.index ["wordinfo_id"], name: "index_lesson_wordinfos_on_wordinfo_id"
   end
 
   create_table "lessons", force: :cascade do |t|
@@ -86,6 +77,8 @@ ActiveRecord::Schema.define(version: 20161017045808) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "lesson_id"
+    t.index ["lesson_id"], name: "index_wordinfos_on_lesson_id"
     t.index ["user_id"], name: "index_wordinfos_on_user_id"
     t.index ["word"], name: "index_wordinfos_on_word"
   end

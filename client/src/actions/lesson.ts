@@ -24,6 +24,25 @@ const headers = {
     'Content-Type': 'application/json'
 };
 
+export function loadLessons() {
+    return (dispatch: any) => {
+        dispatch({
+            type: 'load_lessons_pending'
+        });
+        fetch('/api/lesson/all', {
+            headers,
+            credentials: 'same-origin'
+        })
+        .then(errorCheck)
+        .then((res: Lesson[]) => {
+            dispatch({
+                type: 'load_all_lesssons_success',
+                lessons: res
+            });
+        });
+    };
+}
+
 export function loadLesson(id: number) {
     return (dispatch: any) => {
         dispatch({
