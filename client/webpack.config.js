@@ -13,6 +13,7 @@ module.exports = {
     devtool: "source-map",
 
     resolve: {
+        modulesDirectories: ["node_modules", "src"],
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
     },
@@ -46,7 +47,9 @@ module.exports = {
     },
 
     sassLoader: {
-        includePaths: [path.resolve(__dirname, "./styles")]
+        includePaths: [
+            path.resolve(__dirname, "./styles")
+        ]
     },
 
     plugins: [

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import LessonCreator from '../components/Lesson/LessonCreator';
-import { Lesson } from '../reducers/lessonReducer';
+import { Lesson } from 'datatypes/lessonTypes';
 import { State } from '../reducers/index';
 import { saveLesson, loadLesson } from '../actions/lesson';
 
