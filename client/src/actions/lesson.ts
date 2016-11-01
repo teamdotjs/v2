@@ -98,7 +98,7 @@ export function saveLesson(l: Lesson) {
                 method: 'PATCH',
                 headers,
                 credentials: 'same-origin',
-                body: JSON.stringify(l)
+                body: JSON.stringify({lesson: l})
             })
             .then(errorCheck)
             .then((_res: Lesson) => {
