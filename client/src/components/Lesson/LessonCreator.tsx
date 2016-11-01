@@ -1,5 +1,5 @@
 import * as React from 'react';
-import WordCreator from './WordCreator';
+import WordCreator from './WordCreator/WordCreator';
 import Page from '../util/Page';
 import BindingComponent from '../util/BindingComponent';
 import {Lesson} from '../../reducers/lessonReducer';
@@ -69,7 +69,10 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                     name='title'
                     value={this.state['title']}
                     onChange={this.bindValueToName.bind(this)}/>
-                <WordCreator name='word_infos' value={this.state['word_infos']} onChange={this.updateState('word_infos')}/>
+                <WordCreator 
+                    name='word_infos' 
+                    value={this.state['word_infos']}
+                    onChange={this.updateState('word_infos')}/>
                 </div>
             );
         }
