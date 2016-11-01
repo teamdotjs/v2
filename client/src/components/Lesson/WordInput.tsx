@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     TextField,
 } from 'material-ui';
-import { WordInfo } from 'datatypes/lessonTypes';
+import {WordInfo} from '../../reducers/lessonReducer';
 
 export interface WordCreatorProps {
     value?: WordInfo;

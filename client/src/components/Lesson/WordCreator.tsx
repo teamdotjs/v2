@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {WordInput} from './WordInput';
-import { WordInfo } from 'datatypes/lessonTypes';
+import {WordInfo} from '../../reducers/lessonReducer';
 import { List, ListItem, Subheader } from 'material-ui';
 export interface WordCreatorProps {
     name?: string;
