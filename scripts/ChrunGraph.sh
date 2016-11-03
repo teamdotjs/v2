@@ -1,0 +1,1 @@
+git log --all -M -C --name-only | grep -E '^(app|lib)/' | sort | uniq -c | sort | awk '{print $1}' | uniq -c | sort | awk 'BEGIN { print "frequency,churn_count"} { print $1,$2}'
