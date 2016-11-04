@@ -45,6 +45,14 @@ class AuthControllerTest < ActionController::TestCase
     assert_json_match({ logged_in: false }, @response.body)
   end
 
+  test 'GET /api/auth/signed_in user not found' do
+    login_as_testuser
+    users(:testuser).destroy
+    get :signed_in
+    assert_response :not_found
+    assert_json_match({ errors: ['Not Found'] }, @response.body)
+  end
+
   test 'GET /api/auth/signed_in session expired' do
     session[:user_id] = {
       value: users(:testuser).id,

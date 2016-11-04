@@ -44,6 +44,8 @@ class AuthController < ApplicationController
   #   Content: { 'logged_in': true, user_id: int }
   #   (2) Code: 200
   #   Content: { 'logged_in': false }
+  #   (3) Code: 404
+  #   Content: { 'errors': ['Not Found'] }
   def signed_in
     if session_not_expired?
       render json: { 'logged_in': true, user_id: session[:user_id][:value] }
