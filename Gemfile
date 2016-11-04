@@ -23,9 +23,11 @@ group :test do
   # Customize minitest output
   gem 'minitest-reporters', '~> 1.1', '>= 1.1.12'
   # One-liners that test common rails functionality
-  gem 'shoulda-matchers', '~> 3.1', '>= 3.1.1'
+  gem 'shoulda', '~> 3.5'
   # Code coverage
   gem 'simplecov', '~> 0.12.0'
+  # Assert json objects match
+  gem 'json_expressions', '~> 0.8.3'
 end
 
 group :production do
