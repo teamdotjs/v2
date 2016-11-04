@@ -1,0 +1,5 @@
+testuser:
+  name: Test User
+  email: testuser@test.com
+  password_digest: <%= BCrypt::Password.create('TestPass') %>
+  birthday: 1990-01-01
