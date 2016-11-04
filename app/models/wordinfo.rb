@@ -19,7 +19,9 @@ class Wordinfo < ApplicationRecord
     super(options.merge(
       include: [
         { roots: { only: [:id, :word] } },
-        { forms: { only: :id, include: { associated_word: { only: [:id, :word] } } } },
+        { forms: { only: :id, include: { associated_word: {
+          only: [:id, :word, :part_of_speech]
+        } } } },
         { synonyms: { only: [:id, :word] } },
         { antonyms: { only: [:id, :word] } },
         { sentences: { only: [:id, :context_sentence] } }

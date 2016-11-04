@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024194154) do
+ActiveRecord::Schema.define(version: 20161104214417) do
 
   create_table "antonyms", force: :cascade do |t|
     t.string   "word"
@@ -75,9 +75,10 @@ ActiveRecord::Schema.define(version: 20161024194154) do
     t.string   "word"
     t.text     "definition"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.integer  "lesson_id"
+    t.string   "part_of_speech"
     t.index ["lesson_id"], name: "index_wordinfos_on_lesson_id"
     t.index ["user_id"], name: "index_wordinfos_on_user_id"
     t.index ["word"], name: "index_wordinfos_on_word"
