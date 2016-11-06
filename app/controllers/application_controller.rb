@@ -15,7 +15,9 @@ class ApplicationController < ActionController::API
 
   def session_not_expired?
     user_session = session[:user_id]
-    user_session && user_session[:expires] >= 1.day.ago
+    return false unless user_session
+    User.find(user_session[:value])
+    user_session[:expires] >= 1.day.ago
   end
 
   private
