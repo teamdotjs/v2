@@ -3,6 +3,7 @@ class WordinfoController < ApplicationController
   #   'id': int,
   #   'word': '',
   #   'definition': '',
+  #   'part_of_speech': '',
   #   'roots': [{ 'id': int, 'word': '' }],
   #   'forms': [{ 'id': int, 'associated_word': { 'id': int, 'word': '' } }],
   #   'synonyms': [{ 'id': int, 'word': '' }],

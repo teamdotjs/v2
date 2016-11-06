@@ -40,8 +40,11 @@ module ActiveSupport
             id: 9270340,
             word: 'probably',
             definition: '',
+            part_of_speech: '',
             roots: [{ id: 483898531, word: 'prob' }],
-            forms: [{ id: 344729615, associated_word: { id: 344729615, word: 'probable' } }],
+            forms: [{ id: 344729615, associated_word: {
+              id: 344729615, word: 'probable', part_of_speech: ''
+            } }],
             synonyms: [{ id: 410840900, word: 'likely' }],
             antonyms: [{ id: 866466245, word: 'unlikely' }],
             sentences: [{ id: 309456473, context_sentence: 'This is probably the best test ever' }]
@@ -50,6 +53,7 @@ module ActiveSupport
             id: 344729615,
             word: 'probable',
             definition: '',
+            part_of_speech: '',
             roots: [],
             forms: [],
             synonyms: [],

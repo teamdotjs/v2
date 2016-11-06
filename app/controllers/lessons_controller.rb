@@ -114,6 +114,7 @@ class LessonsController < ApplicationController
         :id,
         :word,
         :definition,
+        :part_of_speech,
         :user_id,
         :_destroy,
         roots_attributes: [:id, :word, :_destroy],
