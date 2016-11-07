@@ -66,6 +66,18 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             this.state.wordInfos.map((w: WordInfo) => w.word).indexOf(word) < 0;
     }
 
+    deleteWord() {
+        const wordInfos = this.state.wordInfos.filter((_: any, i: number) => i !== this.state.currentWordIndex);
+        this.setState({
+            wordInfos,
+            currentWordIndex: -1
+        });
+
+        if (this.props.onChange) {
+            this.props.onChange(wordInfos);
+        }
+    }
+
     onNewWordSubmit(ev: any) {
         ev.preventDefault();
         if (!this.isValidWord(this.newInput.getValue())) {
@@ -95,7 +107,8 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         const wordInfo = <WordDetails
             wordInfo={this.state.wordInfos[this.state.currentWordIndex]}
             value={this.state.currentWordIndex}
-            onChange={this.onWordChanged.bind(this)} />;
+            onChange={this.onWordChanged.bind(this)}
+            onDelete={this.deleteWord.bind(this)} />;
 
         const selectInfo = <Subheader>
             {'No word selected'}
@@ -105,8 +118,9 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             <div style={{display: 'flex'}}>
                 <div style={{width: '30%', borderRight: '1px solid lightgray'}}>
                      <form onSubmit={this.onNewWordSubmit.bind(this)}>
-                        <TextField  style={{width: '100%'}}
+                        <TextField  style={{width: '100%', marginRight: '20px'}}
                                     floatingLabelText='New Word'
+                                    underlineShow={false}
                                     ref={(e: TextField) => this.newInput = e}/>
                     </form>
                     <SelectableList value={this.state.currentWordIndex}

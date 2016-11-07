@@ -1,5 +1,4 @@
 export interface WordInfo {
-    id?: number;
     word: string;
 }
 

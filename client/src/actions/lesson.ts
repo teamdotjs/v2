@@ -34,10 +34,11 @@ export function loadLessons() {
             credentials: 'same-origin'
         })
         .then(errorCheck)
-        .then((res: Lesson[]) => {
+        .then((res: any[]) => {
+            res.forEach(l => l.wordinfos.forEach((w: any) => w.id = undefined));
             dispatch({
                 type: 'load_all_lesssons_success',
-                lessons: res
+                lessons: res as Lesson[]
             });
         });
     };
@@ -84,6 +85,7 @@ export function createLesson() {
 }
 
 export function saveLesson(l: Lesson) {
+
     return (dispatch: any) => {
         dispatch({
             type: 'save_lesson_local',

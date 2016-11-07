@@ -1,19 +1,17 @@
 import * as React from 'react';
 import {
     TextField,
-    Divider
+    IconButton
 } from 'material-ui';
 import { WordInfo } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
 
-const style = {
-  marginLeft: 20,
-};
 
 export interface WordDetailsProps {
     value: number;
     wordInfo: WordInfo;
     onChange: (v: number, w: WordInfo) => void;
+    onDelete: () => void;
 }
 
 export class WordDetails extends BindingComponent<WordDetailsProps> {
@@ -32,20 +30,25 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
     }
 
     render() {
-        return (<div>
-            {this.props.wordInfo.word}
-            <br />
+        return (<div style={{paddingLeft: '20px'}}>
+            <TextField hintText='Word'
+                    floatingLabelText='Word'
+                    name='word'
+                    value={this.state['word'] || ''}
+                    onChange={this.bindValueToName.bind(this)}
+                />
+            <IconButton onClick={this.props.onDelete}
+                style={{display: 'inline-block',float: 'right'}}
+                iconClassName='material-icons'
+                tooltip='Delete'>delete</IconButton>
             <TextField hintText='Definition'
                     floatingLabelText='Definition'
                     multiLine={true}
                     fullWidth={true}
-                    style={style}
-                    underlineShow={false}
                     name='definition'
                     value={this.state['definition'] || ''}
                     onChange={this.bindValueToName.bind(this)}
                 />
-            <Divider />
         </div>);
     }
 }

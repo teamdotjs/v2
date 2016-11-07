@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { } from 'material-ui';
 
 export interface WordListItemProps {
     value: number;
@@ -13,7 +12,9 @@ export class WordListItem extends React.Component<WordListItemProps, {}> {
     }
 
     render() {
-        return <div>{this.props.text}</div>;
+        return <div>
+            {this.props.text}
+        </div>;
     }
 }
 
