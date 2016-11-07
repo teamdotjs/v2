@@ -37,15 +37,14 @@ module ActiveSupport
         title: 'English 101',
         wordinfos: [
           {
-            id: Integer,
             word: 'probably',
             definition: '',
             part_of_speech: '',
-            roots: [{ id: Integer, word: 'prob' }],
-            forms: [{ id: Integer, word: 'probable', part_of_speech: '' }],
-            synonyms: [{ id: Integer, word: 'likely' }],
-            antonyms: [{ id: Integer, word: 'unlikely' }],
-            sentences: [{ id: Integer, context_sentence: 'This is probably the best test ever' }]
+            roots: [{ word: 'prob' }],
+            forms: [{ word: 'probable', part_of_speech: '' }],
+            synonyms: [{ word: 'likely' }],
+            antonyms: [{ word: 'unlikely' }],
+            sentences: [{ context_sentence: 'This is probably the best test ever' }]
           }
         ]
       }
