@@ -69,12 +69,17 @@ class LessonsController < ApplicationController
   #   Content: { 'errors': ['Not Found'] }
   def update
     lesson = Lesson.find(params[:id])
+    Wordinfo.where(id: lesson.wordinfo_ids).destroy_all
     lesson.attributes = lesson_params
-    unless lesson.save
-      render json: { 'errors': lesson.errors }, status: :bad_request # 400
-      return
+    begin
+      unless lesson.save
+        render json: { 'errors': lesson.errors }, status: :bad_request # 400
+        return
+      end
+      render json: lesson.reload
+    rescue ActiveRecord::RecordNotUnique => e
+      render json: { 'errors': e.cause }, status: :bad_request # 400
     end
-    render json: lesson.reload
   end
 
   # DELETE /api/lesson/:id
@@ -116,12 +121,11 @@ class LessonsController < ApplicationController
         :definition,
         :part_of_speech,
         :user_id,
-        :_destroy,
-        roots_attributes: [:id, :word, :_destroy],
-        forms_attributes: [:id, :wordinfo_id, :associated_word_id, :_destroy],
-        synonyms_attributes: [:id, :word, :_destroy],
-        antonyms_attributes: [:id, :word, :_destroy],
-        sentences_attributes: [:id, :context_sentence, :_destroy]
+        roots_attributes: [:id, :word],
+        forms_attributes: [:id, :word, :part_of_speech],
+        synonyms_attributes: [:id, :word],
+        antonyms_attributes: [:id, :word],
+        sentences_attributes: [:id, :context_sentence]
       ]
     )
   end

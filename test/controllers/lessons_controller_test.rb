@@ -63,17 +63,55 @@ class LessonsControllerTest < ActionController::TestCase
 
   test 'PATCH /api/lesson/:id bad request (wordinfo word blank)' do
     login_as_testuser
-    lesson = lessons(:english101)
-    lesson.wordinfos[0].word = ''
-    patch :update, params: { id: lesson.id, lesson: lesson.as_json }
+    lesson = lessons(:english101).as_json
+    lesson['wordinfos'].each do |wordinfo|
+      wordinfo.delete('id')
+      wordinfo['roots'].each { |root| root.delete('id') }
+      wordinfo['forms'].each { |form| form.delete('id') }
+      wordinfo['synonyms'].each { |synonym| synonym.delete('id') }
+      wordinfo['antonyms'].each { |antonym| antonym.delete('id') }
+      wordinfo['sentences'].each { |sentence| sentence.delete('id') }
+    end
+    lesson['wordinfos'][0]['word'] = ''
+    patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :bad_request
     assert_json_match({ errors: { 'wordinfos.word': ['can\'t be blank'] } }, @response.body)
   end
 
-  test 'PATCH /api/lesson/:id success' do
+  test 'PATCH /api/lesson/:id multiple wordinfo with same word ' do
     login_as_testuser
     lesson = lessons(:english101)
-    patch :update, params: { id: lesson.id, lesson: lesson.as_json }
+    updated_lesson = {
+      id: lesson.id,
+      wordinfos: [
+        {
+          word: 'Test'
+        },
+        {
+          word: 'test'
+        }
+      ]
+    }
+    patch :update, params: { id: lesson.id, lesson: updated_lesson }
+    assert_response :bad_request
+    pattern = {
+      errors: 'UNIQUE constraint failed: index \'index_wordinfos_on_lesson_id_and_word\''
+    }
+    assert_json_match pattern, @response.body
+  end
+
+  test 'PATCH /api/lesson/:id success' do
+    login_as_testuser
+    lesson = lessons(:english101).as_json
+    lesson['wordinfos'].each do |wordinfo|
+      wordinfo.delete('id')
+      wordinfo['roots'].each { |root| root.delete('id') }
+      wordinfo['forms'].each { |form| form.delete('id') }
+      wordinfo['synonyms'].each { |synonym| synonym.delete('id') }
+      wordinfo['antonyms'].each { |antonym| antonym.delete('id') }
+      wordinfo['sentences'].each { |sentence| sentence.delete('id') }
+    end
+    patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :ok
     assert_json_match lesson_pattern, @response.body
   end
