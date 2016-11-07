@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {WordInfo} from '../../../reducers/lessonReducer';
-import { TextField, List, ListItem } from 'material-ui';
+import { TextField, List, ListItem, Subheader } from 'material-ui';
 import { WordListItem } from './WordListItem';
 import { WordDetails } from './WordDetails';
 import * as listUtil from 'material-ui/List';
@@ -97,9 +97,13 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             value={this.state.currentWordIndex}
             onChange={this.onWordChanged.bind(this)} />;
 
+        const selectInfo = <Subheader>
+            {'No word selected'}
+        </Subheader>;
+
         return (
             <div style={{display: 'flex'}}>
-                <div style={{width: '30%'}}>
+                <div style={{width: '30%', borderRight: '1px solid lightgray'}}>
                      <form onSubmit={this.onNewWordSubmit.bind(this)}>
                         <TextField  style={{width: '100%'}}
                                     floatingLabelText='New Word'
@@ -112,7 +116,7 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
                 </div>
 
                 <div style={{width: '70%', padding: '15px'}}>
-                    { this.state.currentWordIndex >= 0 ? wordInfo : undefined }
+                    { this.state.currentWordIndex >= 0 ? wordInfo : selectInfo }
                 </div>
             </div>
         );
