@@ -10,13 +10,13 @@ class Lesson < ApplicationRecord
       include:
         { wordinfos: {
           include: [
-            { roots: { only: [:id, :word] } },
-            { forms: { only: [:id, :word, :part_of_speech] } },
-            { synonyms: { only: [:id, :word] } },
-            { antonyms: { only: [:id, :word] } },
-            { sentences: { only: [:id, :context_sentence] } }
+            { roots: { only: [:word] } },
+            { forms: { only: [:word, :part_of_speech] } },
+            { synonyms: { only: [:word] } },
+            { antonyms: { only: [:word] } },
+            { sentences: { only: [:context_sentence] } }
           ],
-          except: [:user_id, :lesson_id, :created_at, :updated_at]
+          except: [:id, :user_id, :lesson_id, :created_at, :updated_at]
         } },
       except: [:owner_id, :created_at, :updated_at]
     ))

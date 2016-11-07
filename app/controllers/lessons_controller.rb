@@ -117,16 +117,15 @@ class LessonsController < ApplicationController
       :id,
       :title,
       wordinfos_attributes: [
-        :id,
         :word,
         :definition,
         :part_of_speech,
         :user_id,
-        roots_attributes: [:id, :word],
-        forms_attributes: [:id, :word, :part_of_speech],
-        synonyms_attributes: [:id, :word],
-        antonyms_attributes: [:id, :word],
-        sentences_attributes: [:id, :context_sentence]
+        roots_attributes: [:word],
+        forms_attributes: [:word, :part_of_speech],
+        synonyms_attributes: [:word],
+        antonyms_attributes: [:word],
+        sentences_attributes: [:context_sentence]
       ]
     )
   end
