@@ -84,19 +84,51 @@ class LessonsControllerTest < ActionController::TestCase
     updated_lesson = {
       id: lesson.id,
       wordinfos: [
+        { word: 'Test' },
+        { word: 'test' }
+      ]
+    }
+    patch :update, params: { id: lesson.id, lesson: updated_lesson }
+    assert_response :bad_request
+    assert_json_match({ errors: { 'wordinfos.word': ['has already been taken'] } }, @response.body)
+  end
+
+  test 'PATCH /api/lesson/:id wordinfo and synonym with same word' do
+    login_as_testuser
+    lesson = lessons(:english101)
+    updated_lesson = {
+      id: lesson.id,
+      wordinfos: [
         {
-          word: 'Test'
-        },
-        {
-          word: 'test'
+          word: 'Test',
+          synonyms: [{ word: 'test' }]
         }
       ]
     }
     patch :update, params: { id: lesson.id, lesson: updated_lesson }
     assert_response :bad_request
-    pattern = {
-      errors: 'UNIQUE constraint failed: index \'index_wordinfos_on_lesson_id_and_word\''
+    pattern = { errors: { 'wordinfos.synonyms.word': ['synonym cannot be the same word'] } }
+    assert_json_match pattern, @response.body
+  end
+
+  test 'PATCH /api/lesson/:id two synonyms with same word in one wordinfo' do
+    login_as_testuser
+    lesson = lessons(:english101)
+    updated_lesson = {
+      id: lesson.id,
+      wordinfos: [
+        {
+          word: 'Test',
+          synonyms: [
+            { word: 'Quiz' },
+            { word: 'quiz' }
+          ]
+        }
+      ]
     }
+    patch :update, params: { id: lesson.id, lesson: updated_lesson }
+    assert_response :bad_request
+    pattern = { errors: { 'wordinfos.synonyms.word': ['has already been taken'] } }
     assert_json_match pattern, @response.body
   end
 

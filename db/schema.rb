@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161106193655) do
+ActiveRecord::Schema.define(version: 20161106161429) do
 
   create_table "antonyms", force: :cascade do |t|
     t.string   "word"
     t.integer  "wordinfo_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["wordinfo_id", nil], name: "index_antonyms_on_wordinfo_id_and_word", unique: true
     t.index ["wordinfo_id"], name: "index_antonyms_on_wordinfo_id"
   end
 
@@ -43,7 +42,6 @@ ActiveRecord::Schema.define(version: 20161106193655) do
     t.integer  "wordinfo_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["wordinfo_id", nil], name: "index_roots_on_wordinfo_id_and_word", unique: true
     t.index ["wordinfo_id"], name: "index_roots_on_wordinfo_id"
   end
 
@@ -52,7 +50,6 @@ ActiveRecord::Schema.define(version: 20161106193655) do
     t.integer  "wordinfo_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.index ["wordinfo_id", nil], name: "index_sentences_on_wordinfo_id_and_context_sentence", unique: true
     t.index ["wordinfo_id"], name: "index_sentences_on_wordinfo_id"
   end
 
@@ -61,7 +58,6 @@ ActiveRecord::Schema.define(version: 20161106193655) do
     t.integer  "wordinfo_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["wordinfo_id", nil], name: "index_synonyms_on_wordinfo_id_and_word", unique: true
     t.index ["wordinfo_id"], name: "index_synonyms_on_wordinfo_id"
   end
 
@@ -83,7 +79,6 @@ ActiveRecord::Schema.define(version: 20161106193655) do
     t.datetime "updated_at",     null: false
     t.integer  "lesson_id"
     t.string   "part_of_speech"
-    t.index ["lesson_id", nil], name: "index_wordinfos_on_lesson_id_and_word", unique: true
     t.index ["lesson_id"], name: "index_wordinfos_on_lesson_id"
     t.index ["user_id"], name: "index_wordinfos_on_user_id"
     t.index ["word"], name: "index_wordinfos_on_word"
