@@ -12,9 +12,7 @@ export class WordListItem extends React.Component<WordListItemProps, {}> {
     }
 
     render() {
-        return <div>
-            {this.props.text}
-        </div>;
+        return <div>{this.props.text}</div>;
     }
 }
 

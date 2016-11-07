@@ -6,7 +6,6 @@ import {
 import { WordInfo } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
 
-
 export interface WordDetailsProps {
     value: number;
     wordInfo: WordInfo;
@@ -44,7 +43,6 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
             <TextField hintText='Definition'
                     floatingLabelText='Definition'
                     multiLine={true}
-                    fullWidth={true}
                     name='definition'
                     value={this.state['definition'] || ''}
                     onChange={this.bindValueToName.bind(this)}
