@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161104214417) do
+ActiveRecord::Schema.define(version: 20161106161429) do
 
   create_table "antonyms", force: :cascade do |t|
     t.string   "word"
@@ -21,11 +21,11 @@ ActiveRecord::Schema.define(version: 20161104214417) do
   end
 
   create_table "forms", force: :cascade do |t|
-    t.integer  "associated_word_id"
     t.integer  "wordinfo_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.index ["associated_word_id"], name: "index_forms_on_associated_word_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "word"
+    t.string   "part_of_speech"
     t.index ["wordinfo_id"], name: "index_forms_on_wordinfo_id"
   end
 

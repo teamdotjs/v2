@@ -69,6 +69,12 @@ class LessonsController < ApplicationController
   #   Content: { 'errors': ['Not Found'] }
   def update
     lesson = Lesson.find(params[:id])
+    errors = check_duplicates
+    unless errors.empty?
+      render json: { 'errors': errors }, status: :bad_request # 400
+      return
+    end
+    Wordinfo.where(id: lesson.wordinfo_ids).destroy_all
     lesson.attributes = lesson_params
     unless lesson.save
       render json: { 'errors': lesson.errors }, status: :bad_request # 400
@@ -116,13 +122,34 @@ class LessonsController < ApplicationController
         :definition,
         :part_of_speech,
         :user_id,
-        :_destroy,
-        roots_attributes: [:id, :word, :_destroy],
-        forms_attributes: [:id, :wordinfo_id, :associated_word_id, :_destroy],
-        synonyms_attributes: [:id, :word, :_destroy],
-        antonyms_attributes: [:id, :word, :_destroy],
-        sentences_attributes: [:id, :context_sentence, :_destroy]
+        roots_attributes: [:id, :word],
+        forms_attributes: [:id, :word, :part_of_speech],
+        synonyms_attributes: [:id, :word],
+        antonyms_attributes: [:id, :word],
+        sentences_attributes: [:id, :context_sentence]
       ]
     )
+  end
+
+  def check_duplicates
+    errors = {}
+    lesson = params[:lesson]
+    wordinfos = lesson['wordinfos']
+    wordinfos_uniq = wordinfos.uniq! { |wordinfo| wordinfo['word'].downcase }
+    errors['wordinfos.word'] = ['has already been taken'] unless wordinfos_uniq.nil?
+    wordinfos.each do |wordinfo|
+      errors = check_duplicates_wordinfo_nested wordinfo, 'roots', 'word', errors
+      errors = check_duplicates_wordinfo_nested wordinfo, 'synonyms', 'word', errors
+      errors = check_duplicates_wordinfo_nested wordinfo, 'antonyms', 'word', errors
+      errors = check_duplicates_wordinfo_nested wordinfo, 'sentences', 'context_sentence', errors
+    end
+    errors
+  end
+
+  def check_duplicates_wordinfo_nested(wordinfo, model, attribute, errors)
+    if wordinfo[model] && !wordinfo[model].uniq! { |m| m[attribute].downcase }.nil?
+      errors["wordinfos.#{model}.#{attribute}"] = ['has already been taken']
+    end
+    errors
   end
 end

@@ -37,30 +37,17 @@ module ActiveSupport
         title: 'English 101',
         wordinfos: [
           {
-            id: 9270340,
+            id: Integer,
             word: 'probably',
             definition: '',
             part_of_speech: '',
-            roots: [{ id: 483898531, word: 'prob' }],
-            forms: [{ id: 344729615, associated_word: {
-              id: 344729615, word: 'probable', part_of_speech: ''
-            } }],
-            synonyms: [{ id: 410840900, word: 'likely' }],
-            antonyms: [{ id: 866466245, word: 'unlikely' }],
-            sentences: [{ id: 309456473, context_sentence: 'This is probably the best test ever' }]
-          },
-          {
-            id: 344729615,
-            word: 'probable',
-            definition: '',
-            part_of_speech: '',
-            roots: [],
-            forms: [],
-            synonyms: [],
-            antonyms: [],
-            sentences: []
+            roots: [{ id: Integer, word: 'prob' }],
+            forms: [{ id: Integer, word: 'probable', part_of_speech: '' }],
+            synonyms: [{ id: Integer, word: 'likely' }],
+            antonyms: [{ id: Integer, word: 'unlikely' }],
+            sentences: [{ id: Integer, context_sentence: 'This is probably the best test ever' }]
           }
-        ].ordered!
+        ]
       }
     end
 

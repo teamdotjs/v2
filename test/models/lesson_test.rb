@@ -3,8 +3,7 @@ require 'test_helper'
 class LessonTest < ActiveSupport::TestCase
   should belong_to(:owner).class_name('User')
   should have_many(:wordinfos).dependent(:destroy)
-  should accept_nested_attributes_for(:wordinfos).allow_destroy(true)
-  should validate_presence_of(:title)
+  should accept_nested_attributes_for(:wordinfos)
   should validate_length_of(:title).is_at_most(255)
 
   test 'lesson as json' do
