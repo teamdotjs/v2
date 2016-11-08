@@ -31,20 +31,13 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
     }
 
 
-
-    onWordEdit(ev: any) {
-        this.setState({
-            'word': ev.target.value
-        }, this.componentStateChange.bind(this));
-    }
-
     render() {
         return (<div style={{paddingLeft: '20px'}}>
             <WordInput hintText='Word'
                     floatingLabelText='Word'
                     name='word'
                     value={this.state['word'] || ''}
-                    onChange={this.onWordEdit.bind(this)}
+                    onChange={this.bindValueToName.bind(this)}
                 />
 
             <IconButton onClick={this.props.onDelete}
@@ -65,6 +58,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     onChange={this.updateState('synonyms')}
                     values={this.state['synonyms']}
                     hintText='Synonyms'/>
+
             <TagBuilder name='antonyms'
                     onChange={this.updateState('antonyms')}
                     values={this.state['antonyms']}
