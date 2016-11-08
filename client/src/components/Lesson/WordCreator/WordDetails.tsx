@@ -3,8 +3,9 @@ import {
     TextField,
     IconButton
 } from 'material-ui';
-import { WordInfo } from '../../../reducers/lessonReducer';
+import { WordInfo, WordForm } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
+import WordFormSelector from './WordFormSelector';
 
 export interface WordDetailsProps {
     value: number;
@@ -28,6 +29,12 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
         this.setState(newProps.wordInfo);
     }
 
+    onFormChange(newForms: WordForm[]) {
+        this.setState({
+            forms: newForms
+        }, this.componentStateChange.bind(this));
+    }
+
     render() {
         return (<div style={{paddingLeft: '20px'}}>
             <TextField hintText='Word'
@@ -46,7 +53,15 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     name='definition'
                     value={this.state['definition'] || ''}
                     onChange={this.bindValueToName.bind(this)}
+                    style={{ width: '100%' }}
                 />
+            <h3>Forms</h3>
+            <WordFormSelector
+                forms={this.props.wordInfo.forms || []}
+                onChange={this.onFormChange.bind(this)}
+                onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
+                newValue={this.state['wordFormNewValue']}
+            />
         </div>);
     }
 }
