@@ -22,6 +22,4 @@ deployment:
       - git add --force client/dist/
       - git commit --amend -m "Auto Commit $CIRCLE_SHA1"
       - git push -f git@heroku.com:vocab-v2.git HEAD:refs/heads/master
-
-
-
+      - heroku run rake db:migrate
