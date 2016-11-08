@@ -1,18 +1,23 @@
 import * as React from 'react';
-import Paper from 'material-ui/Paper';
+import { Paper, Toolbar, ToolbarTitle } from 'material-ui';
 
 const style = {
     padding: '40px',
+    marginBottom: '40px'
 };
 
 export interface PageProps {
     children?: Element[];
+    title?: string;
 }
 
 const Page = (props: PageProps) => {
-    return (
-            <Paper style={style}>
-            {props.children}
+    const header = props.title !== undefined ? <Toolbar><ToolbarTitle text={props.title} /></Toolbar> : undefined;
+    return (<Paper>
+                {header}
+                <div style={style}>
+                    {props.children}
+                </div>
             </Paper>
     );
 };
