@@ -1,5 +1,12 @@
+export interface WordForm {
+    word: string;
+    part_of_speech: string;
+}
+
 export interface WordInfo {
     word: string;
+    part_of_speech?: string;
+    forms?: WordForm[];
 }
 
 export interface Lesson {

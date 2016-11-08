@@ -3,8 +3,9 @@ import {
     TextField,
     IconButton
 } from 'material-ui';
-import { WordInfo } from '../../../reducers/lessonReducer';
+import { WordInfo, WordForm } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
+import WordFormSelector from './WordFormSelector';
 import { WordInput } from '../../util/WordInput';
 import { TagBuilder } from '../../util/TagBuilder';
 
@@ -30,6 +31,11 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
         this.setState(newProps.wordInfo);
     }
 
+    onFormChange(newForms: WordForm[]) {
+        this.setState({
+            forms: newForms
+        }, this.componentStateChange.bind(this));
+    }
 
     render() {
         return (<div style={{paddingLeft: '20px'}}>
@@ -52,6 +58,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     name='definition'
                     value={this.state['definition'] || ''}
                     onChange={this.bindValueToName.bind(this)}
+                    style={{ width: '100%' }}
                 />
 
             <TagBuilder name='synonyms'
@@ -63,6 +70,14 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     onChange={this.updateState('antonyms')}
                     values={this.state['antonyms']}
                     hintText='Antonyms'/>
+
+            <h3>Forms</h3>
+            <WordFormSelector
+                forms={this.props.wordInfo.forms || []}
+                onChange={this.onFormChange.bind(this)}
+                onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
+                newValue={this.state['wordFormNewValue']}
+            />
 
         </div>);
     }
