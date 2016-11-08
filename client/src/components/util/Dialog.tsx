@@ -2,14 +2,18 @@ import * as React from 'react';
 import Paper from 'material-ui/Paper';
 
 const style = {
+    margin: '0 auto',
     padding: '40px',
+    textAlign: 'center',
+    display: 'block',
+    maxWidth: '400px'
 };
 
-export interface PageProps {
+export interface DialogProps {
     children?: Element[];
 }
 
-const Page = (props: PageProps) => {
+const Dialog = (props: DialogProps) => {
     return (
             <Paper style={style}>
             {props.children}
@@ -17,4 +21,4 @@ const Page = (props: PageProps) => {
     );
 };
 
-export default Page;
+export default Dialog;

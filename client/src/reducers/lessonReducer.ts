@@ -1,12 +1,11 @@
 export interface WordInfo {
-    id?: number;
     word: string;
 }
 
 export interface Lesson {
     id: number;
     title: string;
-    word_infos: WordInfo[];
+    wordinfos: WordInfo[];
 }
 
 export type LessonState = {[id: number]: Lesson};
@@ -23,7 +22,7 @@ export const lessonReducer = (state: LessonState, action: any): LessonState => {
                 [action.id]: {
                     id: action.id,
                     title: '',
-                    word_infos: []
+                    wordinfos: []
                 }
             }, state);
         case 'load_all_lesssons_success':

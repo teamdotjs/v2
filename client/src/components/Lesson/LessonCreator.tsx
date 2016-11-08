@@ -1,5 +1,5 @@
 import * as React from 'react';
-import WordCreator from './WordCreator';
+import WordCreator from './WordCreator/WordCreator';
 import Page from '../util/Page';
 import BindingComponent from '../util/BindingComponent';
 import {Lesson} from '../../reducers/lessonReducer';
@@ -21,7 +21,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         this.state = props.value || {
             'id': 0,
             'title': '',
-            'word_infos': []
+            'wordinfos': []
         };
     }
 
@@ -29,7 +29,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         this.setState(newProps.value || {
             'id': 0,
             'title': '',
-            'word_infos': []
+            'wordinfos': []
         });
     }
 
@@ -37,7 +37,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         return {
             id: this.state['id'],
             title: this.state['title'],
-            word_infos: this.state['word_infos'],
+            wordinfos: this.state['wordinfos'],
         };
     }
 
@@ -69,7 +69,10 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                     name='title'
                     value={this.state['title']}
                     onChange={this.bindValueToName.bind(this)}/>
-                <WordCreator name='word_infos' value={this.state['word_infos']} onChange={this.updateState('word_infos')}/>
+                <WordCreator
+                    name='wordinfos'
+                    value={this.state['wordinfos']}
+                    onChange={this.updateState('wordinfos')}/>
                 </div>
             );
         }

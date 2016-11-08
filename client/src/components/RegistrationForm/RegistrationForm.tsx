@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BindingComponent from '../util/BindingComponent';
-import Page from '../util/Page';
+import Dialog from '../util/Dialog';
 
 import {
     RaisedButton,
@@ -98,7 +98,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
         }
 
         return (
-            <Page>
+            <Dialog>
             <form onSubmit={this.submit.bind(this)}>
                 {errors}
                 <TextField hintText='Email' name='user'
@@ -139,7 +139,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
                 <br />
                 {action}
             </form>
-            </Page>
+            </Dialog>
         );
     }
 

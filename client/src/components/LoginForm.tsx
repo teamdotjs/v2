@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BindingComponent from './util/BindingComponent';
 import {Link} from 'react-router';
-import Page from './util/Page';
+import Dialog from './util/Dialog';
 
 import {
     RaisedButton,
@@ -37,7 +37,7 @@ export class LoginForm extends BindingComponent<LoginProps> {
         </div>;
 
         return (
-            <Page>
+            <Dialog>
             <form onSubmit={this.submit.bind(this)}>
                 <TextField hintText='email' name='email'
                             value={this.state['email']}
@@ -56,7 +56,7 @@ export class LoginForm extends BindingComponent<LoginProps> {
                 </div>
                 {this.props.lock ? spinner : buttons}
             </form>
-            </Page>
+            </Dialog>
         );
     }
 

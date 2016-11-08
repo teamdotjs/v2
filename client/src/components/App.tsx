@@ -12,7 +12,9 @@ const App = (props: AppProps) => {
         <AppBar
                     title={title}
                     iconClassNameRight='muidocs-icon-navigation-expand-more'/>
+            <div style={{maxWidth: '800px', margin: '0 auto'}}>
             {props.children}
+            </div>
         </div>
     );
 };
