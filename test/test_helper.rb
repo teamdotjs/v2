@@ -40,7 +40,7 @@ module ActiveSupport
             word: 'probably',
             definition: '',
             part_of_speech: '',
-            roots: [{ word: 'prob' }],
+            roots: [{ root: 'prob', meaning: '' }],
             forms: [{ word: 'probable', part_of_speech: '' }],
             synonyms: [{ word: 'likely' }],
             antonyms: [{ word: 'unlikely' }],

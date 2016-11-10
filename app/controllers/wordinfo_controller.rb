@@ -1,14 +1,13 @@
 class WordinfoController < ApplicationController
   # { wordinfo } = {
-  #   'id': int,
   #   'word': '',
   #   'definition': '',
   #   'part_of_speech': '',
-  #   'roots': [{ 'id': int, 'word': '' }],
-  #   'forms': [{ 'id': int, 'word': '', part_of_speech: '' }],
-  #   'synonyms': [{ 'id': int, 'word': '' }],
-  #   'antonyms': [{ 'id': int, 'word': '' }],
-  #   'sentences': [{ 'id': int, 'context_sentence': '' }] }
+  #   'roots': [{ 'root': '', 'meaning': '' }],
+  #   'forms': [{ 'word': '', part_of_speech: '' }],
+  #   'synonyms': [''],
+  #   'antonyms': [''],
+  #   'sentences': [{ 'context_sentence': '' }] }
   before_action :signed_in?
 
   # GET /api/wordinfo/all

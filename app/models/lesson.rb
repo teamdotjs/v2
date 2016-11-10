@@ -10,7 +10,7 @@ class Lesson < ApplicationRecord
       include:
         { wordinfos: {
           include: [
-            { roots: { only: [:word] } },
+            { roots: { only: [:root, :meaning] } },
             { forms: { only: [:word, :part_of_speech] } },
             { synonyms: { only: [:word] } },
             { antonyms: { only: [:word] } },

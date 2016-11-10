@@ -121,7 +121,7 @@ class LessonsController < ApplicationController
         :definition,
         :part_of_speech,
         :user_id,
-        roots_attributes: [:word],
+        roots_attributes: [:root, :meaning],
         forms_attributes: [:word, :part_of_speech],
         synonyms_attributes: [:word],
         antonyms_attributes: [:word],
