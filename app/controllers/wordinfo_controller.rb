@@ -11,7 +11,7 @@ class WordinfoController < ApplicationController
   #   'sentences': [{ 'id': int, 'context_sentence': '' }] }
   before_action :signed_in?
 
-  # GET /api/wordinfo/all
+  # GET /api/wordinfo
   # Desc: return all word infos created by current user
   # Request body params:
   #   none
@@ -21,7 +21,7 @@ class WordinfoController < ApplicationController
   # Error response:
   #   Code: 401
   #   Content: { 'errors': ['Not Authorized'] }
-  def all
+  def index
     render json: Wordinfo.where(user_id: session[:user_id][:value])
   end
 
