@@ -11,14 +11,14 @@ class RoutesTest < ActionController::TestCase
   should route(:get, '/api/user/email_taken').to('users#email_taken')
 
   # lesson routes
-  should route(:get, '/api/lesson/all').to('lessons#all')
+  should route(:get, '/api/lesson').to('lessons#index')
   should route(:post, '/api/lesson').to('lessons#create')
   should route(:get, '/api/lesson/1').to('lessons#show', id: 1)
   should route(:patch, '/api/lesson/1').to('lessons#update', id: 1)
-  should route(:delete, '/api/lesson/1').to('lessons#delete', id: 1)
+  should route(:delete, '/api/lesson/1').to('lessons#destroy', id: 1)
 
   # wordinfo routes
-  should route(:get, '/api/wordinfo/all').to('wordinfo#all')
+  should route(:get, '/api/wordinfo').to('wordinfo#index')
   should route(:get, '/api/wordinfo/1').to('wordinfo#show', id: 1)
 
   # static files
