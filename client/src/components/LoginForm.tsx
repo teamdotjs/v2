@@ -39,7 +39,7 @@ export class LoginForm extends BindingComponent<LoginProps> {
         return (
             <Dialog>
             <form onSubmit={this.submit.bind(this)}>
-                <TextField hintText='email' name='email'
+                <TextField hintText='Email' name='email'
                             value={this.state['email']}
                             onChange={this.bindValueToName.bind(this)}
                             disabled={this.props.lock} />
