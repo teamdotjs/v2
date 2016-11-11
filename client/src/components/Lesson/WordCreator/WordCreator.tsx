@@ -3,6 +3,7 @@ import {WordInfo} from '../../../reducers/lessonReducer';
 import { TextField, List, ListItem, Subheader } from 'material-ui';
 import { WordListItem } from './WordListItem';
 import { WordDetails } from './WordDetails';
+import { WordInput } from '../../util/WordInput';
 import * as listUtil from 'material-ui/List';
 
 let SelectableList = (listUtil as any).makeSelectable(List);
@@ -16,6 +17,7 @@ export interface WordCreatorProps {
 export interface WordCreatorState {
     wordInfos: WordInfo[];
     currentWordIndex: number;
+    inputText: string;
 }
 
 export class WordCreator extends React.Component<WordCreatorProps, WordCreatorState> {
@@ -25,7 +27,8 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         super(props);
         this.state = {
             wordInfos: props.value || [],
-            currentWordIndex: -1
+            currentWordIndex: -1,
+            inputText: ''
         };
     }
 
@@ -44,7 +47,8 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
 
         this.setState({
             wordInfos,
-            currentWordIndex: this.state.currentWordIndex
+            currentWordIndex: this.state.currentWordIndex,
+            inputText: this.state.inputText
         });
 
         // TODO state callback
@@ -56,7 +60,8 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
     onWordSelect(_: any, i: number) {
         this.setState({
             wordInfos: this.state.wordInfos,
-            currentWordIndex: i
+            currentWordIndex: i,
+            inputText: this.state.inputText
         });
     }
 
@@ -70,7 +75,8 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         const wordInfos = this.state.wordInfos.filter((_: any, i: number) => i !== this.state.currentWordIndex);
         this.setState({
             wordInfos,
-            currentWordIndex: -1
+            currentWordIndex: -1,
+            inputText: this.state.inputText
         });
 
         if (this.props.onChange) {
@@ -78,23 +84,29 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         }
     }
 
-    onNewWordSubmit(ev: any) {
-        ev.preventDefault();
-        if (!this.isValidWord(this.newInput.getValue())) {
+    onNewWordKeyPress(ev: any) {
+        if (ev.keyCode !== 13 || !this.isValidWord(this.state.inputText)) {
             // TODO, show error
             return;
         }
 
         this.setState({
             currentWordIndex: this.state.currentWordIndex,
-            wordInfos: this.state.wordInfos.concat([{word: this.newInput.getValue()}])
+            wordInfos: this.state.wordInfos.concat([{word: this.state.inputText}]),
+            inputText: ''
         }, () => {
             if (this.props.onChange !== undefined) {
                 this.props.onChange(this.state.wordInfos);
             }
         });
-        ev.target.reset();
-        return false;
+    }
+
+    onNewWordEdit(ev: any) {
+        this.setState({
+            currentWordIndex: this.state.currentWordIndex,
+            wordInfos: this.state.wordInfos,
+            inputText: ev.target.value.toLowerCase()
+        });
     }
 
     render() {
@@ -117,12 +129,12 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         return (
             <div style={{display: 'flex'}}>
                 <div style={{width: '30%', borderRight: '1px solid lightgray'}}>
-                     <form onSubmit={this.onNewWordSubmit.bind(this)}>
-                        <TextField  style={{width: '100%', marginRight: '20px'}}
+                        <WordInput  style={{width: '100%', marginRight: '20px'}}
                                     floatingLabelText='New Word'
                                     underlineShow={false}
-                                    ref={(e: TextField) => this.newInput = e}/>
-                    </form>
+                                    onKeyDown={this.onNewWordKeyPress.bind(this)}
+                                    value={this.state.inputText}
+                                    onChange={this.onNewWordEdit.bind(this)}/>
                     <SelectableList value={this.state.currentWordIndex}
                                     onChange={this.onWordSelect.bind(this)} >
                         {wordItems}

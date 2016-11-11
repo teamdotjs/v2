@@ -4,7 +4,7 @@ import Page from '../util/Page';
 import BindingComponent from '../util/BindingComponent';
 import {Lesson} from '../../reducers/lessonReducer';
 import {
-    TextField,
+    TextField
 } from 'material-ui';
 
 export interface LessonCreatorProps {
@@ -62,24 +62,28 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         } else {
             content = (
                 <div style={{textAlign: 'left'}}>
-                <TextField
-                    style={{width: '100%'}}
-                    inputStyle={{fontSize: '1.5em'}}
-                    floatingLabelText='Lesson Title'
-                    name='title'
-                    value={this.state['title']}
-                    onChange={this.bindValueToName.bind(this)}/>
-                <WordCreator
-                    name='wordinfos'
-                    value={this.state['wordinfos']}
-                    onChange={this.updateState('wordinfos')}/>
+                    <Page>
+                        <TextField
+                            style={{width: '100%'}}
+                            inputStyle={{fontSize: '1.5em'}}
+                            floatingLabelText='Lesson Title'
+                            name='title'
+                            value={this.state['title']}
+                            onChange={this.bindValueToName.bind(this)}/>
+                    </Page>
+                    <Page title='Word Editor'>
+                        <WordCreator
+                            name='wordinfos'
+                            value={this.state['wordinfos']}
+                            onChange={this.updateState('wordinfos')}/>
+                    </Page>
                 </div>
             );
         }
         return  (
-            <Page>
+            <div>
                 {content}
-            </Page>
+            </div>
         );
     }
 }
