@@ -46,6 +46,27 @@ module ActiveSupport
             antonyms: ['unlikely'],
             sentences: [{ context_sentence: 'This is probably the best test ever' }]
           }
+        ],
+        practices: [907223594]
+      }
+    end
+
+    def practice_pattern
+      {
+        id: 907223594,
+        type: 'synonym',
+        questions: [
+          {
+            id: 784075757,
+            type: 'mc',
+            prompts: ['What is the synonym of probably?'],
+            options: [
+              { value: 'likely', is_correct: true },
+              { value: 'unlikely', is_correct: false },
+              { value: 'uncertain', is_correct: false },
+              { value: 'questionable', is_correct: false }
+            ]
+          }
         ]
       }
     end

@@ -17,6 +17,10 @@ class RoutesTest < ActionController::TestCase
   should route(:patch, '/api/lesson/1').to('lessons#update', id: 1)
   should route(:delete, '/api/lesson/1').to('lessons#destroy', id: 1)
 
+  # practice routes
+  should route(:get, '/api/lesson/1/practice').to('practices#index', id: 1)
+  should route(:get, '/api/lesson/1/practice/1').to('practices#show', id: 1, p_id: 1)
+
   # wordinfo routes
   should route(:get, '/api/wordinfo').to('wordinfo#index')
   should route(:get, '/api/wordinfo/1').to('wordinfo#show', id: 1)
