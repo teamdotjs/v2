@@ -18,6 +18,10 @@ Rails.application.routes.draw do
       match '/:id' => 'lessons#show', via: [:get]
       match '/:id' => 'lessons#update', via: [:patch]
       match '/:id' => 'lessons#destroy', via: [:delete]
+      scope '/:id/practice' do
+        match '/' => 'practices#index', via: [:get]
+        match '/:p_id' => 'practices#show', via: [:get]
+      end
     end
 
     scope '/wordinfo' do

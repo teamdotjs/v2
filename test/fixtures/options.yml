@@ -1,0 +1,19 @@
+probably_synonym_option1:
+  question: probably_synonym_q
+  value: likely
+  is_correct: true
+
+probably_synonym_option2:
+  question: probably_synonym_q
+  value: unlikely
+  is_correct: false
+
+probably_synonym_option3:
+  question: probably_synonym_q
+  value: uncertain
+  is_correct: false
+
+probably_synonym_option4:
+  question: probably_synonym_q
+  value: questionable
+  is_correct: false

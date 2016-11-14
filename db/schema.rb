@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161110000758) do
+ActiveRecord::Schema.define(version: 20161111191936) do
 
   create_table "antonyms", force: :cascade do |t|
     t.string   "word"
@@ -35,6 +35,41 @@ ActiveRecord::Schema.define(version: 20161110000758) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.index ["owner_id"], name: "index_lessons_on_owner_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.integer  "question_id"
+    t.string   "value"
+    t.boolean  "is_correct"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
+  create_table "practices", force: :cascade do |t|
+    t.integer  "lesson_id"
+    t.integer  "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_practices_on_lesson_id"
+    t.index ["type"], name: "index_practices_on_type"
+  end
+
+  create_table "prompts", force: :cascade do |t|
+    t.integer  "question_id"
+    t.text     "text"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["question_id"], name: "index_prompts_on_question_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer  "practice_id"
+    t.integer  "type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["practice_id"], name: "index_questions_on_practice_id"
+    t.index ["type"], name: "index_questions_on_type"
   end
 
   create_table "roots", force: :cascade do |t|
