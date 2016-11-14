@@ -40,10 +40,10 @@ module ActiveSupport
             word: 'probably',
             definition: '',
             part_of_speech: '',
-            roots: [{ word: 'prob' }],
+            roots: [{ root: 'prob', meaning: '' }],
             forms: [{ word: 'probable', part_of_speech: '' }],
-            synonyms: [{ word: 'likely' }],
-            antonyms: [{ word: 'unlikely' }],
+            synonyms: ['likely'],
+            antonyms: ['unlikely'],
             sentences: [{ context_sentence: 'This is probably the best test ever' }]
           }
         ]

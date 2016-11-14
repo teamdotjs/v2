@@ -15,9 +15,9 @@ class Wordinfo < ApplicationRecord
   validates_uniqueness_of :word, scope: :lesson, case_sensitive: false
 
   def as_json(options = {})
-    super(options.merge(
+    wordinfos = super(options.merge(
       include: [
-        { roots: { only: [:word] } },
+        { roots: { only: [:root, :meaning] } },
         { forms: { only: [:word, :part_of_speech] } },
         { synonyms: { only: [:word] } },
         { antonyms: { only: [:word] } },
@@ -25,5 +25,8 @@ class Wordinfo < ApplicationRecord
       ],
       except: [:id, :user_id, :lesson_id, :created_at, :updated_at]
     ))
+    wordinfos['synonyms'].map! { |synonym| synonym['word'] }
+    wordinfos['antonyms'].map! { |antonym| antonym['word'] }
+    wordinfos
   end
 end

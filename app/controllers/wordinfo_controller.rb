@@ -1,17 +1,16 @@
 class WordinfoController < ApplicationController
   # { wordinfo } = {
-  #   'id': int,
   #   'word': '',
   #   'definition': '',
   #   'part_of_speech': '',
-  #   'roots': [{ 'id': int, 'word': '' }],
-  #   'forms': [{ 'id': int, 'word': '', part_of_speech: '' }],
-  #   'synonyms': [{ 'id': int, 'word': '' }],
-  #   'antonyms': [{ 'id': int, 'word': '' }],
-  #   'sentences': [{ 'id': int, 'context_sentence': '' }] }
+  #   'roots': [{ 'root': '', 'meaning': '' }],
+  #   'forms': [{ 'word': '', part_of_speech: '' }],
+  #   'synonyms': [''],
+  #   'antonyms': [''],
+  #   'sentences': [{ 'context_sentence': '' }] }
   before_action :signed_in?
 
-  # GET /api/wordinfo/all
+  # GET /api/wordinfo
   # Desc: return all word infos created by current user
   # Request body params:
   #   none
@@ -21,7 +20,7 @@ class WordinfoController < ApplicationController
   # Error response:
   #   Code: 401
   #   Content: { 'errors': ['Not Authorized'] }
-  def all
+  def index
     render json: Wordinfo.where(user_id: session[:user_id][:value])
   end
 

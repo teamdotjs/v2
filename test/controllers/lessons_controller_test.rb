@@ -1,15 +1,15 @@
 require 'test_helper'
 
 class LessonsControllerTest < ActionController::TestCase
-  test 'GET /api/lesson/all unauthorized' do
-    get :all
+  test 'GET /api/lesson unauthorized' do
+    get :index
     assert_response :unauthorized
     assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
   end
 
-  test 'GET /api/lesson/all success' do
+  test 'GET /api/lesson success' do
     login_as_testuser
-    get :all
+    get :index
     assert_response :ok
     assert_json_match [lesson_pattern], @response.body
   end
@@ -34,13 +34,13 @@ class LessonsControllerTest < ActionController::TestCase
     assert_json_match lesson_pattern, @response.body
   end
 
-  test 'POST /api/lesson/ unauthorized' do
+  test 'POST /api/lesson unauthorized' do
     post :create
     assert_response :unauthorized
     assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
   end
 
-  test 'POST /api/lesson/ title defaults to Untitled if not provided' do
+  test 'POST /api/lesson title defaults to Untitled if not provided' do
     login_as_testuser
     post :create
     assert_response :ok
@@ -64,14 +64,6 @@ class LessonsControllerTest < ActionController::TestCase
   test 'PATCH /api/lesson/:id bad request (wordinfo word blank)' do
     login_as_testuser
     lesson = lessons(:english101).as_json
-    lesson['wordinfos'].each do |wordinfo|
-      wordinfo.delete('id')
-      wordinfo['roots'].each { |root| root.delete('id') }
-      wordinfo['forms'].each { |form| form.delete('id') }
-      wordinfo['synonyms'].each { |synonym| synonym.delete('id') }
-      wordinfo['antonyms'].each { |antonym| antonym.delete('id') }
-      wordinfo['sentences'].each { |sentence| sentence.delete('id') }
-    end
     lesson['wordinfos'][0]['word'] = ''
     patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :bad_request
@@ -136,12 +128,8 @@ class LessonsControllerTest < ActionController::TestCase
     login_as_testuser
     lesson = lessons(:english101).as_json
     lesson['wordinfos'].each do |wordinfo|
-      wordinfo.delete('id')
-      wordinfo['roots'].each { |root| root.delete('id') }
-      wordinfo['forms'].each { |form| form.delete('id') }
-      wordinfo['synonyms'].each { |synonym| synonym.delete('id') }
-      wordinfo['antonyms'].each { |antonym| antonym.delete('id') }
-      wordinfo['sentences'].each { |sentence| sentence.delete('id') }
+      wordinfo['synonyms'].map! { |synonym| { word: synonym } }
+      wordinfo['antonyms'].map! { |antonym| { word: antonym } }
     end
     patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :ok
@@ -149,21 +137,21 @@ class LessonsControllerTest < ActionController::TestCase
   end
 
   test 'DELETE /api/lesson/:id unauthorized' do
-    delete :delete, params: { id: lessons(:english101).id }
+    delete :destroy, params: { id: lessons(:english101).id }
     assert_response :unauthorized
     assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
   end
 
   test 'DELETE /api/lesson/:id lesson not found' do
     login_as_testuser
-    delete :delete, params: { id: 1 }
+    delete :destroy, params: { id: 1 }
     assert_response :not_found
     assert_json_match({ errors: ['Not Found'] }, @response.body)
   end
 
   test 'DELETE /api/lesson/:id success' do
     login_as_testuser
-    delete :delete, params: { id: lessons(:english101).id }
+    delete :destroy, params: { id: lessons(:english101).id }
     assert_response :ok
     assert_json_match({ deleted: true }, @response.body)
     assert_raises ActiveRecord::RecordNotFound do

@@ -13,15 +13,15 @@ Rails.application.routes.draw do
     end
 
     scope '/lesson' do
-      match '/all' => 'lessons#all', via: [:get]
+      match '/' => 'lessons#index', via: [:get]
       match '/' => 'lessons#create', via: [:post]
       match '/:id' => 'lessons#show', via: [:get]
       match '/:id' => 'lessons#update', via: [:patch]
-      match '/:id' => 'lessons#delete', via: [:delete]
+      match '/:id' => 'lessons#destroy', via: [:delete]
     end
 
     scope '/wordinfo' do
-      match '/all' => 'wordinfo#all', via: [:get]
+      match '/' => 'wordinfo#index', via: [:get]
       match '/:id' => 'wordinfo#show', via: [:get]
     end
   end
