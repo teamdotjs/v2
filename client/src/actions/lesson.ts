@@ -29,7 +29,7 @@ export function loadLessons() {
         dispatch({
             type: 'load_lessons_pending'
         });
-        fetch('/api/lesson/all', {
+        fetch('/api/lesson', {
             headers,
             credentials: 'same-origin'
         })

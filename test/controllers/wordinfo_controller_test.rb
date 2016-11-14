@@ -1,15 +1,15 @@
 require 'test_helper'
 
 class WordinfoControllerTest < ActionController::TestCase
-  test 'GET /api/wordinfo/all unauthorized' do
-    get :all
+  test 'GET /api/wordinfo unauthorized' do
+    get :index
     assert_response :unauthorized
     assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
   end
 
-  test 'GET /api/wordinfo/all success' do
+  test 'GET /api/wordinfo success' do
     login_as_testuser
-    get :all
+    get :index
     assert_response :ok
     assert_json_match lesson_pattern[:wordinfos], @response.body
   end
