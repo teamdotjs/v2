@@ -11,4 +11,13 @@ class SentenceTest < ActiveSupport::TestCase
     )
     assert_includes sentence.errors.full_messages, 'Context sentence has already been taken'
   end
+
+  test 'validates sentence contains word or form' do
+    sentence = Sentence.create(
+      context_sentence: 'Test',
+      wordinfo: wordinfos(:probably)
+    )
+    assert_includes sentence.errors.full_messages,
+                    'Context sentence doesn\'t contain the word or a form'
+  end
 end
