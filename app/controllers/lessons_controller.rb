@@ -2,7 +2,7 @@ class LessonsController < ApplicationController
   # { lesson } = { 'id': int, 'title': '', 'wordinfos': [{ wordinfo }] }
   before_action :signed_in?
 
-  # GET /api/lesson/all
+  # GET /api/lesson
   # Desc: return all lessons created by current user
   # Request body params:
   #   none
@@ -12,11 +12,11 @@ class LessonsController < ApplicationController
   # Error response:
   #   Code: 401
   #   Content: { 'errors': ['Not Authorized'] }
-  def all
+  def index
     render json: Lesson.where(owner_id: session[:user_id][:value])
   end
 
-  # POST /api/lesson/
+  # POST /api/lesson
   # Desc: creates a new lesson for the current user
   # Request body params:
   #   title (string - optional - defaults to 'Untitled')
@@ -95,7 +95,7 @@ class LessonsController < ApplicationController
   #   Content: { 'errors': ['Not Authorized'] }
   #   (2) Code: 404
   #   Content: { 'errors': ['Not Found'] }
-  def delete
+  def destroy
     lesson = Lesson.find(params[:id])
     lesson.destroy
     render json: { 'deleted': true }
