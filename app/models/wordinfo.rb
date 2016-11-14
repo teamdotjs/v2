@@ -17,7 +17,7 @@ class Wordinfo < ApplicationRecord
   def as_json(options = {})
     wordinfos = super(options.merge(
       include: [
-        { roots: { only: [:word] } },
+        { roots: { only: [:root, :meaning] } },
         { forms: { only: [:word, :part_of_speech] } },
         { synonyms: { only: [:word] } },
         { antonyms: { only: [:word] } },
