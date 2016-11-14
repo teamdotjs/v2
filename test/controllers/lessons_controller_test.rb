@@ -64,14 +64,6 @@ class LessonsControllerTest < ActionController::TestCase
   test 'PATCH /api/lesson/:id bad request (wordinfo word blank)' do
     login_as_testuser
     lesson = lessons(:english101).as_json
-    lesson['wordinfos'].each do |wordinfo|
-      wordinfo.delete('id')
-      wordinfo['roots'].each { |root| root.delete('id') }
-      wordinfo['forms'].each { |form| form.delete('id') }
-      wordinfo['synonyms'].each { |synonym| synonym.delete('id') }
-      wordinfo['antonyms'].each { |antonym| antonym.delete('id') }
-      wordinfo['sentences'].each { |sentence| sentence.delete('id') }
-    end
     lesson['wordinfos'][0]['word'] = ''
     patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :bad_request
@@ -136,12 +128,8 @@ class LessonsControllerTest < ActionController::TestCase
     login_as_testuser
     lesson = lessons(:english101).as_json
     lesson['wordinfos'].each do |wordinfo|
-      wordinfo.delete('id')
-      wordinfo['roots'].each { |root| root.delete('id') }
-      wordinfo['forms'].each { |form| form.delete('id') }
-      wordinfo['synonyms'].each { |synonym| synonym.delete('id') }
-      wordinfo['antonyms'].each { |antonym| antonym.delete('id') }
-      wordinfo['sentences'].each { |sentence| sentence.delete('id') }
+      wordinfo['synonyms'].map! { |synonym| { word: synonym } }
+      wordinfo['antonyms'].map! { |antonym| { word: antonym } }
     end
     patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :ok
