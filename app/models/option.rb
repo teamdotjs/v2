@@ -8,7 +8,7 @@ class Option < ApplicationRecord
 
   def one_correct_per_question
     return unless is_correct
-    return unless question.options.any?(&:is_correct)
+    return unless question.options.any? { |opt| opt.is_correct && opt.value != value }
     errors.add(:question, 'has multiple correct answers')
   end
 end

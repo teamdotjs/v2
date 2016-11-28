@@ -40,4 +40,41 @@ class PracticesControllerTest < ActionController::TestCase
     assert_response :ok
     assert_json_match practice_pattern, @response.body
   end
+
+  test 'POST /api/lesson/:id/practice/ unauthorized' do
+    post :create, params: { id: 1 }
+    assert_response :unauthorized
+    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+  end
+
+  test 'POST /api/lesson/:id/practice/ lesson not found' do
+    login_as_testuser
+    post :create, params: { id: 1 }
+    assert_response :not_found
+    assert_json_match({ errors: ['Not Found'] }, @response.body)
+  end
+
+  test 'POST /api/lesson/:id/practice/ type not valid' do
+    login_as_testuser
+    post :create, params: { id: lessons(:english101).id, type: 'a' }
+    assert_response :bad_request
+    assert_json_match({ errors: { type: ['\'a\' is not a valid type'] } }, @response.body)
+  end
+
+  test 'POST /api/lesson/:id/practice/ success' do
+    login_as_testuser
+    post :create, params: { id: lessons(:english101).id, type: 'sentence' }
+    practice = {
+      id: 907223595,
+      type: 'sentence',
+      questions: [{
+        id: 784075758,
+        type: 'fitb',
+        prompts: ['This is probably the best test ever'],
+        options: [{ value: 'probably', is_correct: true }]
+      }]
+    }
+    assert_response :ok
+    assert_json_match practice, @response.body
+  end
 end
