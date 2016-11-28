@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       match '/:id' => 'lessons#destroy', via: [:delete]
       scope '/:id/practice' do
         match '/' => 'practices#index', via: [:get]
+        match '/' => 'practices#create', via: [:post]
         match '/:p_id' => 'practices#show', via: [:get]
       end
     end

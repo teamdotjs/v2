@@ -41,4 +41,53 @@ class PracticesController < ApplicationController
   def show
     render json: Practice.find(params[:p_id])
   end
+
+  # ***ONLY WORKS FOR FITB SENTENCES***
+  # POST /api/lesson/:id/practice/
+  # Desc: create a practice and auto generate questions
+  # Request body params:
+  #   type (string)
+  # Success response:
+  #   Code: 200
+  #   Content: { practice }
+  # Error response:
+  #   (1) Code: 401
+  #   Content: { 'errors': ['Not Authorized'] }
+  #   (2) Code: 404
+  #   Content: { 'errors': ['Not Found'] }
+  #   (2) Code: 400
+  #   Content: { 'errors': { 'type': ["'' is not a valid type"] } }
+  def create
+    lesson = Lesson.find(params[:id])
+    type = params[:type]
+    begin
+      practice = Practice.create(lesson: lesson, type: type)
+    rescue ArgumentError => error
+      render json: { 'errors': { 'type': [error.message] } }, status: :bad_request # 400
+      return
+    end
+    questions_attributes = generate_questions lesson
+    practice.attributes = { questions_attributes: questions_attributes }
+    practice.save
+    render json: practice.reload
+  end
+
+  private
+
+  def generate_questions(lesson)
+    questions_attributes = []
+    lesson.wordinfos.each do |wordinfo|
+      sentence = wordinfo.sentences.first.context_sentence
+      words = wordinfo.forms.map(&:word)
+      words << wordinfo.word
+      answer = ''
+      words.each { |word| answer = word if sentence.include? word }
+      questions_attributes << {
+        type: 'fitb',
+        prompts_attributes: [{ text: sentence }],
+        options_attributes: [{ value: answer, is_correct: true }]
+      }
+    end
+    questions_attributes
+  end
 end

@@ -5,6 +5,7 @@ class PracticeTest < ActiveSupport::TestCase
   should have_many(:questions).dependent(:destroy)
   should accept_nested_attributes_for(:questions)
   should define_enum_for(:type).with([:definition, :synonym, :root, :sentence])
+  should validate_presence_of(:type)
 
   test 'practice as json' do
     practice = practices(:synonym_mc)
