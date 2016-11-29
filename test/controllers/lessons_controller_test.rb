@@ -93,7 +93,7 @@ class LessonsControllerTest < ActionController::TestCase
       wordinfos: [
         {
           word: 'Test',
-          synonyms: [{ word: 'test' }]
+          synonyms: ['test']
         }
       ]
     }
@@ -112,8 +112,8 @@ class LessonsControllerTest < ActionController::TestCase
         {
           word: 'Test',
           synonyms: [
-            { word: 'Quiz' },
-            { word: 'quiz' }
+            'Quiz',
+            'quiz'
           ]
         }
       ]
@@ -127,10 +127,6 @@ class LessonsControllerTest < ActionController::TestCase
   test 'PATCH /api/lesson/:id success' do
     login_as_testuser
     lesson = lessons(:english101).as_json
-    lesson['wordinfos'].each do |wordinfo|
-      wordinfo['synonyms'].map! { |synonym| { word: synonym } }
-      wordinfo['antonyms'].map! { |antonym| { word: antonym } }
-    end
     patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :ok
     assert_json_match lesson_pattern, @response.body
