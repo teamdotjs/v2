@@ -31,5 +31,6 @@ Rails.application.routes.draw do
     end
   end
   #  Send static files
+  match '/lesson/:id' => 'static#lesson', via: [:get]
   match '/*path' => 'static#base', via: [:get]
 end

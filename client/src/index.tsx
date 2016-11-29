@@ -22,6 +22,13 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 store.dispatch(loginCheck());
 
+declare var window: any;
+window.logState = () => {
+    store.dispatch((_dispatch: any, getState: () => any) => {
+        console.log(JSON.stringify(getState().lesson, null, 2));
+    });
+};
+
 ReactDOM.render(
     <MuiThemeProvider>
         <Provider store={store}>

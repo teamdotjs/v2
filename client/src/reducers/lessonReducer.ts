@@ -17,8 +17,15 @@ export interface Lesson {
 
 export type LessonState = {[id: number]: Lesson};
 
+declare var LESSON_INIT_DATA: any;
+
 export const lessonReducer = (state: LessonState, action: any): LessonState => {
-    if (state === undefined) return {};
+    if (state === undefined) {
+        return LESSON_INIT_DATA.reduce((accm: LessonState, data: any) => {
+            accm[data.id] = data;
+            return accm;
+        }, {});
+    }
     switch (action.type) {
         case 'save_lesson_local':
             return Object.assign({
