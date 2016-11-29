@@ -106,12 +106,11 @@ class LessonsController < ApplicationController
   def lesson_params
     params[:lesson][:wordinfos_attributes] = params[:lesson][:wordinfos]
     params[:lesson][:wordinfos_attributes].each do |info|
-      
       info[:user_id] = session[:user_id][:value]
       info[:roots_attributes] = info[:roots]
       info[:forms_attributes] = info[:forms]
-      info[:synonyms_attributes] = (info[:synonyms] || []).map {|s| {:word => s}}
-      info[:antonyms_attributes] = (info[:antonyms] || []).map {|s| {:word => s}}
+      info[:synonyms_attributes] = (info[:synonyms] || []).map { |s| { word: s } }
+      info[:antonyms_attributes] = (info[:antonyms] || []).map { |s| { word: s } }
       info[:sentences_attributes] = info[:sentences]
     end
     params.require(:lesson).permit(

@@ -111,10 +111,7 @@ class LessonsControllerTest < ActionController::TestCase
       wordinfos: [
         {
           word: 'Test',
-          synonyms: [
-            'Quiz',
-            'quiz'
-          ]
+          synonyms: %w(Quiz quiz)
         }
       ]
     }
