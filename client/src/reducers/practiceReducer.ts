@@ -1,8 +1,23 @@
+export interface Question {
+    id: number;
+    type: 'fitb' | 'mc';
+    promts: string[];
+    options: {
+        value: string;
+        is_correct: boolean;
+    }[];
+};
+
+export interface Section {
+    id: number;
+    type: 'synonym' | 'sentence';
+    questions: Question[];
+};
 
 export interface Practice {
-    exists: boolean;
+    loading: boolean;
     isGenerating: boolean;
-    data?: any;
+    sections?: Section[];
     error?: Error;
 };
 
@@ -14,25 +29,33 @@ export interface PracticeState {
 export const practiceReducer = (state: PracticeState, action: any): PracticeState => {
     if (state === undefined) return {};
     switch (action.type) {
+        case 'practice_load':
+            return Object.assign({}, state, {
+                [action.id]: {
+                    loading: true,
+                    isGenerating: false
+                }
+            });
         case 'practice_generate':
             return Object.assign({}, state, {
                 [action.id]: {
-                    exists: true,
+                    loading: true,
                     isGenerating: true
                 }
             });
         case 'practice_save_local':
             return Object.assign({} , state, {
-                [action.practice.id]: {
-                    exists: true,
+                [action.id]: {
+                    loading: true,
                     isGenerating: false,
-                    data: action.practice
+                    sections: action.practices
                 }
             });
         case 'practice_save_error':
+            console.log(action);
             return Object.assign({} , state, {
                 [action.id]: {
-                    exists: false,
+                    loading: false,
                     isGenerating: false,
                     error: action.error
                 }

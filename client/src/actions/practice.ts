@@ -17,12 +17,26 @@ export function generatePractice(id: number) {
             credentials: 'same-origin'
         })
         .then(errorCheck)
-        .then((res: JSON) => {
-            console.log(res);
-            let practice = {
-                id
-            };
-            dispatch({ type: 'practice_save_local', practice });
+        .then((practices: JSON) => {
+            dispatch({ type: 'practice_save_local', practices, id });
+        })
+        .catch(
+            (error: Error) =>
+                dispatch({ type: 'practice_save_error', id, error })
+        );
+    };
+}
+
+export function loadPractice(id: number) {
+    return (dispatch: any) => {
+        dispatch({ type: 'practice_load', id});
+        fetch(`/api/lesson/${id}/practice`, {
+            headers,
+            credentials: 'same-origin'
+        })
+        .then(errorCheck)
+        .then((practices: JSON) => {
+            dispatch({ type: 'practice_save_local', practices, id });
         })
         .catch(
             (error: Error) =>

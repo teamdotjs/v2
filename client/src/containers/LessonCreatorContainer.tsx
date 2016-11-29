@@ -3,7 +3,7 @@ import LessonCreator from '../components/Lesson/LessonCreator';
 import { Lesson } from '../reducers/lessonReducer';
 import { State } from '../reducers/index';
 import { saveLesson, loadLesson } from '../actions/lesson';
-import { generatePractice } from '../actions/practice';
+import { generatePractice, loadPractice } from '../actions/practice';
 
 function mapStateToProps(state: State, props: any): any  {
     return {
@@ -16,7 +16,7 @@ function mapStateToProps(state: State, props: any): any  {
 declare var window: any;
 
 function mapDispatchToProps(dispatch: any, ownProps: any): any {
-    window.test = (id: number) => dispatch(generatePractice(id));
+    window.test = (id: number) => dispatch(loadPractice(id));
     return {
         loadLession: () => {
             dispatch(loadLesson(ownProps.params.id));
