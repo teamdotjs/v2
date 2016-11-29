@@ -13,10 +13,7 @@ function mapStateToProps(state: State, props: any): any  {
     };
 }
 
-declare var window: any;
-
 function mapDispatchToProps(dispatch: any, ownProps: any): any {
-    window.test = (id: number) => dispatch(loadPractice(id));
     return {
         loadLession: () => {
             dispatch(loadLesson(ownProps.params.id));

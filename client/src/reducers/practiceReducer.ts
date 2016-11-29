@@ -23,7 +23,7 @@ export interface Practice {
 
 export interface PracticeState {
     // ID in state is the lesson ID
-    [id: string]: Practice;
+    [id: number]: Practice;
 };
 
 export const practiceReducer = (state: PracticeState, action: any): PracticeState => {
