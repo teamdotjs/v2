@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { WordInput } from '../../util/WordInput';
 import { WordForm } from '../../../reducers/lessonReducer';
 import {
     TextField,
@@ -28,7 +29,7 @@ const WordFormSelector = (props: WordFormSelectorProps) => {
         }
     };
 
-    const newField = <TextField
+    const newField = <WordInput
         name={'new'}
         value={props.newValue}
         floatingLabelText='Add form'
