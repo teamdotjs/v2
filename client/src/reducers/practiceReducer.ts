@@ -1,7 +1,7 @@
 export interface Question {
     id: number;
     type: 'fitb' | 'mc';
-    promts: string[];
+    prompts: string[];
     options: {
         value: string;
         is_correct: boolean;

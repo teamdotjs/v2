@@ -3,12 +3,17 @@ import WordCreator from './WordCreator/WordCreator';
 import Page from '../util/Page';
 import BindingComponent from '../util/BindingComponent';
 import {Lesson} from '../../reducers/lessonReducer';
-import { Practice } from '../../reducers/practiceReducer';
+import {
+    Practice
+} from '../../reducers/practiceReducer';
 import {
     TextField,
     RaisedButton,
     LinearProgress
 } from 'material-ui';
+import {
+    PracticeView
+} from './PracticeView';
 
 export interface LessonCreatorProps {
     children?: Element[];
@@ -83,7 +88,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                     <LinearProgress />
                 </div>;
             } else {
-                return <div>Done</div>;
+                return <PracticeView practice={this.props.practice} />;
             }
         } else {
             return <RaisedButton
