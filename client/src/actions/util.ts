@@ -14,7 +14,7 @@ export function errorCheck(response: Response): any {
         case 500:
             throw new Error('The server failed to respond');
         default:
-            return new Error('Unknown error');
+            throw new Error('Unknown error');
     }
 }
 

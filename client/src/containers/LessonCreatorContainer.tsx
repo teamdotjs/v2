@@ -3,6 +3,7 @@ import LessonCreator from '../components/Lesson/LessonCreator';
 import { Lesson } from '../reducers/lessonReducer';
 import { State } from '../reducers/index';
 import { saveLesson, loadLesson } from '../actions/lesson';
+import { generatePractice, loadPractice } from '../actions/practice';
 
 function mapStateToProps(state: State, props: any): any  {
     return {
@@ -19,6 +20,9 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
         },
         onChange: (lesson: Lesson) => {
             dispatch(saveLesson(lesson));
+        },
+        getPractice: (lessonId: number) => {
+            dispatch(generatePractice(lessonId));
         }
     };
 }
