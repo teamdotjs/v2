@@ -71,8 +71,6 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     values={this.state['antonyms']}
                     hintText='Antonyms'/>
 
-           
-
             <h3>Forms</h3>
             <WordFormSelector
                 forms={this.props.wordInfo.forms || []}
