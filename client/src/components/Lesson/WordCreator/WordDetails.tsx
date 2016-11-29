@@ -71,17 +71,14 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     values={this.state['antonyms']}
                     hintText='Antonyms'/>
 
-            <TagBuilder name='roots'
-                    onChange={this.updateState('roots')}
-                    values={this.state['roots']}
-                    hintText='Roots'/>
+           
 
             <h3>Forms</h3>
             <WordFormSelector
                 forms={this.props.wordInfo.forms || []}
                 onChange={this.onFormChange.bind(this)}
                 onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
-                newValue={this.state['wordFormNewValue']}
+                newValue={this.state['wordFormNewValue'] || ''}
             />
 
         </div>);
