@@ -137,16 +137,18 @@ class LessonsController < ApplicationController
     wordinfos_uniq = wordinfos.uniq! { |wordinfo| wordinfo['word'].downcase }
     errors['wordinfos.word'] = ['has already been taken'] unless wordinfos_uniq.nil?
     wordinfos.each do |wordinfo|
-      errors = check_duplicates_wordinfo_nested wordinfo, 'roots', 'word', errors
-      errors = check_duplicates_wordinfo_nested wordinfo, 'synonyms', 'word', errors
-      errors = check_duplicates_wordinfo_nested wordinfo, 'antonyms', 'word', errors
-      errors = check_duplicates_wordinfo_nested wordinfo, 'sentences', 'context_sentence', errors
+      errors = check_duplicates_wordinfo_nested wordinfo, 'roots', errors, 'root'
+      errors = check_duplicates_wordinfo_nested wordinfo, 'forms', errors, 'word'
+      errors = check_duplicates_wordinfo_nested wordinfo, 'synonyms', errors
+      errors = check_duplicates_wordinfo_nested wordinfo, 'antonyms', errors
+      errors = check_duplicates_wordinfo_nested wordinfo, 'sentences', errors, 'context_sentence'
     end
     errors
   end
 
-  def check_duplicates_wordinfo_nested(wordinfo, model, attribute, errors)
-    if wordinfo[model] && !wordinfo[model].uniq! { |m| m[attribute].downcase }.nil?
+  def check_duplicates_wordinfo_nested(wordinfo, model, errors, attribute = nil)
+    extractor = if attribute.nil? then proc {|m| m } else proc { |m| m[attribute].downcase } end
+    if wordinfo[model] && !wordinfo[model].uniq!(&extractor).nil?
       errors["wordinfos.#{model}.#{attribute}"] = ['has already been taken']
     end
     errors
