@@ -3,13 +3,14 @@ import LessonCreator from '../components/Lesson/LessonCreator';
 import { Lesson } from '../reducers/lessonReducer';
 import { State } from '../reducers/index';
 import { saveLesson, loadLesson } from '../actions/lesson';
-import { generatePractice, loadPractice } from '../actions/practice';
+import { loadPractice } from '../actions/practice';
 
 function mapStateToProps(state: State, props: any): any  {
     return {
         notFound: !(props.params.id in state.lesson),
         value: state.lesson[props.params.id],
         lessonId: props.params.id,
+        practice: state.practice[props.params.id]
     };
 }
 
@@ -22,7 +23,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
             dispatch(saveLesson(lesson));
         },
         getPractice: (lessonId: number) => {
-            dispatch(generatePractice(lessonId));
+            dispatch(loadPractice(lessonId));
         }
     };
 }

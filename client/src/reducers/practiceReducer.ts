@@ -1,7 +1,7 @@
 export interface Question {
     id: number;
     type: 'fitb' | 'mc';
-    promts: string[];
+    prompts: string[];
     options: {
         value: string;
         is_correct: boolean;
@@ -46,7 +46,7 @@ export const practiceReducer = (state: PracticeState, action: any): PracticeStat
         case 'practice_save_local':
             return Object.assign({} , state, {
                 [action.id]: {
-                    loading: true,
+                    loading: false,
                     isGenerating: false,
                     sections: action.practices
                 }
