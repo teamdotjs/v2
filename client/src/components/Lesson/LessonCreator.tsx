@@ -3,16 +3,21 @@ import WordCreator from './WordCreator/WordCreator';
 import Page from '../util/Page';
 import BindingComponent from '../util/BindingComponent';
 import {Lesson} from '../../reducers/lessonReducer';
+import { Practice } from '../../reducers/practiceReducer';
 import {
-    TextField
+    TextField,
+    RaisedButton,
+    LinearProgress
 } from 'material-ui';
 
 export interface LessonCreatorProps {
     children?: Element[];
     onChange?: (l: Lesson) => void;
     loadLession?: () => void;
+    getPractice?: (id: number) => void;
     value?: Lesson;
     notFound: boolean;
+    practice?: Practice;
 }
 
 export class LessonCreator extends BindingComponent<LessonCreatorProps> {
@@ -55,6 +60,44 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         }
     }
 
+    getLoadingText(): string | undefined {
+        if (this.props.practice !== undefined ) {
+            if (this.props.practice.isGenerating) {
+                return 'Your practice is generating';
+            } else if (this.props.practice.loading) {
+                return 'Loading';
+            }
+        }
+        return undefined;
+    }
+
+    _renderPractice(): JSX.Element {
+        if (this.props.practice !== undefined) {
+            const message = this.getLoadingText();
+            if (message !== undefined) {
+                return <div>
+                    <h4 style={{
+                            textAlign: 'center',
+                            marginTop: '0px'
+                        }}>{message}</h4>
+                    <LinearProgress />
+                </div>;
+            } else {
+                return <div>Done</div>;
+            }
+        } else {
+            return <RaisedButton
+                label='Generate Practice Questions'
+                secondary={true}
+                fullWidth={true}
+                onClick={() => {
+                    if (this.props.getPractice !== undefined) {
+                        this.props.getPractice(this.state['id']);
+                    }
+                }} />;
+        }
+    }
+
     render() {
         let content: any;
         if (this.props.notFound) {
@@ -76,6 +119,9 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                             name='wordinfos'
                             value={this.state['wordinfos']}
                             onChange={this.updateState('wordinfos')}/>
+                    </Page>
+                    <Page title='Practice'>
+                        {this._renderPractice()}
                     </Page>
                 </div>
             );
