@@ -5,10 +5,17 @@ Project information and webpage can be found [here](http://teamjs.se.rit.edu), g
 
 Issues are managed by [ZenHub](https://www.zenhub.com/), the main board that includes process can be found [here](https://github.com/teamdotjs/teamdotjs.github.io#boards?repos=66860551,67741560) (only works if ZenHub installed).
 
-## Running the Rails API
-1. Download [Ruby 2.3.1](https://www.ruby-lang.org/en/downloads/)
-2. Download bundler: `gem install bundler`
-3. Pull source code and and create file called .env in the root folder
+## Running the project
+1. Download [Ruby 2.3.3](https://www.ruby-lang.org/en/downloads/) and [Node.js](https://nodejs.org/en/)
+2. Download the latest source code from the master branch
+3. Build the front end:
+    - `cd client`
+    - `npm install`
+    - `npm run build`
+    - `cd ../`
+4. Download bundler: `gem install bundler`
+5. Run `bundle`
+6. Create a file called .env in the root folder
     - Run `rails secret` twice
     - Copy these secrets into .env in this format:
     
@@ -16,6 +23,5 @@ Issues are managed by [ZenHub](https://www.zenhub.com/), the main board that inc
         ENV['SECRET_KEY_BASE_DEV'] = '<<RAILS_SECRET1>>'
         ENV['SECRET_KEY_BASE_TEST'] = '<<RAILS_SECRET2>>'
         ```
-4. Run `bundle`
-5. Run `rake db:create`
-6. Run `rails s` and go to [http://localhost:3000](http://localhost:3000) in the browser
+7. Run `rake db:create` and `rake db:migrate`
+8. Run `rails s` and go to [http://localhost:3000](http://localhost:3000) in the browser

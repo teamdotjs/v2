@@ -1,27 +1,27 @@
 source 'https://rubygems.org'
-ruby '2.2.5'
+ruby '2.3.3'
 
 # Only use Active Record, Active Support, and Railties from rails
-gem 'activerecord', '~> 5.0.0', '>= 5.0.0.1'
-gem 'activesupport', '~> 5.0.0', '>= 5.0.0.1'
-gem 'railties', '~> 5.0.0', '>= 5.0.0.1'
+gem 'activerecord', '~> 5.0.0', '>= 5.0.1'
+gem 'activesupport', '~> 5.0.0', '>= 5.0.1'
+gem 'railties', '~> 5.0.0', '>= 5.0.1'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
+gem 'rack-cors', '~> 0.4.0'
 # Ruby linter
-gem 'rubocop', '~> 0.43.0'
+gem 'rubocop', '~> 0.47'
 # Hash passwords
 gem 'bcrypt', '~> 3.1', '>= 3.1.11'
 
 group :development, :test do
   # Use sqlite3 for dev and test databases
-  gem 'sqlite3', '~> 1.3', '>= 1.3.11'
+  gem 'sqlite3', '~> 1.3', '>= 1.3.13'
 end
 
 group :test do
   # Customize minitest output
-  gem 'minitest-reporters', '~> 1.1', '>= 1.1.12'
+  gem 'minitest-reporters', '~> 1.1', '>= 1.1.14'
   # One-liners that test common rails functionality
   gem 'shoulda', '~> 3.5'
   # Code coverage
