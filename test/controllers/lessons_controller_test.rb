@@ -68,6 +68,8 @@ class LessonsControllerTest < ActionController::TestCase
     patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :bad_request
     assert_json_match({ errors: { 'wordinfos.word': ['can\'t be blank'] } }, @response.body)
+    lesson = lessons(:english101)
+    assert_not_empty lesson.wordinfos
   end
 
   test 'PATCH /api/lesson/:id multiple wordinfo with same word ' do
@@ -83,6 +85,7 @@ class LessonsControllerTest < ActionController::TestCase
     patch :update, params: { id: lesson.id, lesson: updated_lesson }
     assert_response :bad_request
     assert_json_match({ errors: { 'wordinfos.word': ['has already been taken'] } }, @response.body)
+    assert_not_empty lesson.reload.wordinfos
   end
 
   test 'PATCH /api/lesson/:id wordinfo and synonym with same word' do
@@ -101,6 +104,7 @@ class LessonsControllerTest < ActionController::TestCase
     assert_response :bad_request
     pattern = { errors: { 'wordinfos.synonyms.word': ['synonym cannot be the same word'] } }
     assert_json_match pattern, @response.body
+    assert_not_empty lesson.reload.wordinfos
   end
 
   test 'PATCH /api/lesson/:id two synonyms with same word in one wordinfo' do
@@ -119,6 +123,7 @@ class LessonsControllerTest < ActionController::TestCase
     assert_response :bad_request
     pattern = { errors: { 'wordinfos.synonyms.word': ['has already been taken'] } }
     assert_json_match pattern, @response.body
+    assert_not_empty lesson.reload.wordinfos
   end
 
   test 'PATCH /api/lesson/:id success' do
@@ -127,6 +132,8 @@ class LessonsControllerTest < ActionController::TestCase
     patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :ok
     assert_json_match lesson_pattern, @response.body
+    lesson = lessons(:english101)
+    assert_not_empty lesson.wordinfos
   end
 
   test 'DELETE /api/lesson/:id unauthorized' do
