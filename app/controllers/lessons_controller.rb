@@ -74,9 +74,16 @@ class LessonsController < ApplicationController
       render json: { 'errors': errors }, status: :bad_request # 400
       return
     end
-    Wordinfo.where(id: lesson.wordinfo_ids).destroy_all
-    lesson.attributes = lesson_params
-    unless lesson.save
+    lesson_saved = true
+    ActiveRecord::Base.transaction do
+      Wordinfo.where(id: lesson.wordinfo_ids).destroy_all
+      lesson.attributes = lesson_params
+      unless lesson.save
+        lesson_saved = false
+        raise ActiveRecord::Rollback
+      end
+    end
+    unless lesson_saved
       render json: { 'errors': lesson.errors }, status: :bad_request # 400
       return
     end
