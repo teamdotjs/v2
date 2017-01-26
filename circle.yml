@@ -2,7 +2,7 @@ machine:
   node:
     version: 6.4.0
   ruby:
-    version: 2.2.5
+    version: 2.3.3
 
 checkout:
   post:

@@ -14,7 +14,7 @@ class AuthController < ApplicationController
   #   Content: { errors: ['Invalid Username/Password'] }
   def login
     user = User.find_by_email(params[:email].downcase)
-    if user && user.authenticate(params[:password])
+    if user&.authenticate(params[:password])
       session[:user_id] = {
         value: user.id,
         expires: 1.day.from_now

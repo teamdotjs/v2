@@ -8,7 +8,7 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'db/**/*'
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.3
 
 Metrics/LineLength:
   Max: 100
@@ -27,3 +27,10 @@ Style/Documentation:
 
 Style/NumericLiterals:
   Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/routes.rb'
