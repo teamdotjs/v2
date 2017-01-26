@@ -15,5 +15,6 @@
     },
     "include": [
         "src/**/*.{tsx,ts}"
-    ]
+    ],
+    "files": ["src/index.tsx"]
 }
