@@ -11,13 +11,17 @@ class AuthControllerTest < ActionController::TestCase
   test 'POST /api/auth/login user not found' do
     post :login, params: { email: 'user@test.com', password: 'TestPass' }
     assert_response :unauthorized
-    assert_json_match({ errors: ['Invalid Username/Password'] }, @response.body)
+    error_response = { errors: ['Invalid Email/Password Combination'],
+                       error_message: 'Invalid Email/Password Combination' }
+    assert_json_match error_response, @response.body
   end
 
   test 'POST /api/auth/login invalid password' do
     post :login, params: { email: 'testuser@test.com', password: 'password' }
     assert_response :unauthorized
-    assert_json_match({ errors: ['Invalid Username/Password'] }, @response.body)
+    error_response = { errors: ['Invalid Email/Password Combination'],
+                       error_message: 'Invalid Email/Password Combination' }
+    assert_json_match error_response, @response.body
   end
 
   test 'POST /api/auth/login success' do
@@ -29,7 +33,8 @@ class AuthControllerTest < ActionController::TestCase
   test 'POST /api/auth/logout not signed in' do
     post :logout
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'POST /api/auth/logout success' do
@@ -50,7 +55,9 @@ class AuthControllerTest < ActionController::TestCase
     users(:testuser).destroy
     get :signed_in
     assert_response :not_found
-    assert_json_match({ errors: ['Not Found'] }, @response.body)
+    error_response = { errors: ['Couldn\'t find User with \'id\'=965022582'],
+                       error_message: 'User could not be found' }
+    assert_json_match error_response, @response.body
   end
 
   test 'GET /api/auth/signed_in session expired' do
