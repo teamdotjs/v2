@@ -24,11 +24,6 @@ Rails.application.routes.draw do
         match '/:p_id' => 'practices#show', via: [:get]
       end
     end
-
-    scope '/wordinfo' do
-      match '/' => 'wordinfo#index', via: [:get]
-      match '/:id' => 'wordinfo#show', via: [:get]
-    end
   end
   #  Send static files
   match '/*path' => 'static#base', via: [:get]

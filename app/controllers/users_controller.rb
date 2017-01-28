@@ -9,12 +9,12 @@ class UsersController < ApplicationController
   #   birthday (isodate)
   # Success response:
   #   Code: 200
-  #   Content: { 'logged_in': true, user: { id: int, name: string, email: string, birthday: date } }
+  #   Content: { logged_in: true, user: { id: int, name: string, email: string, birthday: date } }
   # Error response:
   #   (1) Code: 409
-  #   Content: { errors: { 'email': ['has already been taken', ...], ... } }
+  #   Content: { errors: { email: ['has already been taken', ...], ... } }
   #   (2) Code: 400
-  #   Content: { errors: { 'name': [...], 'email': [...], 'password': [...], 'birthday': [...] } }
+  #   Content: { errors: { name: [...], email: [...], password: [...], birthday: [...] } }
   def create
     user = User.new(user_params)
     if user.save
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
         value: user.id,
         expires: 1.day.from_now
       }
-      render json: { 'logged_in': true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
+      render json: { logged_in: true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
     elsif user.errors['email']&.include?('has already been taken')
       render json: { errors: user.errors }, status: :conflict # 409
     else
