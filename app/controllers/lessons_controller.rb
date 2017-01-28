@@ -1,5 +1,5 @@
 class LessonsController < ApplicationController
-  # { lesson } = { 'id': int, 'title': '', 'wordinfos': [{ wordinfo }] }
+  # { lesson } = { id: int, title: '', wordinfos: [{ wordinfo }] }
   before_action :signed_in?
 
   # GET /api/lesson
@@ -11,7 +11,7 @@ class LessonsController < ApplicationController
   #   Content: [{ lesson }]
   # Error response:
   #   Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def index
     render json: Lesson.where(owner_id: session[:user_id][:value])
   end
@@ -25,7 +25,7 @@ class LessonsController < ApplicationController
   #   Content: { lesson }
   # Error response:
   #   (1) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def create
     lesson_params = { owner_id: session[:user_id][:value] }
     title = params[:title]
@@ -43,35 +43,35 @@ class LessonsController < ApplicationController
   #   Content: { lesson }
   # Error response:
   #   (1) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   #   (2) Code: 404
-  #   Content: { 'errors': ['Not Found'] }
+  #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
+  #              error_message: 'Lesson could not be found' }
   def show
     render json: Lesson.find(params[:id])
   end
 
   # PATCH /api/lesson/:id
-  # Desc: updates lesson specified by id
-  #   if a wordinfo, root, form, etc. has an id, it is updated
-  #   if it doesn't have an id, it is created
-  #   include '_destroy': true to destroy a wordinfo, root, form, etc.
+  # Desc: updates lesson specified by id by destroying
+  #   all wordinfos for this lesson then recreating them
   # Request body params:
-  #   { 'lesson': { lesson } }
+  #   { lesson: { lesson } }
   # Success response:
   #   Code: 200
   #   Content: { lesson }
   # Error response:
   #   (1) Code: 400
-  #   Content: { 'errors': { 'title': [''] } }
+  #   Content: { errors: { title: [''] } }
   #   (2) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   #   (3) Code: 404
-  #   Content: { 'errors': ['Not Found'] }
+  #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
+  #              error_message: 'Lesson could not be found' }
   def update
     lesson = Lesson.find(params[:id])
     errors = check_duplicates
     unless errors.empty?
-      render json: { 'errors': errors }, status: :bad_request # 400
+      render json: { errors: errors }, status: :bad_request # 400
       return
     end
     lesson_saved = true
@@ -84,7 +84,7 @@ class LessonsController < ApplicationController
       end
     end
     unless lesson_saved
-      render json: { 'errors': lesson.errors }, status: :bad_request # 400
+      render json: { errors: lesson.errors }, status: :bad_request # 400
       return
     end
     render json: lesson.reload
@@ -96,16 +96,17 @@ class LessonsController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: { 'deleted': true }
+  #   Content: { deleted: true }
   # Error response:
   #   (1) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   #   (2) Code: 404
-  #   Content: { 'errors': ['Not Found'] }
+  #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
+  #              error_message: 'Lesson could not be found' }
   def destroy
     lesson = Lesson.find(params[:id])
     lesson.destroy
-    render json: { 'deleted': true }
+    render json: { deleted: true }
   end
 
   private

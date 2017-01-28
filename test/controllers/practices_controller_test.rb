@@ -4,14 +4,17 @@ class PracticesControllerTest < ActionController::TestCase
   test 'GET /api/lesson/:id/practice unauthorized' do
     get :index, params: { id: 1 }
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'GET /api/lesson/:id/practice lesson not found' do
     login_as_testuser
     get :index, params: { id: 1 }
     assert_response :not_found
-    assert_json_match({ errors: ['Not Found'] }, @response.body)
+    error_response = { errors: ['Couldn\'t find Lesson with \'id\'=1'],
+                       error_message: 'Lesson could not be found' }
+    assert_json_match error_response, @response.body
   end
 
   test 'GET /api/lesson/:id/practice success' do
@@ -24,14 +27,17 @@ class PracticesControllerTest < ActionController::TestCase
   test 'GET /api/lesson/:id/practice/:p_id unauthorized' do
     get :show, params: { id: 1, p_id: 1 }
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'GET /api/lesson/:id/practice/:p_id practice not found' do
     login_as_testuser
     get :show, params: { id: 1, p_id: 1 }
     assert_response :not_found
-    assert_json_match({ errors: ['Not Found'] }, @response.body)
+    error_response = { errors: ['Couldn\'t find Practice with \'id\'=1'],
+                       error_message: 'Practice could not be found' }
+    assert_json_match error_response, @response.body
   end
 
   test 'GET /api/lesson/:id/practice/:p_id success' do
@@ -44,14 +50,17 @@ class PracticesControllerTest < ActionController::TestCase
   test 'POST /api/lesson/:id/practice/ unauthorized' do
     post :create, params: { id: 1 }
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'POST /api/lesson/:id/practice/ lesson not found' do
     login_as_testuser
     post :create, params: { id: 1 }
     assert_response :not_found
-    assert_json_match({ errors: ['Not Found'] }, @response.body)
+    error_response = { errors: ['Couldn\'t find Lesson with \'id\'=1'],
+                       error_message: 'Lesson could not be found' }
+    assert_json_match error_response, @response.body
   end
 
   test 'POST /api/lesson/:id/practice/ type not valid' do

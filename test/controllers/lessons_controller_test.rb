@@ -4,7 +4,8 @@ class LessonsControllerTest < ActionController::TestCase
   test 'GET /api/lesson unauthorized' do
     get :index
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'GET /api/lesson success' do
@@ -17,14 +18,17 @@ class LessonsControllerTest < ActionController::TestCase
   test 'GET /api/lesson/:id unauthorized' do
     get :show, params: { id: lessons(:english101).id }
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'GET /api/lesson/:id lesson not found' do
     login_as_testuser
     get :show, params: { id: 1 }
     assert_response :not_found
-    assert_json_match({ errors: ['Not Found'] }, @response.body)
+    error_response = { errors: ['Couldn\'t find Lesson with \'id\'=1'],
+                       error_message: 'Lesson could not be found' }
+    assert_json_match error_response, @response.body
   end
 
   test 'GET /api/lesson/:id success' do
@@ -37,7 +41,8 @@ class LessonsControllerTest < ActionController::TestCase
   test 'POST /api/lesson unauthorized' do
     post :create
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'POST /api/lesson title defaults to Untitled if not provided' do
@@ -51,14 +56,17 @@ class LessonsControllerTest < ActionController::TestCase
   test 'PATCH /api/lesson/:id unauthorized' do
     patch :update, params: { id: lessons(:english101).id }
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'PATCH /api/lesson/:id lesson not found' do
     login_as_testuser
     patch :update, params: { id: 1 }
     assert_response :not_found
-    assert_json_match({ errors: ['Not Found'] }, @response.body)
+    error_response = { errors: ['Couldn\'t find Lesson with \'id\'=1'],
+                       error_message: 'Lesson could not be found' }
+    assert_json_match error_response, @response.body
   end
 
   test 'PATCH /api/lesson/:id bad request (wordinfo word blank)' do
@@ -139,14 +147,17 @@ class LessonsControllerTest < ActionController::TestCase
   test 'DELETE /api/lesson/:id unauthorized' do
     delete :destroy, params: { id: lessons(:english101).id }
     assert_response :unauthorized
-    assert_json_match({ errors: ['Not Authenticated'] }, @response.body)
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
   end
 
   test 'DELETE /api/lesson/:id lesson not found' do
     login_as_testuser
     delete :destroy, params: { id: 1 }
     assert_response :not_found
-    assert_json_match({ errors: ['Not Found'] }, @response.body)
+    error_response = { errors: ['Couldn\'t find Lesson with \'id\'=1'],
+                       error_message: 'Lesson could not be found' }
+    assert_json_match error_response, @response.body
   end
 
   test 'DELETE /api/lesson/:id success' do

@@ -1,12 +1,12 @@
 class PracticesController < ApplicationController
   # { practice } = {
-  #   'id': int,
-  #   'type': '',
-  #   'questions': [{
-  #     'id': int,
-  #     'type': '',
-  #     'prompts': [''],
-  #     'options': [{ 'value': '', 'is_correct': boolean }]
+  #   id: int,
+  #   type: '',
+  #   questions: [{
+  #     id: int,
+  #     type: '',
+  #     prompts: [''],
+  #     options: [{ value: '', is_correct: boolean }]
   #   }] }
   before_action :signed_in?
 
@@ -19,9 +19,10 @@ class PracticesController < ApplicationController
   #   Content: [{ practice }]
   # Error response:
   #   (1) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   #   (2) Code: 404
-  #   Content: { 'errors': ['Not Found'] }
+  #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
+  #              error_message: 'Lesson could not be found' }
   def index
     render json: Lesson.find(params[:id]).practices
   end
@@ -35,9 +36,10 @@ class PracticesController < ApplicationController
   #   Content: { practice }
   # Error response:
   #   (1) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   #   (2) Code: 404
-  #   Content: { 'errors': ['Not Found'] }
+  #   Content: { errors: ['Couldn't find Practice with 'id'=int'],
+  #              error_message: 'Practice could not be found' }
   def show
     render json: Practice.find(params[:p_id])
   end
@@ -52,18 +54,19 @@ class PracticesController < ApplicationController
   #   Content: { practice }
   # Error response:
   #   (1) Code: 401
-  #   Content: { 'errors': ['Not Authorized'] }
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   #   (2) Code: 404
-  #   Content: { 'errors': ['Not Found'] }
+  #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
+  #              error_message: 'Lesson could not be found' }
   #   (2) Code: 400
-  #   Content: { 'errors': { 'type': ["'' is not a valid type"] } }
+  #   Content: { errors: { type: ["'' is not a valid type"] } }
   def create
     lesson = Lesson.find(params[:id])
     type = params[:type]
     begin
       practice = Practice.create(lesson: lesson, type: type)
     rescue ArgumentError => error
-      render json: { 'errors': { 'type': [error.message] } }, status: :bad_request # 400
+      render json: { errors: { type: [error.message] } }, status: :bad_request # 400
       return
     end
     questions_attributes = generate_questions lesson

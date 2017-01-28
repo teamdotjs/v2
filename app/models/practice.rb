@@ -3,7 +3,7 @@ class Practice < ApplicationRecord
   belongs_to :lesson
   has_many :questions, dependent: :destroy
   accepts_nested_attributes_for :questions
-  enum type: { 'definition': 0, 'synonym': 1, 'root': 2, 'sentence': 3 }
+  enum type: { definition: 0, synonym: 1, root: 2, sentence: 3 }
   validates :type, presence: true
 
   def as_json(options = {})
