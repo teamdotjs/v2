@@ -24,6 +24,8 @@ Rails.application.routes.draw do
         match '/:p_id' => 'practices#show', via: [:get]
       end
     end
+
+    match '/question/:id/submit_answer' => 'questions#submit_answer', via: [:post]
   end
   #  Send static files
   match '/*path' => 'static#base', via: [:get]

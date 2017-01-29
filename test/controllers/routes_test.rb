@@ -22,6 +22,9 @@ class RoutesTest < ActionController::TestCase
   should route(:post, '/api/lesson/1/practice').to('practices#create', id: 1)
   should route(:get, '/api/lesson/1/practice/1').to('practices#show', id: 1, p_id: 1)
 
+  # question routes
+  should route(:post, '/api/question/1/submit_answer').to('questions#submit_answer', id: 1)
+
   # static files
   should route(:get, '/a').to('static#base', path: 'a')
 end
