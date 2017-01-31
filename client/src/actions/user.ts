@@ -15,7 +15,7 @@ export interface LoginActionFailure {
     error: string;
 }
 
-export interface LogoutActionSuccess{
+export interface LogoutActionSuccess {
     type: 'logout';
 }
 
@@ -32,7 +32,7 @@ interface LoginCheckResponse {
     logged_in: boolean;
 }
 
-interface LogoutCheckResponse{
+interface LogoutCheckResponse {
     logged_in: boolean;
 }
 
@@ -102,11 +102,11 @@ export function loginFailure(error: string): LoginActionFailure {
     };
 }
 
-export function logout(): any{
+export function logout(): any {
     return(dispatch: any) => {
-        fetch('/api/auth/logout',{
+        fetch('/api/auth/logout', {
             method: 'POST',
-            headers:{
+            headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             },
@@ -116,16 +116,16 @@ export function logout(): any{
         .then((_res: LogoutCheckResponse) => {
             dispatch(logoutSuccess());
         })
-        .catch((_err: Error)=>{
+        .catch((_err: Error) => {
             location.reload();
         });
         return dispatch({
             type: 'logout_request'
         });
-    }
+    };
 }
 
-export function logoutSuccess(): LogoutActionSuccess{
+export function logoutSuccess(): LogoutActionSuccess {
     return{
         type: 'logout'
     };
