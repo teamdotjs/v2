@@ -20,10 +20,12 @@ export function generatePractice(id: number) {
         .then((practices: JSON) => {
             dispatch({ type: 'practice_save_local', practices, id });
         })
-        .catch(
-            (error: Error) =>
-                dispatch({ type: 'practice_save_error', id, error })
-        );
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
+            });
+        });
     };
 }
 
@@ -38,9 +40,11 @@ export function loadPractice(id: number) {
         .then((practices: JSON) => {
             dispatch({ type: 'practice_save_local', practices, id });
         })
-        .catch(
-            (error: Error) =>
-                dispatch({ type: 'practice_save_error', id, error })
-        );
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
+            });
+        });
     };
 }

@@ -8,20 +8,22 @@ class AuthController < ApplicationController
   #   password (string)
   # Success response:
   #   Code: 200
-  #   Content: { 'logged_in': true, user: { id: int, name: string, email: string, birthday: date } }
+  #   Content: { logged_in: true, user: { id: int, name: string, email: string, birthday: date } }
   # Error response:
   #   Code: 401
-  #   Content: { errors: ['Invalid Username/Password'] }
+  #   Content: { errors: ['Invalid Email/Password Combination'],
+  #              error_message: 'Invalid Email/Password Combination' }
   def login
     user = User.find_by_email(params[:email].downcase)
-    if user && user.authenticate(params[:password])
+    if user&.authenticate(params[:password])
       session[:user_id] = {
         value: user.id,
         expires: 1.day.from_now
       }
-      render json: { 'logged_in': true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
+      render json: { logged_in: true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
     else
-      render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized # 401
+      message = 'Invalid Email/Password Combination'
+      render json: { errors: [message], error_message: message }, status: :unauthorized # 401
     end
   end
 
@@ -30,10 +32,10 @@ class AuthController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: { 'logged_in': false }
+  #   Content: { logged_in: false }
   def logout
     session.delete(:user_id)
-    render json: { 'logged_in': false }
+    render json: { logged_in: false }
   end
 
   # GET /api/auth/signed_in
@@ -41,16 +43,17 @@ class AuthController < ApplicationController
   #   none
   # Success response:
   #   (1) Code: 200
-  #   Content: { 'logged_in': true, user_id: int }
+  #   Content: { logged_in: true, user_id: int }
   #   (2) Code: 200
-  #   Content: { 'logged_in': false }
+  #   Content: { logged_in: false }
   #   (3) Code: 404
-  #   Content: { 'errors': ['Not Found'] }
+  #   Content: { errors: ['Couldn't find User with 'id'=int'],
+  #              error_message: 'User could not be found' }
   def signed_in
     if session_not_expired?
-      render json: { 'logged_in': true, user_id: session[:user_id][:value] }
+      render json: { logged_in: true, user_id: session[:user_id][:value] }
     else
-      render json: { 'logged_in': false }, status: :unauthorized # 401
+      render json: { logged_in: false }, status: :unauthorized # 401
     end
   end
 end

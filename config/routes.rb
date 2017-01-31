@@ -25,10 +25,7 @@ Rails.application.routes.draw do
       end
     end
 
-    scope '/wordinfo' do
-      match '/' => 'wordinfo#index', via: [:get]
-      match '/:id' => 'wordinfo#show', via: [:get]
-    end
+    match '/question/:id/submit_answer' => 'questions#submit_answer', via: [:post]
   end
   #  Send static files
   match '/*path' => 'static#base', via: [:get]

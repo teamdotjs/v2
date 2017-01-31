@@ -40,6 +40,12 @@ export function loadLessons() {
                 type: 'load_all_lesssons_success',
                 lessons: res as Lesson[]
             });
+        })
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
+            });
         });
     };
 }
@@ -58,6 +64,12 @@ export function loadLesson(id: number) {
             dispatch({
                 type: 'save_lesson_local',
                 lesson: res
+            });
+        })
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
             });
         });
     };
@@ -80,6 +92,12 @@ export function createLesson() {
                 id: res.id
             });
             dispatch(push('/lesson/' + res.id));
+        })
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
+            });
         });
     };
 }
@@ -106,6 +124,12 @@ export function saveLesson(l: Lesson) {
             .then((_res: Lesson) => {
                 dispatch({
                     type: 'save_lesson_success',
+                });
+            })
+            .catch((err: Error) => {
+                dispatch({
+                    type: 'error_push',
+                    error: err.message
                 });
             });
         }, 1000);
