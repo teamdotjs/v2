@@ -28,7 +28,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
     }
 
     componentWillReceiveProps(newProps: WordDetailsProps) {
-        this.setState(newProps.wordInfo);
+        this.setState({wordInfo: newProps.wordInfo});
     }
 
     onFormChange(newForms: WordForm[]) {
