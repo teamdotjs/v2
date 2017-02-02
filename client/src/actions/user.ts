@@ -15,6 +15,10 @@ export interface LoginActionFailure {
     error: string;
 }
 
+export interface LogoutActionSuccess {
+    type: 'logout';
+}
+
 export interface RegisterFailure {
     type: 'register_failure';
     errors: string[];
@@ -25,6 +29,10 @@ export interface RegisterSuccess {
 }
 
 interface LoginCheckResponse {
+    logged_in: boolean;
+}
+
+interface LogoutCheckResponse {
     logged_in: boolean;
 }
 
@@ -91,6 +99,35 @@ export function loginFailure(error: string): LoginActionFailure {
     return {
         type: 'login_failure',
         error
+    };
+}
+
+export function logout(): any {
+    return(dispatch: any) => {
+        fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(errorCheck)
+        .then((_res: LogoutCheckResponse) => {
+            dispatch(logoutSuccess());
+        })
+        .catch((_err: Error) => {
+            location.reload();
+        });
+        return dispatch({
+            type: 'logout_request'
+        });
+    };
+}
+
+export function logoutSuccess(): LogoutActionSuccess {
+    return{
+        type: 'logout'
     };
 }
 

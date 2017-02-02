@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
-    ContextSentance
-} from '../Questions/ContextSentance';
+    ContextSentence
+} from '../Questions/ContextSentence';
 import {
     Practice
 } from '../../reducers/practiceReducer';
@@ -23,7 +23,7 @@ export const PracticeView = (props: PracticeViewProps) => {
             {section.questions.map(q => {
                 switch (q.type) {
                     case 'fitb':
-                        return <ContextSentance question={q} key={q.id + q.type} />;
+                        return <ContextSentence question={q} key={q.id + q.type} />;
                     case 'mc':
                         return <MultipleChoiceView question={q} key={q.id + q.type} />;
                 }
