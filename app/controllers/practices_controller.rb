@@ -6,7 +6,7 @@ class PracticesController < ApplicationController
   #     id: int,
   #     type: '',
   #     prompts: [''],
-  #     options: [{ value: '', is_correct: boolean }]
+  #     options: ['']
   #   }] }
   before_action :signed_in?
 

@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   #   email (string)
   # Success response:
   #   Code: 200
-  #   Content: { true/false }
+  #   Content: true/false
   # Error response:
   #   (1) Code: 400
   #   Content: { errors: ['Email not provided'] }
