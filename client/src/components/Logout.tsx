@@ -15,7 +15,7 @@ const Logout = (props: LogoutProps) => {
         label='Logout' />;
     let notButtons = <div />;
     return (
-        <div>
+        <div style={{marginTop: '6px'}}>
             {props.isLoggedIn ?  buttons : notButtons }
         </div>
     );
