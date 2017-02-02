@@ -4,10 +4,10 @@ import {
     Question
 } from '../../reducers/practiceReducer';
 
-export class ContextSentance extends QuestionView {
+export class ContextSentence extends QuestionView {
 
-    highlightWord(sentance: string, word: string): JSX.Element {
-        return <div>{sentance.split(' ').map(cur => {
+    highlightWord(sentence: string, word: string): JSX.Element {
+        return <div>{sentence.split(' ').map(cur => {
             if (!cur.search(word)) {
                 return <span key={cur} style={{ color: 'red'}}>{cur + ' '}</span>;
             } else {
@@ -32,7 +32,7 @@ export class ContextSentance extends QuestionView {
         const question: Question = this.props.question;
         const answer = question.options[0].value;
         return <div>
-            <h4>Context Sentance</h4>
+            <h4>Context Sentence</h4>
             {this.highlightWord(question.prompts[0], answer)}
             {this.alterContext(question, answer)}
         </div>;

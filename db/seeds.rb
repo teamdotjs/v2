@@ -45,7 +45,7 @@ Option.create(value: 'calm', is_correct: false, question: anarchy_synonym_q)
 sentence_practice = Practice.create(type: 'sentence', lesson: lesson)
 atheist_sentence_q = Question.create(type: 'fitb', practice: sentence_practice)
 Prompt.create(text: 'The atheist wrote a novel disproving the existence of a higher power.', question: atheist_sentence_q)
-Prompt.create(text: 'The atheist has an alternative sentance.', question: atheist_sentence_q)
+Prompt.create(text: 'The atheist has an alternative sentence.', question: atheist_sentence_q)
 Option.create(value: 'atheist', is_correct: true, question: atheist_sentence_q)
 
 anarchy_sentence_q = Question.create(type: 'fitb', practice: sentence_practice)
