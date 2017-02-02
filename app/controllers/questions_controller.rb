@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
   #   value
   # Success response:
   #   Code: 200
-  #   Content: { true/false }
+  #   Content: true/false
   # Error response:
   #   (1) Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }

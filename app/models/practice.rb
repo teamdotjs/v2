@@ -12,7 +12,7 @@ class Practice < ApplicationRecord
         questions: {
           include: [
             { prompts: { only: [:text] } },
-            { options: { only: [:value, :is_correct] } }
+            { options: { only: [:value] } }
           ],
           except: [:practice_id, :created_at, :updated_at]
         }
@@ -21,6 +21,7 @@ class Practice < ApplicationRecord
     ))
     practice['questions'].each do |question|
       question['prompts'].map! { |prompt| prompt['text'] }
+      question['options'].map! { |option| option['value'] }
     end
     practice
   end

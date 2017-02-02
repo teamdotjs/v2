@@ -60,12 +60,7 @@ module ActiveSupport
             id: 784075757,
             type: 'mc',
             prompts: ['What is the synonym of probably?'],
-            options: [
-              { value: 'likely', is_correct: true },
-              { value: 'unlikely', is_correct: false },
-              { value: 'uncertain', is_correct: false },
-              { value: 'questionable', is_correct: false }
-            ]
+            options: %w(likely unlikely uncertain questionable)
           }
         ]
       }

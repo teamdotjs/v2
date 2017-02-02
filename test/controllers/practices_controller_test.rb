@@ -80,7 +80,7 @@ class PracticesControllerTest < ActionController::TestCase
         id: 784075758,
         type: 'fitb',
         prompts: ['This is probably the best test ever'],
-        options: [{ value: 'probably', is_correct: true }]
+        options: ['probably']
       }]
     }
     assert_response :ok

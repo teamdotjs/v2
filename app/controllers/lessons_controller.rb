@@ -1,5 +1,17 @@
 class LessonsController < ApplicationController
-  # { lesson } = { id: int, title: '', wordinfos: [{ wordinfo }] }
+  # { lesson } = {
+  #   id: int,
+  #   title: '',
+  #   wordinfos: [{
+  #     word: '',
+  #     definition: '',
+  #     part_of_speech: '',
+  #     roots: [{ root: '', meaning: '' }],
+  #     forms: [{ word: '', part_of_speech: '' }],
+  #     synonyms: [''],
+  #     antonyms: [''],
+  #     sentences: [{ context_sentence: '' }]
+  #   } }] }
   before_action :signed_in?
 
   # GET /api/lesson
