@@ -11,8 +11,8 @@ export interface LogoutProps {
 }
 const Logout = (props: LogoutProps) => {
     let buttons = <FlatButton onClick={props.onLogoutClick}
-            style={{ color: 'white'}}
-            label='Logout' />;
+        style={{ color: 'white'}}
+        label='Logout' />;
     let notButtons = <div />;
     return (
         <div>
