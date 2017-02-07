@@ -2,13 +2,14 @@ import 'whatwg-fetch';
 import {
     errorCheck
 } from './util';
+import { SectionType } from '../reducers/practiceReducer';
 
 const headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
 };
 
-export function generatePractice(id: number) {
+export function generatePractice(id: number, _type: SectionType) {
     return (dispatch: any) => {
         dispatch({ type: 'practice_generate', id });
         fetch(`/api/lesson/${id}/practice`, {

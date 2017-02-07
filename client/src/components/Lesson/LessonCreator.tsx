@@ -4,7 +4,7 @@ import Page from '../util/Page';
 import BindingComponent from '../util/BindingComponent';
 import {Lesson} from '../../reducers/lessonReducer';
 import {
-    Practice
+    Practice, SectionType
 } from '../../reducers/practiceReducer';
 import {
     TextField,
@@ -18,6 +18,7 @@ export interface LessonCreatorProps {
     onChange?: (l: Lesson) => void;
     loadLession?: () => void;
     getPractice?: (id: number) => void;
+    generatePractice: (type: SectionType) => void;
     value?: Lesson;
     notFound: boolean;
     practices?: Practice[];
@@ -98,7 +99,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                     <PracticeView
                         /* FIX ME */
                         onPreviewPractice={() => {}}
-                        onCreatePractice={() => {}}
+                        onCreatePractice={this.props.generatePractice}
                         practices={this.props.practices || []} />
                 </div>
             );

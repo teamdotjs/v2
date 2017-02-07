@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import LessonCreator from '../components/Lesson/LessonCreator';
 import { Lesson } from '../reducers/lessonReducer';
-// import { Practice } from '../reducers/practiceReducer';
+import { SectionType } from '../reducers/practiceReducer';
 import { State } from '../reducers/index';
 import { saveLesson, loadLesson } from '../actions/lesson';
-import { loadPractice } from '../actions/practice';
+import { loadPractice, generatePractice } from '../actions/practice';
 
 function mapStateToProps(state: State, props: any): any  {
     const practices = state.lesson[props.params.id] !== undefined ?
@@ -22,13 +22,17 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
     dispatch(loadPractice(ownProps.params.id));
     return {
         loadLession: () => {
-            
+            dispatch(loadLesson(ownProps.params.id));
+            dispatch(loadPractice(ownProps.params.id));
         },
         onChange: (lesson: Lesson) => {
             dispatch(saveLesson(lesson));
         },
         getPractice: (lessonId: number) => {
             dispatch(loadPractice(lessonId));
+        },
+        generatePractice: (type: SectionType) => {
+            dispatch(generatePractice(ownProps.params.id, type));
         }
     };
 }
