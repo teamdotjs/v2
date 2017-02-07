@@ -9,13 +9,16 @@ const headers = {
     'Content-Type': 'application/json'
 };
 
-export function generatePractice(id: number, _type: SectionType) {
+export function generatePractice(id: number, type: SectionType) {
     return (dispatch: any) => {
         dispatch({ type: 'practice_generate', id });
         fetch(`/api/lesson/${id}/practice`, {
             method: 'POST',
-            headers,
-            credentials: 'same-origin'
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'same-origin',
+            body: type
         })
         .then(errorCheck)
         .then((practices: JSON) => {
