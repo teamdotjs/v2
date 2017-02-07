@@ -13,6 +13,7 @@ export interface Lesson {
     id: number;
     title: string;
     wordinfos: WordInfo[];
+    practices: number[];
 }
 
 export type LessonState = {[id: number]: Lesson};

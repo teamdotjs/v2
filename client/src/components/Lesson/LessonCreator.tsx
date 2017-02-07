@@ -20,7 +20,7 @@ export interface LessonCreatorProps {
     getPractice?: (id: number) => void;
     value?: Lesson;
     notFound: boolean;
-    practice?: Practice;
+    practices?: Practice[];
 }
 
 export class LessonCreator extends BindingComponent<LessonCreatorProps> {
@@ -29,7 +29,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         this.state = props.value || {
             'id': 0,
             'title': '',
-            'wordinfos': []
+            'wordinfos': [],
+            'practices': props.practices
         };
     }
 
@@ -37,7 +38,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         this.setState(newProps.value || {
             'id': 0,
             'title': '',
-            'wordinfos': []
+            'wordinfos': [],
+            'practices': this.state.practices
         });
     }
 
@@ -46,6 +48,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
             id: this.state['id'],
             title: this.state['title'],
             wordinfos: this.state['wordinfos'],
+            'practices': this.state.practices
         };
     }
 
@@ -64,12 +67,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
     }
 
     getLoadingText(): string | undefined {
-        if (this.props.practice !== undefined ) {
-            if (this.props.practice.isGenerating) {
-                return 'Your practice is generating';
-            } else if (this.props.practice.loading) {
-                return 'Loading';
-            }
+        if (this.props.practices !== undefined ) {
+            return 'Your practice is generating';
         }
         return undefined;
     }
@@ -96,11 +95,12 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                             value={this.state['wordinfos']}
                             onChange={this.updateState('wordinfos')}/>
                     </Page>
-                <PracticeView
-                    /* FIX ME */
-                    onPreviewPractice={() => {}}
-                    onCreatePractice={() => {}}
-                    practices={this.props.practice ? this.props.practice.sections || [] : []} />;                </div>
+                    <PracticeView
+                        /* FIX ME */
+                        onPreviewPractice={() => {}}
+                        onCreatePractice={() => {}}
+                        practices={this.props.practices || []} />
+                </div>
             );
         }
         return  (
