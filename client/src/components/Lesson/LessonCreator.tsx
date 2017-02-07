@@ -7,7 +7,7 @@ import {
     Practice, SectionType
 } from '../../reducers/practiceReducer';
 import {
-    TextField,
+    TextField
 } from 'material-ui';
 import {
     PracticeView
@@ -40,7 +40,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
             'id': 0,
             'title': '',
             'wordinfos': [],
-            'practices': this.state.practices
+            'practices': this.state['practices']
         });
     }
 
@@ -49,7 +49,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
             id: this.state['id'],
             title: this.state['title'],
             wordinfos: this.state['wordinfos'],
-            'practices': this.state.practices
+            'practices': this.state['practices']
         };
     }
 

@@ -132,6 +132,6 @@ export function saveLesson(l: Lesson) {
                     error: err.message
                 });
             });
-        }, 1000);
+        }, 5000);
     };
 }

@@ -49,12 +49,12 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             wordInfos,
             currentWordIndex: this.state.currentWordIndex,
             inputText: this.state.inputText
-        });
-
-        // TODO state callback
+        }, () => {
+             // TODO state callback
         if (this.props.onChange) {
             this.props.onChange(wordInfos);
         }
+        });
     }
 
     onWordSelect(_: any, i: number) {

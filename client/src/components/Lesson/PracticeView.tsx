@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {
     ContextSentence
-} from '../Questions/ContextSentence';
+} from '../Practice/ContextSentence';
 import {
     Practice, practiceTypes, SectionType
 } from '../../reducers/practiceReducer';
 import {
     MultipleChoiceView
-} from '../Questions/MultipleChoiceView';
+} from '../Practice/MultipleChoiceView';
 import {
     Tabs, Tab, Paper, Toolbar, ToolbarTitle, ToolbarGroup, IconMenu, IconButton, MenuItem, FontIcon, Subheader, FlatButton
 } from 'material-ui';

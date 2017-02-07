@@ -13,7 +13,6 @@ const App = (props: AppProps) => {
         <ErrorContainer />
         <AppBar
             title={title}
-            iconClassNameRight='muidocs-icon-navigation-expand-more'
             iconElementRight= { <LogoutContainer /> }/>
             <div style={{maxWidth: '800px', margin: '0 auto'}}>
                 {props.children}
