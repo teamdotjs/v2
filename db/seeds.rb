@@ -27,6 +27,14 @@ Antonym.create(word: 'calm', wordinfo: anarchy)
 Antonym.create(word: 'peace', wordinfo: anarchy)
 Sentence.create(context_sentence: 'As soon as the teacher stepped in the hall, the classroom descended into anarchy.', wordinfo: anarchy)
 
+abundant = Wordinfo.create(word: 'abundant', definition: 'Available in large quantities', part_of_speech: 'adjective', user: user, lesson: lesson)
+Synonym.create(word: 'profuse', wordinfo: abundant)
+Sentence.create(context_sentence: 'The riverbanks were abundant in wild plants.', wordinfo: abundant)
+
+augment = Wordinfo.create(word: 'augment', definition: 'Make greater by adding to it', part_of_speech: 'verb', user: user, lesson: lesson)
+Synonym.create(word: 'increase', wordinfo: augment)
+Sentence.create(context_sentence: 'He will augment his summer income by painting houses.', wordinfo: augment)
+
 synonym_practice = Practice.create(type: 'synonym', lesson: lesson)
 atheist_synonym_q = Question.create(type: 'mc', practice: synonym_practice)
 Prompt.create(text: 'What is the synonym of atheist?', question: atheist_synonym_q)
