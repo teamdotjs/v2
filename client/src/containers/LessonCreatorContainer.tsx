@@ -7,8 +7,9 @@ import { saveLesson, loadLesson } from '../actions/lesson';
 import { loadPractice, generatePractice } from '../actions/practice';
 
 function mapStateToProps(state: State, props: any): any  {
-    const practices = state.lesson[props.params.id] !== undefined ?
-        state.lesson[props.params.id].practices.map((id: number) => state.practice[id]) : [];
+    let practices = state.lesson[props.params.id] === undefined ? [] :
+        state.lesson[props.params.id].practices.map((id: number) => state.practice[id])
+                                               .filter(p => p !== undefined);
     return {
         notFound: !(props.params.id in state.lesson),
         value: state.lesson[props.params.id],
