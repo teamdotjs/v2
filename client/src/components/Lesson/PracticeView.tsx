@@ -3,7 +3,7 @@ import {
     ContextSentence
 } from '../Questions/ContextSentence';
 import {
-    Section, practiceTypes, SectionType
+    Practice, practiceTypes, SectionType
 } from '../../reducers/practiceReducer';
 import {
     MultipleChoiceView
@@ -13,7 +13,7 @@ import {
 } from 'material-ui';
 
 export interface PracticeViewProps {
-    practices: Section[];
+    practices: Practice[];
     onCreatePractice: (type: SectionType) => void;
     onPreviewPractice: () => void;
 };

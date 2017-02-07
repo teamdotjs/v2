@@ -38,8 +38,7 @@ export function loadPractice(id: number) {
         })
         .then(errorCheck)
         .then((practices: JSON) => {
-            console.log(practices);
-            dispatch({ type: 'practice_save_local', practices, id });
+            dispatch({ type: 'practice_load_success', practices });
         })
         .catch((err: Error) => {
             dispatch({
