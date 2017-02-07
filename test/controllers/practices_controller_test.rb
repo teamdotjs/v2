@@ -79,7 +79,7 @@ class PracticesControllerTest < ActionController::TestCase
       questions: [{
         id: 784075758,
         type: 'fitb',
-        prompts: ['This is probably the best test ever'],
+        prompts: ['This is __________ the best test ever'],
         options: ['probably']
       }]
     }
