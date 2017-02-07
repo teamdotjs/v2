@@ -4,12 +4,10 @@ import Page from '../util/Page';
 import BindingComponent from '../util/BindingComponent';
 import {Lesson} from '../../reducers/lessonReducer';
 import {
-    Practice
+    Practice, SectionType
 } from '../../reducers/practiceReducer';
 import {
-    TextField,
-    RaisedButton,
-    LinearProgress
+    TextField
 } from 'material-ui';
 import {
     PracticeView
@@ -20,9 +18,10 @@ export interface LessonCreatorProps {
     onChange?: (l: Lesson) => void;
     loadLession?: () => void;
     getPractice?: (id: number) => void;
+    generatePractice: (type: SectionType) => void;
     value?: Lesson;
     notFound: boolean;
-    practice?: Practice;
+    practices?: Practice[];
 }
 
 export class LessonCreator extends BindingComponent<LessonCreatorProps> {
@@ -31,7 +30,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         this.state = props.value || {
             'id': 0,
             'title': '',
-            'wordinfos': []
+            'wordinfos': [],
+            'practices': props.practices
         };
     }
 
@@ -39,7 +39,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         this.setState(newProps.value || {
             'id': 0,
             'title': '',
-            'wordinfos': []
+            'wordinfos': [],
+            'practices': this.state['practices']
         });
     }
 
@@ -48,6 +49,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
             id: this.state['id'],
             title: this.state['title'],
             wordinfos: this.state['wordinfos'],
+            'practices': this.state['practices']
         };
     }
 
@@ -66,41 +68,10 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
     }
 
     getLoadingText(): string | undefined {
-        if (this.props.practice !== undefined ) {
-            if (this.props.practice.isGenerating) {
-                return 'Your practice is generating';
-            } else if (this.props.practice.loading) {
-                return 'Loading';
-            }
+        if (this.props.practices !== undefined ) {
+            return 'Your practice is generating';
         }
         return undefined;
-    }
-
-    _renderPractice(): JSX.Element {
-        if (this.props.practice !== undefined) {
-            const message = this.getLoadingText();
-            if (message !== undefined) {
-                return <div>
-                    <h4 style={{
-                            textAlign: 'center',
-                            marginTop: '0px'
-                        }}>{message}</h4>
-                    <LinearProgress />
-                </div>;
-            } else {
-                return <PracticeView practice={this.props.practice} />;
-            }
-        } else {
-            return <RaisedButton
-                label='Generate Practice Questions'
-                secondary={true}
-                fullWidth={true}
-                onClick={() => {
-                    if (this.props.getPractice !== undefined) {
-                        this.props.getPractice(this.state['id']);
-                    }
-                }} />;
-        }
     }
 
     render() {
@@ -125,9 +96,11 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                             value={this.state['wordinfos']}
                             onChange={this.updateState('wordinfos')}/>
                     </Page>
-                    <Page title='Practice'>
-                        {this._renderPractice()}
-                    </Page>
+                    <PracticeView
+                        /* FIX ME */
+                        onPreviewPractice={() => {}}
+                        onCreatePractice={this.props.generatePractice}
+                        practices={this.props.practices || []} />
                 </div>
             );
         }
