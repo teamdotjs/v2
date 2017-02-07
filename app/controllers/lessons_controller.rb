@@ -80,6 +80,7 @@ class LessonsController < ApplicationController
   #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
   #              error_message: 'Lesson could not be found' }
   def update
+    puts "UPDATE PARAMS: #{params[:lesson][:wordinfos]}"
     lesson = Lesson.find(params[:id])
     errors = check_duplicates
     unless errors.empty?
@@ -123,7 +124,9 @@ class LessonsController < ApplicationController
 
   private
 
+  # rubocop:disable all
   def lesson_params
+    puts "LESSON PARAMS WORDINFOS: #{params[:lesson][:wordinfos]}"
     params[:lesson][:wordinfos_attributes] = params[:lesson][:wordinfos]
     params[:lesson][:wordinfos_attributes].each do |info|
       info[:user_id] = session[:user_id][:value]
@@ -149,6 +152,7 @@ class LessonsController < ApplicationController
       ]
     )
   end
+  # rubocop:enable all
 
   def check_duplicates
     errors = {}
