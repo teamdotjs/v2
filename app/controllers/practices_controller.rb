@@ -85,6 +85,7 @@ class PracticesController < ApplicationController
       words << wordinfo.word
       answer = ''
       words.each { |word| answer = word if sentence.include? word }
+      sentence.sub!(answer, '__________') # replace answer with underscores
       questions_attributes << {
         type: 'fitb',
         prompts_attributes: [{ text: sentence }],
