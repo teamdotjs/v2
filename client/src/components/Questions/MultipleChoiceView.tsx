@@ -3,6 +3,18 @@ import { QuestionView } from './QuestionView';
 import {
     Question
 } from '../../reducers/practiceReducer';
+import {
+    RadioButtonGroup, RadioButton
+} from 'material-ui';
+
+const styles = {
+  block: {
+    maxWidth: 250,
+  },
+  radioButton: {
+    marginBottom: 16,
+  },
+};
 
 export class MultipleChoiceView extends QuestionView {
 
@@ -10,15 +22,16 @@ export class MultipleChoiceView extends QuestionView {
         const question: Question = this.props.question;
 
         return <div>
-            {question.prompts[0]}
-            <ul>
+            <h3>{question.prompts[0]} </h3>
+            <RadioButtonGroup name='response'>
                 {question.options.map((opt) => {
-                    const style = {
-                        color: opt.is_correct ? 'green' : 'black'
-                    };
-                    return <li style={style} key={opt.value}>{opt.value}</li>;
+                    return <RadioButton
+                            style={styles.radioButton}
+                            label={opt}
+                            value={opt}
+                            key={opt} />;
                 })}
-            </ul>
+                </RadioButtonGroup>
         </div>;
     };
 

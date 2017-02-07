@@ -33,6 +33,7 @@ export function loadLessons() {
             headers,
             credentials: 'same-origin'
         })
+        .then()
         .then(errorCheck)
         .then((res: any[]) => {
             res.forEach(l => l.wordinfos.forEach((w: any) => w.id = undefined));
