@@ -30,7 +30,7 @@ export class ContextSentence extends QuestionView {
 
     renderQuestion(): JSX.Element {
         const question: Question = this.props.question;
-        const answer = question.options[0].value;
+        const answer = question.options[0];
         return <div>
             <h4>Context Sentence</h4>
             {this.highlightWord(question.prompts[0], answer)}

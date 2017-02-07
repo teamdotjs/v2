@@ -2,19 +2,23 @@ import 'whatwg-fetch';
 import {
     errorCheck
 } from './util';
+import { SectionType } from '../reducers/practiceReducer';
 
 const headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
 };
 
-export function generatePractice(id: number) {
+export function generatePractice(id: number, type: SectionType) {
     return (dispatch: any) => {
         dispatch({ type: 'practice_generate', id });
         fetch(`/api/lesson/${id}/practice`, {
             method: 'POST',
-            headers,
-            credentials: 'same-origin'
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'same-origin',
+            body: type
         })
         .then(errorCheck)
         .then((practices: JSON) => {
@@ -38,7 +42,7 @@ export function loadPractice(id: number) {
         })
         .then(errorCheck)
         .then((practices: JSON) => {
-            dispatch({ type: 'practice_save_local', practices, id });
+            dispatch({ type: 'practice_load_success', practices });
         })
         .catch((err: Error) => {
             dispatch({
