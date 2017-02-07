@@ -8,8 +8,6 @@ import {
 } from '../../reducers/practiceReducer';
 import {
     TextField,
-    RaisedButton,
-    LinearProgress
 } from 'material-ui';
 import {
     PracticeView
@@ -76,33 +74,6 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         return undefined;
     }
 
-    _renderPractice(): JSX.Element {
-        if (this.props.practice !== undefined) {
-            const message = this.getLoadingText();
-            if (message !== undefined) {
-                return <div>
-                    <h4 style={{
-                            textAlign: 'center',
-                            marginTop: '0px'
-                        }}>{message}</h4>
-                    <LinearProgress />
-                </div>;
-            } else {
-                return <PracticeView practice={this.props.practice} />;
-            }
-        } else {
-            return <RaisedButton
-                label='Generate Practice Questions'
-                secondary={true}
-                fullWidth={true}
-                onClick={() => {
-                    if (this.props.getPractice !== undefined) {
-                        this.props.getPractice(this.state['id']);
-                    }
-                }} />;
-        }
-    }
-
     render() {
         let content: any;
         if (this.props.notFound) {
@@ -125,10 +96,11 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                             value={this.state['wordinfos']}
                             onChange={this.updateState('wordinfos')}/>
                     </Page>
-                    <Page title='Practice'>
-                        {this._renderPractice()}
-                    </Page>
-                </div>
+                <PracticeView
+                    /* FIX ME */
+                    onPreviewPractice={() => {}}
+                    onCreatePractice={() => {}}
+                    practices={this.props.practice ? this.props.practice.sections || [] : []} />;                </div>
             );
         }
         return  (

@@ -2,15 +2,14 @@ export interface Question {
     id: number;
     type: 'fitb' | 'mc';
     prompts: string[];
-    options: {
-        value: string;
-        is_correct: boolean;
-    }[];
+    options: string[];
 };
+
+export type SectionType = 'synonym' | 'sentence';
 
 export interface Section {
     id: number;
-    type: 'synonym' | 'sentence';
+    type: SectionType;
     questions: Question[];
 };
 
@@ -25,6 +24,8 @@ export interface PracticeState {
     // ID in state is the lesson ID
     [id: number]: Practice;
 };
+
+export const practiceTypes = ['synonym', 'sentence'] as SectionType[];
 
 export const practiceReducer = (state: PracticeState, action: any): PracticeState => {
     if (state === undefined) return {};

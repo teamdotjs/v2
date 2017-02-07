@@ -18,6 +18,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
     return {
         loadLession: () => {
             dispatch(loadLesson(ownProps.params.id));
+            dispatch(loadPractice(ownProps.params.id));
         },
         onChange: (lesson: Lesson) => {
             dispatch(saveLesson(lesson));
