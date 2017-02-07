@@ -134,23 +134,19 @@ class PracticesController < ApplicationController
     questions_attributes = []
     synonyms = []
     lesson.wordinfos.map { |wordinfo| synonyms += wordinfo.synonyms.map(&:word) }
-    puts "SYNONYMS: #{synonyms}"
     lesson.wordinfos.each do |wordinfo|
-      puts "WORDINFO SYNONYMS: #{wordinfo.synonyms.as_json}"
       correct_options = wordinfo.synonyms.map(&:word)
-      puts "CORRECT: #{correct_options}"
       incorrect_options = (synonyms - correct_options).sample(3)
-      puts "INCORRECT: #{incorrect_options}"
-      # questions_attributes << {
-      #   type: 'mc',
-      #   prompts_attributes: [{ text: "What is a synonym of #{wordinfo.word}?" }],
-      #   options_attributes: [
-      #     { value: correct_options[0], is_correct: true },
-      #     { value: incorrect_options[0], is_correct: false },
-      #     { value: incorrect_options[1], is_correct: false },
-      #     { value: incorrect_options[2], is_correct: false }
-      #   ]
-      # }
+      questions_attributes << {
+        type: 'mc',
+        prompts_attributes: [{ text: "What is a synonym of #{wordinfo.word}?" }],
+        options_attributes: [
+          { value: correct_options[0], is_correct: true },
+          { value: incorrect_options[0], is_correct: false },
+          { value: incorrect_options[1], is_correct: false },
+          { value: incorrect_options[2], is_correct: false }
+        ]
+      }
     end
     questions_attributes
   end

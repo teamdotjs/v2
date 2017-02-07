@@ -116,9 +116,9 @@ class PracticesControllerTest < ActionController::TestCase
        { word: 'plate', definition: 'eat dinner from' },
        { word: 'screen', definition: 'watch a tv show' },
        { word: 'pan', definition: 'cook in' }] }
-    patch :update, params: { id: lesson_id, lesson: lesson }
+    patch :update, params: { id: lesson_id, lesson: lesson, type: 'definition' }, as: :json
     @controller = controller
-    post :create, params: { id: lesson_id, type: 'definition' }
+    post :create, params: { id: lesson_id }
     assert_response :ok
     practice = { id: 907223595, type: 'definition', questions:
       [{ id: 784075758, type: 'mc', prompts: ['wear on your head'],
@@ -133,29 +133,29 @@ class PracticesControllerTest < ActionController::TestCase
   end
 
   test 'POST /api/lesson/:id/practice/ generate synonym Q\'s with 4 words in lesson' do
-    puts '****************************************************'
     login_as_testuser
     controller = @controller
     @controller = LessonsController.new
     post :create
     lesson_id = JSON.parse(@response.body)['id']
-    lesson = {
-      id: lesson_id,
-      wordinfos: [
-        { word: 'hat', synonyms: ['cap'] },
-        { word: 'plate', synonyms: ['dish'] },
-        { word: 'screen', synonyms: ['monitor'] },
-        { word: 'pan', synonyms: ['pot'] }
-      ]
-    }
-    puts "TEST LESSON: #{lesson}"
-    patch :update, params: { id: lesson_id, lesson: lesson }
+    lesson = { id: lesson_id, wordinfos:
+      [{ word: 'hat', synonyms: ['cap'] },
+       { word: 'plate', synonyms: ['dish'] },
+       { word: 'screen', synonyms: ['monitor'] },
+       { word: 'pan', synonyms: ['pot'] }] }
+    patch :update, params: { id: lesson_id, lesson: lesson, type: 'synonym' }, as: :json
     @controller = controller
-    post :create, params: { id: lesson_id, type: 'synonym' }
+    post :create, params: { id: lesson_id }
     assert_response :ok
-    puts "GENERATE SYNONYMS: #{@response.body}"
-    puts '****************************************************'
-    # practice = {}
-    # assert_json_match practice, @response.body
+    practice = { id: 907223595, type: 'synonym', questions:
+      [{ id: 784075758, type: 'mc', prompts: ['What is a synonym of hat?'],
+         options: %w(cap dish monitor pot) },
+       { id: 784075759, type: 'mc', prompts: ['What is a synonym of plate?'],
+         options: %w(cap dish monitor pot) },
+       { id: 784075760, type: 'mc', prompts: ['What is a synonym of screen?'],
+         options: %w(cap dish monitor pot) },
+       { id: 784075761, type: 'mc', prompts: ['What is a synonym of pan?'],
+         options: %w(cap dish monitor pot) }] }
+    assert_json_match practice, @response.body
   end
 end
