@@ -16,9 +16,10 @@ export function generatePractice(id: number, type: SectionType) {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             credentials: 'same-origin',
-            body: type
+            body: JSON.stringify({type})
         })
         .then(errorCheck)
         .then((practices: JSON) => {
