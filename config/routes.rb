@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       end
     end
 
+    match '/practice/:id' => 'practices#destroy', via: [:delete]
+
     match '/question/:id/submit_answer' => 'questions#submit_answer', via: [:post]
   end
   #  Send static files
