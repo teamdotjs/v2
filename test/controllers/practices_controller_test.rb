@@ -158,4 +158,30 @@ class PracticesControllerTest < ActionController::TestCase
          options: %w(cap dish monitor pot) }] }
     assert_json_match practice, @response.body
   end
+
+  test 'DELETE /api/practice/:id unauthorized' do
+    delete :destroy, params: { id: practices(:synonym_mc).id }
+    assert_response :unauthorized
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'DELETE /api/practice/:id practice not found' do
+    login_as_testuser
+    delete :destroy, params: { id: 1 }
+    assert_response :not_found
+    error_response = { errors: ['Couldn\'t find Practice with \'id\'=1'],
+                       error_message: 'Practice could not be found' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'DELETE /api/practice/:id success' do
+    login_as_testuser
+    delete :destroy, params: { id: practices(:synonym_mc).id }
+    assert_response :ok
+    assert_json_match({ deleted: true }, @response.body)
+    assert_raises ActiveRecord::RecordNotFound do
+      Practice.find(practices(:synonym_mc).id)
+    end
+  end
 end

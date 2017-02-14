@@ -89,6 +89,25 @@ class PracticesController < ApplicationController
     render json: practice.reload
   end
 
+  # DELETE /api/practice/:id
+  # Desc: deletes practice specified by id
+  # Request body params:
+  #   none
+  # Success response:
+  #   Code: 200
+  #   Content: { deleted: true }
+  # Error response:
+  #   (1) Code: 401
+  #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+  #   (2) Code: 404
+  #   Content: { errors: ['Couldn't find Practice with 'id'=int'],
+  #              error_message: 'Practice could not be found' }
+  def destroy
+    practice = Practice.find(params[:id])
+    practice.destroy
+    render json: { deleted: true }
+  end
+
   private
 
   def generate_sentence_questions(lesson)
