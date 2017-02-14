@@ -5,6 +5,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :questions
   enum type: { definition: 0, synonym: 1, root: 2, sentence: 3 }
   validates :type, presence: true
+  validates_uniqueness_of :type, scope: :lesson
 
   def as_json(options = {})
     practice = super(options.merge(

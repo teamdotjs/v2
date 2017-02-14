@@ -7,6 +7,11 @@ class PracticeTest < ActiveSupport::TestCase
   should define_enum_for(:type).with([:definition, :synonym, :root, :sentence])
   should validate_presence_of(:type)
 
+  test 'validates uniqueness of type' do
+    practice = Practice.create(lesson: lessons(:english101), type: 'synonym')
+    assert_includes practice.errors.full_messages, 'Type has already been taken'
+  end
+
   test 'practice as json' do
     practice = practices(:synonym_mc)
     assert_json_match practice_pattern, practice.as_json

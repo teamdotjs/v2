@@ -17,7 +17,8 @@ class WordinfoTest < ActiveSupport::TestCase
   should validate_length_of(:word).is_at_most(255)
 
   test 'validates uniqueness of word' do
-    assert true
+    wordinfo = Wordinfo.create(word: 'Probably', lesson: lessons(:english101))
+    assert_includes wordinfo.errors.full_messages, 'Word has already been taken'
   end
 
   test 'wordinfo as json' do
