@@ -79,8 +79,16 @@ class LessonsController < ApplicationController
   #   (3) Code: 404
   #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
   #              error_message: 'Lesson could not be found' }
+  #   (4) Code: 409
+  #   Content: { errors: ['Lesson cannot be edited while it has a practice for it'],
+  #              error_message: 'Lesson cannot be edited while it has a practice for it' }
   def update
     lesson = Lesson.find(params[:id])
+    unless lesson.practices.empty?
+      message = 'Lesson cannot be edited while it has a practice for it'
+      render json: { errors: [message], error_message: message }, status: :conflict # 409
+      return
+    end
     errors = check_duplicates
     unless errors.empty?
       render json: { errors: errors }, status: :bad_request # 400
