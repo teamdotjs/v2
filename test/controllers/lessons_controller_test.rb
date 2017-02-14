@@ -69,8 +69,18 @@ class LessonsControllerTest < ActionController::TestCase
     assert_json_match error_response, @response.body
   end
 
+  test 'PATCH /api/lesson/:id can\'t edit lesson with practice' do
+    login_as_testuser
+    patch :update, params: { id: lessons(:english101).id }
+    assert_response :conflict
+    error_message = 'Lesson cannot be edited while it has a practice for it'
+    error_response = { errors: [error_message], error_message: error_message }
+    assert_json_match error_response, @response.body
+  end
+
   test 'PATCH /api/lesson/:id bad request (wordinfo word blank)' do
     login_as_testuser
+    lessons(:english101).practices.destroy_all
     lesson = lessons(:english101).as_json
     lesson['wordinfos'][0]['word'] = ''
     patch :update, params: { id: lesson['id'], lesson: lesson }
@@ -82,6 +92,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   test 'PATCH /api/lesson/:id multiple wordinfo with same word ' do
     login_as_testuser
+    lessons(:english101).practices.destroy_all
     lesson = lessons(:english101)
     updated_lesson = {
       id: lesson.id,
@@ -98,6 +109,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   test 'PATCH /api/lesson/:id wordinfo and synonym with same word' do
     login_as_testuser
+    lessons(:english101).practices.destroy_all
     lesson = lessons(:english101)
     updated_lesson = {
       id: lesson.id,
@@ -117,6 +129,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   test 'PATCH /api/lesson/:id two synonyms with same word in one wordinfo' do
     login_as_testuser
+    lessons(:english101).practices.destroy_all
     lesson = lessons(:english101)
     updated_lesson = {
       id: lesson.id,
@@ -136,10 +149,13 @@ class LessonsControllerTest < ActionController::TestCase
 
   test 'PATCH /api/lesson/:id success' do
     login_as_testuser
+    lessons(:english101).practices.destroy_all
     lesson = lessons(:english101).as_json
     patch :update, params: { id: lesson['id'], lesson: lesson }
     assert_response :ok
-    assert_json_match lesson_pattern, @response.body
+    pattern = lesson_pattern
+    pattern[:practices] = []
+    assert_json_match pattern, @response.body
     lesson = lessons(:english101)
     assert_not_empty lesson.wordinfos
   end
