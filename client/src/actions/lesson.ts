@@ -27,7 +27,7 @@ const headers = {
 export function loadLessons() {
     return (dispatch: any) => {
         dispatch({
-            type 'load_lessons_pending'
+            type: 'load_lessons_pending'
         });
         fetch('/api/lesson', {
             headers,
