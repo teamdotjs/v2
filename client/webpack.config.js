@@ -2,7 +2,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 var webpack = require('webpack');
-var webpackFailPlugin = require('webpack-fail-plugin');
+var WebpackFailPlugin = require('webpack-fail-plugin');
 
 module.exports = {
     entry: "./src/index.tsx",
@@ -59,6 +59,6 @@ module.exports = {
         }),
        
         new CopyWebpackPlugin([{from: '*', to: 'dist/', context: 'public'}]),
-        webpackFailPlugin
+        WebpackFailPlugin
     ]
 };
