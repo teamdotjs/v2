@@ -7,6 +7,9 @@ export interface WordInfo {
     word: string;
     part_of_speech?: string;
     forms?: WordForm[];
+    synonyms?: string[];
+    antonyms?: string[];
+    definition?: string;
 }
 
 export interface Lesson {
