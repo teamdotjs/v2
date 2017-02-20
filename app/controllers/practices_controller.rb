@@ -9,6 +9,8 @@ class PracticesController < ApplicationController
   #     options: ['']
   #   }] }
   before_action :signed_in?
+  before_action :lesson_correct_user?, only: :create
+  before_action :practice_correct_user?, only: :destroy
 
   # GET /api/lesson/:id/practice
   # Desc: return all practices in the lesson specified by id
@@ -65,14 +67,13 @@ class PracticesController < ApplicationController
   #     error_message: 'There are not enough words in this lesson to generate a practice'
   #   }
   def create
-    lesson = Lesson.find(params[:id])
     type = params[:type]
     json_rendered = false
     practice = nil
     # rollback practice creation if there's an error creating the practice or generating questions
     ActiveRecord::Base.transaction do
       begin
-        practice = Practice.create(lesson: lesson, type: type)
+        practice = Practice.create(lesson: @lesson, type: type)
       rescue ArgumentError => error
         render json: { errors: { type: [error.message] } }, status: :bad_request # 400
         json_rendered = true
@@ -87,9 +88,9 @@ class PracticesController < ApplicationController
 
       # question generation
       questions_attributes = case type
-                             when 'sentence' then generate_sentence_questions lesson
-                             when 'definition' then generate_definition_questions lesson
-                             when 'synonym' then generate_synonym_questions lesson
+                             when 'sentence' then generate_sentence_questions @lesson
+                             when 'definition' then generate_definition_questions @lesson
+                             when 'synonym' then generate_synonym_questions @lesson
                              end
       # question generation errors
       if questions_attributes[0].key?(:error_message)
@@ -119,8 +120,7 @@ class PracticesController < ApplicationController
   #   Content: { errors: ['Couldn't find Practice with 'id'=int'],
   #              error_message: 'Practice could not be found' }
   def destroy
-    practice = Practice.find(params[:id])
-    practice.destroy
+    @practice.destroy
     render json: { deleted: true }
   end
 
@@ -205,5 +205,17 @@ class PracticesController < ApplicationController
       }
     end
     questions_attributes
+  end
+
+  def lesson_correct_user?
+    @lesson = Lesson.find(params[:id])
+    return if @lesson.owner_id == session[:user_id][:value]
+    render json: { errors: ['Forbidden'], error_message: 'Forbidden' }, status: :forbidden # 403
+  end
+
+  def practice_correct_user?
+    @practice = Practice.find(params[:id])
+    return if @practice.lesson.owner_id == session[:user_id][:value]
+    render json: { errors: ['Forbidden'], error_message: 'Forbidden' }, status: :forbidden # 403
   end
 end
