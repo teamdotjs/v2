@@ -33,6 +33,7 @@
     "ts-loader": "^0.8.2",
     "typescript": "^2.1.1",
     "webpack": "^1.13.2",
+    "webpack-fail-plugin": "^1.0.5",
     "whatwg-fetch": "^1.0.0"
   },
   "dependencies": {
