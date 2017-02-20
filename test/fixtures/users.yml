@@ -3,3 +3,9 @@ testuser:
   email: testuser@test.com
   password_digest: <%= BCrypt::Password.create('TestPass') %>
   birthday: 1990-01-01
+
+seconduser:
+  name: Second User
+  email: seconduser@test.com
+  password_digest: <%= BCrypt::Password.create('Password') %>
+  birthday: 1990-01-01

@@ -60,6 +60,14 @@ class LessonsControllerTest < ActionController::TestCase
     assert_json_match error_response, @response.body
   end
 
+  test 'PATCH /api/lesson/:id forbidden' do
+    login_as_seconduser
+    patch :update, params: { id: lessons(:english101).id }
+    assert_response :forbidden
+    error_response = { errors: ['Forbidden'], error_message: 'Forbidden' }
+    assert_json_match error_response, @response.body
+  end
+
   test 'PATCH /api/lesson/:id lesson not found' do
     login_as_testuser
     patch :update, params: { id: 1 }
@@ -164,6 +172,14 @@ class LessonsControllerTest < ActionController::TestCase
     delete :destroy, params: { id: lessons(:english101).id }
     assert_response :unauthorized
     error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'DELETE /api/lesson/:id forbidden' do
+    login_as_seconduser
+    delete :destroy, params: { id: lessons(:english101).id }
+    assert_response :forbidden
+    error_response = { errors: ['Forbidden'], error_message: 'Forbidden' }
     assert_json_match error_response, @response.body
   end
 

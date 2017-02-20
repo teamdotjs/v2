@@ -51,7 +51,8 @@ class AuthController < ApplicationController
   #              error_message: 'User could not be found' }
   def signed_in
     if session_not_expired?
-      render json: { logged_in: true, user_id: session[:user_id][:value] }
+      user = User.find(session[:user_id][:value])
+      render json: { logged_in: true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
     else
       render json: { logged_in: false }, status: :unauthorized # 401
     end

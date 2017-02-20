@@ -13,6 +13,7 @@ class LessonsController < ApplicationController
   #     sentences: [{ context_sentence: '' }]
   #   } }] }
   before_action :signed_in?
+  before_action :correct_user?, only: [:update, :destroy]
 
   # GET /api/lesson
   # Desc: return all lessons created by current user
@@ -76,15 +77,16 @@ class LessonsController < ApplicationController
   #   Content: { errors: { title: [''] } }
   #   (2) Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
-  #   (3) Code: 404
+  #   (3) Code: 403
+  #   Content: { errors: ['Forbidden'], error_message: 'Forbidden' }
+  #   (4) Code: 404
   #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
   #              error_message: 'Lesson could not be found' }
-  #   (4) Code: 409
+  #   (5) Code: 409
   #   Content: { errors: ['Lesson cannot be edited while it has a practice for it'],
   #              error_message: 'Lesson cannot be edited while it has a practice for it' }
   def update
-    lesson = Lesson.find(params[:id])
-    unless lesson.practices.empty?
+    unless @lesson.practices.empty?
       message = 'Lesson cannot be edited while it has a practice for it'
       render json: { errors: [message], error_message: message }, status: :conflict # 409
       return
@@ -96,18 +98,18 @@ class LessonsController < ApplicationController
     end
     lesson_saved = true
     ActiveRecord::Base.transaction do
-      Wordinfo.where(id: lesson.wordinfo_ids).destroy_all
-      lesson.attributes = lesson_params
-      unless lesson.save
+      Wordinfo.where(id: @lesson.wordinfo_ids).destroy_all
+      @lesson.attributes = lesson_params
+      unless @lesson.save
         lesson_saved = false
         raise ActiveRecord::Rollback
       end
     end
     unless lesson_saved
-      render json: { errors: lesson.errors }, status: :bad_request # 400
+      render json: { errors: @lesson.errors }, status: :bad_request # 400
       return
     end
-    render json: lesson.reload
+    render json: @lesson.reload
   end
 
   # DELETE /api/lesson/:id
@@ -120,12 +122,13 @@ class LessonsController < ApplicationController
   # Error response:
   #   (1) Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
-  #   (2) Code: 404
+  #   (2) Code: 403
+  #   Content: { errors: ['Forbidden'], error_message: 'Forbidden' }
+  #   (3) Code: 404
   #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
   #              error_message: 'Lesson could not be found' }
   def destroy
-    lesson = Lesson.find(params[:id])
-    lesson.destroy
+    @lesson.destroy
     render json: { deleted: true }
   end
 
@@ -180,5 +183,11 @@ class LessonsController < ApplicationController
       errors["wordinfos.#{model}.#{attribute}"] = ['has already been taken']
     end
     errors
+  end
+
+  def correct_user?
+    @lesson = Lesson.find(params[:id])
+    return if @lesson.owner_id == session[:user_id][:value]
+    render json: { errors: ['Forbidden'], error_message: 'Forbidden' }, status: :forbidden # 403
   end
 end

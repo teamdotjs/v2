@@ -54,6 +54,14 @@ class PracticesControllerTest < ActionController::TestCase
     assert_json_match error_response, @response.body
   end
 
+  test 'POST /api/lesson/:id/practice/ forbidden' do
+    login_as_seconduser
+    post :create, params: { id: lessons(:english101) }
+    assert_response :forbidden
+    error_response = { errors: ['Forbidden'], error_message: 'Forbidden' }
+    assert_json_match error_response, @response.body
+  end
+
   test 'POST /api/lesson/:id/practice/ lesson not found' do
     login_as_testuser
     post :create, params: { id: 1 }
@@ -68,6 +76,24 @@ class PracticesControllerTest < ActionController::TestCase
     post :create, params: { id: lessons(:english101).id, type: 'a' }
     assert_response :bad_request
     assert_json_match({ errors: { type: ['\'a\' is not a valid type'] } }, @response.body)
+  end
+
+  test 'POST /api/lesson/:id/practice/ can\'t generate same practice twice' do
+    login_as_testuser
+    post :create, params: { id: lessons(:english101).id, type: 'synonym' }
+    assert_response :bad_request
+    error_response = { errors: { type: ['has already been taken'] } }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'POST /api/lesson/:id/practice/ can\'t generate sentence practice without sentence' do
+    login_as_testuser
+    lessons(:english101).wordinfos.first.sentences.first.destroy
+    post :create, params: { id: lessons(:english101).id, type: 'sentence' }
+    assert_response :conflict
+    error_message = 'probably does not have any context sentences'
+    error_response = { errors: [error_message], error_message: error_message }
+    assert_json_match error_response, @response.body
   end
 
   test 'POST /api/lesson/:id/practice/ generate sentence Q\'s with 1 word in lesson' do
@@ -87,20 +113,61 @@ class PracticesControllerTest < ActionController::TestCase
     assert_json_match practice, @response.body
   end
 
+  test 'POST /api/lesson/:id/practice/ can\'t generate definition practice without definition' do
+    login_as_testuser
+    controller = @controller
+    @controller = LessonsController.new
+    post :create
+    lesson_id = JSON.parse(@response.body)['id']
+    lesson = { id: lesson_id, wordinfos:
+      [{ word: 'hat' },
+       { word: 'plate', definition: 'eat dinner from' },
+       { word: 'screen', definition: 'watch a tv show' },
+       { word: 'pan', definition: 'cook in' }] }
+    patch :update, params: { id: lesson_id, lesson: lesson, type: 'definition' }, as: :json
+    @controller = controller
+    post :create, params: { id: lesson_id }
+    assert_response :conflict
+    error_message = 'hat does not have a definition'
+    error_response = { errors: [error_message], error_message: error_message }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'POST /api/lesson/:id/practice/ can\'t generate synonym practice without enough synonyms' do
+    login_as_testuser
+    controller = @controller
+    @controller = LessonsController.new
+    post :create
+    lesson_id = JSON.parse(@response.body)['id']
+    lesson = { id: lesson_id, wordinfos:
+      [{ word: 'hat' },
+       { word: 'plate', synonyms: ['dish'] },
+       { word: 'screen', synonyms: ['monitor'] },
+       { word: 'pan', synonyms: ['pot'] }] }
+    patch :update, params: { id: lesson_id, lesson: lesson, type: 'synonym' }, as: :json
+    @controller = controller
+    post :create, params: { id: lesson_id }
+    assert_response :conflict
+    error_message = 'There are not enough synonyms in this lesson to generate a practice'
+    error_response = { errors: [error_message], error_message: error_message }
+    assert_json_match error_response, @response.body
+  end
+
   test 'POST /api/lesson/:id/practice/ can\'t generate definition Q\'s with 1 word in lesson' do
     login_as_testuser
     post :create, params: { id: lessons(:english101).id, type: 'definition' }
     assert_response :conflict
-    error_message = 'There are not enough words in this practice to generate a practice'
+    error_message = 'There are not enough words in this lesson to generate a practice'
     error_response = { errors: [error_message], error_message: error_message }
     assert_json_match error_response, @response.body
   end
 
   test 'POST /api/lesson/:id/practice/ can\'t generate synonym Q\'s with 1 word in lesson' do
     login_as_testuser
+    practices(:synonym_mc).destroy
     post :create, params: { id: lessons(:english101).id, type: 'synonym' }
     assert_response :conflict
-    error_message = 'There are not enough words in this practice to generate a practice'
+    error_message = 'There are not enough words in this lesson to generate a practice'
     error_response = { errors: [error_message], error_message: error_message }
     assert_json_match error_response, @response.body
   end
@@ -163,6 +230,14 @@ class PracticesControllerTest < ActionController::TestCase
     delete :destroy, params: { id: practices(:synonym_mc).id }
     assert_response :unauthorized
     error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'DELETE /api/practice/:id forbidden' do
+    login_as_seconduser
+    delete :destroy, params: { id: practices(:synonym_mc).id }
+    assert_response :forbidden
+    error_response = { errors: ['Forbidden'], error_message: 'Forbidden' }
     assert_json_match error_response, @response.body
   end
 
