@@ -61,32 +61,48 @@ class PracticesController < ApplicationController
   #   Content: { errors: { type: ["'' is not a valid type"] } }
   #   (4) Code: 409
   #   Content: {
-  #     errors: ['There are not enough words in this practice to generate a practice'],
-  #     error_message: 'There are not enough words in this practice to generate a practice'
+  #     errors: ['There are not enough words in this lesson to generate a practice'],
+  #     error_message: 'There are not enough words in this lesson to generate a practice'
   #   }
   def create
     lesson = Lesson.find(params[:id])
     type = params[:type]
-    begin
-      practice = Practice.create(lesson: lesson, type: type)
-    rescue ArgumentError => error
-      render json: { errors: { type: [error.message] } }, status: :bad_request # 400
-      return
+    json_rendered = false
+    practice = nil
+    # rollback practice creation if there's an error creating the practice or generating questions
+    ActiveRecord::Base.transaction do
+      begin
+        practice = Practice.create(lesson: lesson, type: type)
+      rescue ArgumentError => error
+        render json: { errors: { type: [error.message] } }, status: :bad_request # 400
+        json_rendered = true
+        raise ActiveRecord::Rollback
+      end
+      # catch duplicate practice error
+      unless practice.errors.empty?
+        render json: { errors: practice.errors }, status: :bad_request # 400
+        json_rendered = true
+        raise ActiveRecord::Rollback
+      end
+
+      # question generation
+      questions_attributes = case type
+                             when 'sentence' then generate_sentence_questions lesson
+                             when 'definition' then generate_definition_questions lesson
+                             when 'synonym' then generate_synonym_questions lesson
+                             end
+      # question generation errors
+      if questions_attributes[0].key?(:error_message)
+        message = questions_attributes[0][:error_message]
+        render json: { errors: [message], error_message: message }, status: :conflict # 409
+        json_rendered = true
+        raise ActiveRecord::Rollback
+      end
+      # save questions if no errors
+      practice.attributes = { questions_attributes: questions_attributes }
+      practice.save
     end
-    questions_attributes = case type
-                           when 'sentence' then generate_sentence_questions lesson
-                           when 'definition' then generate_definition_questions lesson
-                           when 'synonym' then generate_synonym_questions lesson
-                           end
-    if questions_attributes.nil?
-      error_message = 'There are not enough words in this practice to generate a practice'
-      render json: { errors: [error_message], error_message: error_message },
-             status: :conflict # 409
-      return
-    end
-    practice.attributes = { questions_attributes: questions_attributes }
-    practice.save
-    render json: practice.reload
+    render json: practice.reload unless json_rendered
   end
 
   # DELETE /api/practice/:id
@@ -113,6 +129,9 @@ class PracticesController < ApplicationController
   def generate_sentence_questions(lesson)
     questions_attributes = []
     lesson.wordinfos.each do |wordinfo|
+      if wordinfo.sentences.empty?
+        return [{ error_message: "#{wordinfo.word} does not have any context sentences" }]
+      end
       sentence = wordinfo.sentences.first.context_sentence
       words = wordinfo.forms.map(&:word)
       words << wordinfo.word
@@ -129,10 +148,17 @@ class PracticesController < ApplicationController
   end
 
   def generate_definition_questions(lesson)
-    return nil if lesson.wordinfos.length < 4
+    if lesson.wordinfos.length < 4
+      return [{
+        error_message: 'There are not enough words in this lesson to generate a practice'
+      }]
+    end
     questions_attributes = []
     words = lesson.wordinfos.map(&:word)
     lesson.wordinfos.each do |wordinfo|
+      if wordinfo.definition.blank?
+        return [{ error_message: "#{wordinfo.word} does not have a definition" }]
+      end
       correct_option = wordinfo.word
       incorrect_options = (words - [correct_option]).sample(3)
       questions_attributes << {
@@ -150,21 +176,31 @@ class PracticesController < ApplicationController
   end
 
   def generate_synonym_questions(lesson)
-    return nil if lesson.wordinfos.length < 4
+    if lesson.wordinfos.length < 4
+      return [{
+        error_message: 'There are not enough words in this lesson to generate a practice'
+      }]
+    end
     questions_attributes = []
     synonyms = []
     lesson.wordinfos.map { |wordinfo| synonyms += wordinfo.synonyms.map(&:word) }
     lesson.wordinfos.each do |wordinfo|
       correct_options = wordinfo.synonyms.map(&:word)
-      incorrect_options = (synonyms - correct_options).sample(3)
+      incorrect_options = (synonyms - correct_options)
+      if correct_options.empty? || incorrect_options.length < 3
+        return [{
+          error_message: 'There are not enough synonyms in this lesson to generate a practice'
+        }]
+      end
+      random_incorrect = incorrect_options.sample(3)
       questions_attributes << {
         type: 'mc',
         prompts_attributes: [{ text: "What is a synonym of #{wordinfo.word}?" }],
         options_attributes: [
           { value: correct_options[0], is_correct: true },
-          { value: incorrect_options[0], is_correct: false },
-          { value: incorrect_options[1], is_correct: false },
-          { value: incorrect_options[2], is_correct: false }
+          { value: random_incorrect[0], is_correct: false },
+          { value: random_incorrect[1], is_correct: false },
+          { value: random_incorrect[2], is_correct: false }
         ]
       }
     end
