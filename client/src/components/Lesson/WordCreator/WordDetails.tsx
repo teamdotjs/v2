@@ -14,6 +14,7 @@ export interface WordDetailsProps {
     wordInfo: WordInfo;
     onChange: (v: number, w: WordInfo) => void;
     onDelete: () => void;
+    disabled?: boolean;
 }
 
 export class WordDetails extends BindingComponent<WordDetailsProps> {
@@ -43,12 +44,14 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     floatingLabelText='Word'
                     name='word'
                     value={this.state['word'] || ''}
+                    disabled={this.props.disabled}
                     onChange={this.bindValueToName.bind(this)}
                 />
 
             <IconButton onClick={this.props.onDelete}
                 style={{display: 'inline-block',float: 'right'}}
                 iconClassName='material-icons'
+                disabled={this.props.disabled}
                 tooltip='Delete'>delete</IconButton>
 
             <TextField hintText='Definition'
@@ -56,6 +59,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     multiLine={true}
                     fullWidth={true}
                     name='definition'
+                    disabled={this.props.disabled}
                     value={this.state['definition'] || ''}
                     onChange={this.bindValueToName.bind(this)}
                     style={{ width: '100%' }}
@@ -64,12 +68,14 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
             <TagBuilder name='synonyms'
                     onChange={this.updateState('synonyms')}
                     values={this.state['synonyms']}
-                    hintText='Synonyms'/>
+                    hintText='Synonyms'
+                    disabled={this.props.disabled}/>
 
             <TagBuilder name='antonyms'
                     onChange={this.updateState('antonyms')}
                     values={this.state['antonyms']}
-                    hintText='Antonyms'/>
+                    hintText='Antonyms'
+                    disabled={this.props.disabled}/>
 
             <h3>Forms</h3>
             <WordFormSelector
@@ -77,6 +83,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                 onChange={this.onFormChange.bind(this)}
                 onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
                 newValue={this.state['wordFormNewValue'] || ''}
+                disabled={this.props.disabled}
             />
 
         </div>);
