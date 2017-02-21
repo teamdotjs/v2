@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import Logout, { LogoutProps } from '../components/Logout';
+import AppBarRight, { AppBarRightProps } from '../components/AppBarRight';
 import { State } from '../reducers/index';
 import {logout} from '../actions/user';
 
-function mapStateToProps(state: State): LogoutProps {
+function mapStateToProps(state: State): AppBarRightProps {
     return {
         isLoggedIn: state.session.isLoggedIn,
-        userName: state.session.user ? state.session.user.name : '',
+        userName: state.session.user !== undefined ? state.session.user.name : '',
     };
 }
 
@@ -18,9 +18,9 @@ function mapDispatchToProps(dispatch: any): {} {
     };
 }
 
-const LogoutContainer = connect(
+const AppBarRightContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Logout);
+)(AppBarRight);
 
-export default LogoutContainer;
+export default AppBarRightContainer;

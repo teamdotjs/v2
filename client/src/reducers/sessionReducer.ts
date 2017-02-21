@@ -19,7 +19,7 @@ export const sessionReducer = (state: SessionState, action: any): SessionState =
             return {
                 pending: false,
                 isLoggedIn: true,
-                user: action.user.name,
+                user: action.user,
             };
         case 'login_request':
             return {
