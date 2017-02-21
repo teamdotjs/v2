@@ -22,8 +22,8 @@ export function generatePractice(id: number, type: SectionType) {
             body: JSON.stringify({type})
         })
         .then(errorCheck)
-        .then((practices: JSON) => {
-            dispatch({ type: 'practice_save_local', practices, id });
+        .then((practice: JSON) => {
+            dispatch({ type: 'practice_save_local', practice, id });
         })
         .catch((err: Error) => {
             dispatch({
@@ -44,6 +44,27 @@ export function loadPractice(id: number) {
         .then(errorCheck)
         .then((practices: JSON) => {
             dispatch({ type: 'practice_load_success', practices });
+        })
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
+            });
+        });
+    };
+}
+
+export function deletePractice(id: number) {
+    return (dispatch: any) => {
+        dispatch({ type: 'practice_delete', id});
+        fetch(`/api/practice/${id}`, {
+            headers,
+            credentials: 'same-origin',
+            method: 'DELETE'
+        })
+        .then(errorCheck)
+        .then(() => {
+            dispatch({ type: 'practice_delete_success', id });
         })
         .catch((err: Error) => {
             dispatch({

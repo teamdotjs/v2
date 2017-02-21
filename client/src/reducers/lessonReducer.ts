@@ -38,6 +38,10 @@ export const lessonReducer = (state: LessonState, action: any): LessonState => {
                 s[lesson.id] = lesson;
                 return s;
             }, {});
+        case 'practice_save_local':
+            let ns = {...state};
+            ns[action.id].practices.push(action.practice.id);
+            return ns;
         default:
             return state;
     }
