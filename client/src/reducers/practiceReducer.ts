@@ -35,7 +35,7 @@ export const practiceReducer = (state: PracticeState, action: any): PracticeStat
             delete ns[action.id];
             return ns;
         case 'practice_save_local':
-            return {...state, [action.practice.id]: action.practice}
+            return {...state, [action.practice.id]: action.practice};
         default:
             return state;
     }

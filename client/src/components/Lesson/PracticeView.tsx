@@ -37,10 +37,10 @@ export const PracticeView = (props: PracticeViewProps) => {
                     <span>
                     {section.type}
                     <IconButton tooltip='Clear'
-                                iconStyle={{fontSize: "1em", color: "rgba(255,255,255,.8)"}}
-                                style={{fontSize: "1em"}}
+                                iconStyle={{fontSize: '1em', color: 'rgba(255,255,255,.8)'}}
+                                style={{fontSize: '1em'}}
                                 onClick={() => props.onRemovePractice(section.id)}>
-                        <FontIcon className="material-icons">clear</FontIcon>
+                        <FontIcon className='material-icons'>clear</FontIcon>
                     </IconButton>
                     </span>
                 } value={i}>
