@@ -43,7 +43,7 @@ class AuthController < ApplicationController
   #   none
   # Success response:
   #   (1) Code: 200
-  #   Content: { logged_in: true, user_id: int }
+  #   Content: { logged_in: true, user: { id: int, name: string, email: string, birthday: date } }
   #   (2) Code: 200
   #   Content: { logged_in: false }
   #   (3) Code: 404

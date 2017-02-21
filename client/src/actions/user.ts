@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import { push } from 'react-router-redux';
 import { errorCheck } from './util';
+import { User } from '../reducers/sessionReducer';
 
 export interface LoginActionPending {
     type: 'login_request';
@@ -8,6 +9,7 @@ export interface LoginActionPending {
 
 export interface LoginActionSuccess {
     type: 'login';
+    user: User;
 }
 
 export interface LoginActionFailure {
@@ -39,6 +41,7 @@ export interface RegisterSuccess {
 
 interface LoginCheckResponse {
     logged_in: boolean;
+    user: User;
 }
 
 interface LogoutCheckResponse {
@@ -55,8 +58,8 @@ export function loginCheck(): any {
             credentials: 'same-origin'
         })
         .then(errorCheck)
-        .then((_body: LoginCheckResponse) => {
-            dispatch(loginSuccess());
+        .then((body: LoginCheckResponse) => {
+            dispatch(loginSuccess(body));
         })
         .catch(() => {
             dispatch({
@@ -85,8 +88,8 @@ export function login(email: string, password: string): any {
             })
         })
         .then(errorCheck)
-        .then((_res: LoginCheckResponse) => {
-            dispatch(loginSuccess());
+        .then((res: LoginCheckResponse) => {
+            dispatch(loginSuccess(res));
         })
         .catch((err: Error) => {
             dispatch(loginFailure(err.message));
@@ -98,9 +101,10 @@ export function login(email: string, password: string): any {
     };
 }
 
-export function loginSuccess(): LoginActionSuccess {
+export function loginSuccess(res: LoginCheckResponse): LoginActionSuccess {
     return {
-        type: 'login'
+        type: 'login',
+        user: res.user,
     };
 }
 

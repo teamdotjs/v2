@@ -4,7 +4,10 @@ import { State } from '../reducers/index';
 import {logout} from '../actions/user';
 
 function mapStateToProps(state: State): LogoutProps {
-    return {isLoggedIn: state.session.isLoggedIn};
+    return {
+        isLoggedIn: state.session.isLoggedIn,
+        userName: state.session.user ? state.session.user.name : '',
+    };
 }
 
 function mapDispatchToProps(dispatch: any): {} {
