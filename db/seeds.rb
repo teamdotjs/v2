@@ -7,7 +7,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'date'
-user = User.create(email: 'user@email.com', name: 'User Name', password: 'password', birthday: Date.yesterday)
+user = User.create(email: 'user@email.com', name: 'User Name', password: 'password', birthday: 18.years.ago)
 lesson = Lesson.create(title: 'A\'s', owner: user)
 
 atheist = Wordinfo.create(word: 'atheist', definition: 'One who does not believe in God', part_of_speech: 'noun', user: user, lesson: lesson)

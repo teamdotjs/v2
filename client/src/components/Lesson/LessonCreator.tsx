@@ -19,6 +19,7 @@ export interface LessonCreatorProps {
     loadLession?: () => void;
     getPractice?: (id: number) => void;
     generatePractice: (type: SectionType) => void;
+    deletePractice: (id: number) => void;
     value?: Lesson;
     notFound: boolean;
     practices?: Practice[];
@@ -100,6 +101,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                         /* FIX ME */
                         onPreviewPractice={() => {}}
                         onCreatePractice={this.props.generatePractice}
+                        onRemovePractice={this.props.deletePractice}
                         practices={this.props.practices || []} />
                 </div>
             );

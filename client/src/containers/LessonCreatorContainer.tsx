@@ -4,7 +4,7 @@ import { Lesson } from '../reducers/lessonReducer';
 import { SectionType } from '../reducers/practiceReducer';
 import { State } from '../reducers/index';
 import { saveLesson, loadLesson } from '../actions/lesson';
-import { loadPractice, generatePractice } from '../actions/practice';
+import { loadPractice, generatePractice, deletePractice } from '../actions/practice';
 
 function mapStateToProps(state: State, props: any): any  {
     let practices = state.lesson[props.params.id] === undefined ? [] :
@@ -34,6 +34,9 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
         },
         generatePractice: (type: SectionType) => {
             dispatch(generatePractice(ownProps.params.id, type));
+        },
+        deletePractice: (id: number) => {
+            dispatch(deletePractice(id));
         }
     };
 }
