@@ -74,6 +74,6 @@ class AuthControllerTest < ActionController::TestCase
     login_as_testuser
     get :signed_in
     assert_response :ok
-    assert_json_match({ logged_in: true, user_id: 965022582 }, @response.body)
+    assert_json_match user_pattern, @response.body
   end
 end

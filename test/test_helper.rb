@@ -25,10 +25,11 @@ module ActiveSupport
 
     # Add more helper methods to be used by all tests here...
     def login_as_testuser
-      controller = @controller
-      @controller = AuthController.new
-      post :login, params: { email: 'testuser@test.com', password: 'TestPass' }
-      @controller = controller
+      login 'testuser@test.com', 'TestPass'
+    end
+
+    def login_as_seconduser
+      login 'seconduser@test.com', 'Password'
     end
 
     def lesson_pattern
@@ -76,6 +77,15 @@ module ActiveSupport
           birthday: '1990-01-01'
         }
       }
+    end
+
+    private
+
+    def login(email, password)
+      controller = @controller
+      @controller = AuthController.new
+      post :login, params: { email: email, password: password }
+      @controller = controller
     end
   end
 end
