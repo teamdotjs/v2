@@ -19,6 +19,15 @@ export interface LogoutActionSuccess {
     type: 'logout';
 }
 
+export interface LogoutActionFailure {
+    type: 'logout_failure';
+    error: string;
+}
+
+export interface LogoutActionPending {
+    type: 'logout_request';
+}
+
 export interface RegisterFailure {
     type: 'register_failure';
     errors: string[];
@@ -101,6 +110,27 @@ export function loginFailure(error: string): LoginActionFailure {
         error
     };
 }
+export function logoutCheck(): any {
+    return (dispatch: any) => {
+        fetch('/api/auth/signed_in', {
+            credentials: 'same-origin'
+        })
+        .then(errorCheck)
+        .then((_body: LogoutCheckResponse) => {
+            dispatch(logoutSuccess());
+        })
+        .catch(() => {
+            dispatch({
+                type: 'logout_failure',
+                errors: []
+            });
+        });
+
+        return dispatch({
+            type: 'logout_request'
+        });
+    };
+}
 
 export function logout(): any {
     return(dispatch: any) => {
@@ -116,8 +146,8 @@ export function logout(): any {
         .then((_res: LogoutCheckResponse) => {
             dispatch(logoutSuccess());
         })
-        .catch((_err: Error) => {
-            location.reload();
+        .catch((err: Error) => {
+            dispatch(logoutFailure(err.message));
         });
         return dispatch({
             type: 'logout_request'
@@ -130,6 +160,15 @@ export function logoutSuccess(): LogoutActionSuccess {
         type: 'logout'
     };
 }
+
+export function logoutFailure(error: string): LogoutActionFailure {
+    return{
+        type: 'logout_failure',
+        error
+    };
+}
+
+
 
 export function registerFailure(errors: string[]): RegisterFailure {
     return {

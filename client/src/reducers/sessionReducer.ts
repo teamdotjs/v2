@@ -23,6 +23,22 @@ export const sessionReducer = (state: SessionState, action: any): SessionState =
                 isLoggedIn: false,
                 error: action.error
             };
+        case 'logout':
+            return{
+                pending: false,
+                isLoggedIn: false,
+            };
+        case 'logout_request':
+            return{
+                pending: true,
+                isLoggedIn: state.isLoggedIn
+            };
+        case 'logout_failure':
+            return{
+                pending: false,
+                isLoggedIn: true,
+                error: action.error
+            };
         default:
             return state;
     }
