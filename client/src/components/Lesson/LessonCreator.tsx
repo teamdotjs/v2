@@ -87,7 +87,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
         const hasPractices = this.props.practices ? this.props.practices.length > 0 : false;
         const disabledMessage = hasPractices ?
             <div style={disabledMessageStyle}> You cannot edit words while practices exist</div> : undefined;
-       
+
         if (this.props.notFound) {
             content = 'Lesson Not Found';
         } else {
@@ -103,7 +103,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                             onChange={this.bindValueToName.bind(this)}/>
                     </Page>
                     <Page
-                        style={{paddingTop: 0}} 
+                        style={{paddingTop: 0}}
                         header={
                         <div>
                             <Toolbar><ToolbarTitle text='Word Editor'/></Toolbar>
