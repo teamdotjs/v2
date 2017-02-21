@@ -4,6 +4,7 @@ import { WordForm } from '../../../reducers/lessonReducer';
 import {
     TextField,
     SelectField,
+    IconButton,
     MenuItem
 } from 'material-ui';
 
@@ -54,18 +55,23 @@ const WordFormSelector = (props: WordFormSelectorProps) => {
             newForms[index].word = ev.target.value;
             props.onChange(newForms);
         };
-
         return (<div key={form.word} style={{ display: 'flex' }}>
             <TextField name={form.word} value={form.word} style={{ width: '70%'}} onChange={changeHandleInput} />
-            <SelectField style={{ width: '30%'}} value={form.part_of_speech} onChange={changeHandleSelection} >
+            <SelectField style={{ width: '40%'}} value={form.part_of_speech} onChange={changeHandleSelection} >
                 {PARTS.map(part => <MenuItem key={part + form.word} value={part} primaryText={part}/>)}
             </SelectField>
+             <IconButton    iconClassName='material-icons'
+                            tooltip='Remove'
+                            iconStyle={{color: '#AAA'}}
+                            onClick={() => props.onChange(props.forms.filter((_,i) => i !== index))}>
+             clear
+            </IconButton>
         </div>);
     });
 
     return (<div>
-        {forms}
         {newField}
+        {forms}
     </div>);
 };
 
