@@ -30,6 +30,12 @@ export const practiceReducer = (state: PracticeState, action: any): PracticeStat
                     return state;
                 }, {});
             return Object.assign({}, state, newPractices);
+        case 'practice_delete_success':
+            let ns = Object.assign({}, state, newPractices);
+            delete ns[action.id];
+            return ns;
+        case 'practice_save_local':
+            return {...state, [action.practice.id]: action.practice}
         default:
             return state;
     }

@@ -16,6 +16,7 @@ export interface PracticeViewProps {
     practices: Practice[];
     onCreatePractice: (type: SectionType) => void;
     onPreviewPractice: () => void;
+    onRemovePractice: (id: number) => void;
 };
 
 const tabContentStyle = {
@@ -32,7 +33,17 @@ export const PracticeView = (props: PracticeViewProps) => {
         content = (
             <Tabs value={0} >
             {props.practices.map((section, i) =>
-                <Tab key={i} label ={section.type} value={i}>
+                <Tab key={i} label={
+                    <span>
+                    {section.type}
+                    <IconButton tooltip='Clear'
+                                iconStyle={{fontSize: "1em", color: "rgba(255,255,255,.8)"}}
+                                style={{fontSize: "1em"}}
+                                onClick={() => props.onRemovePractice(section.id)}>
+                        <FontIcon className="material-icons">clear</FontIcon>
+                    </IconButton>
+                    </span>
+                } value={i}>
                     <div style={tabContentStyle}>
                         {section.questions.map(q => {
                         switch (q.type) {
