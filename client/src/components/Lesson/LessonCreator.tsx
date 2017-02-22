@@ -32,33 +32,28 @@ const disabledMessageStyle = {
     background: '#ff4081'
 };
 
-export class LessonCreator extends BindingComponent<LessonCreatorProps> {
+export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> {
     constructor(props: LessonCreatorProps) {
         super(props);
         this.state = props.value || {
-            'id': 0,
-            'title': '',
-            'wordinfos': [],
-            'practices': props.practices
+            id: 0,
+            title: '',
+            wordinfos: [],
+            practices: []
         };
     }
 
     componentWillReceiveProps(newProps: LessonCreatorProps) {
         this.setState(newProps.value || {
-            'id': 0,
-            'title': '',
-            'wordinfos': [],
-            'practices': this.state['practices']
+            id: 0,
+            title: '',
+            wordinfos: [],
+            practices: []
         });
     }
 
     get value(): Lesson {
-        return {
-            id: this.state['id'],
-            title: this.state['title'],
-            wordinfos: this.state['wordinfos'],
-            'practices': this.state['practices']
-        };
+        return this.state;
     }
 
     componentWillMount() {
@@ -99,7 +94,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                             inputStyle={{fontSize: '1.5em'}}
                             floatingLabelText='Lesson Title'
                             name='title'
-                            value={this.state['title']}
+                            value={this.state.title}
                             onChange={this.bindValueToName.bind(this)}/>
                     </Page>
                     <Page
@@ -113,7 +108,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                         <WordCreator
                             name='wordinfos'
                             disabled={hasPractices}
-                            value={this.state['wordinfos']}
+                            value={this.state.wordinfos}
                             onChange={this.updateState('wordinfos')}/>
                     </Page>
                     <PracticeView

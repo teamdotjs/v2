@@ -15,7 +15,12 @@ export interface LoginProps {
     error?: string;
 }
 
-export class LoginForm extends BindingComponent<LoginProps> {
+export interface LoginState {
+    email: string;
+    password: string;
+}
+
+export class LoginForm extends BindingComponent<LoginProps, LoginState> {
     constructor(_: LoginProps) {
         super();
         this.state = {
@@ -40,12 +45,12 @@ export class LoginForm extends BindingComponent<LoginProps> {
             <Dialog>
             <form onSubmit={this.submit.bind(this)}>
                 <TextField hintText='Email' name='email'
-                            value={this.state['email']}
+                            value={this.state.email}
                             onChange={this.bindValueToName.bind(this)}
                             disabled={this.props.lock} />
                 <br />
                 <TextField hintText='Password' name='password'
-                            type='password' value={this.state['password']}
+                            type='password' value={this.state.password}
                             onChange={this.bindValueToName.bind(this)}
                             disabled={this.props.lock} />
                 <br />
@@ -61,8 +66,8 @@ export class LoginForm extends BindingComponent<LoginProps> {
     }
 
     submit(ev: Event) {
-        const email = this.state['email'];
-        const pass = this.state['password'];
+        const email = this.state.email;
+        const pass = this.state.password;
         if (this.props.onSubmit !== undefined) {
             this.props.onSubmit(email, pass);
         }
