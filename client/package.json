@@ -12,7 +12,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/es6-promise": "0.0.32",
-    "@types/isomorphic-fetch": "0.0.31",
     "@types/material-ui": "^0.16.7",
     "@types/react": "15.0.4",
     "@types/react-dom": "^0.14.22",
@@ -20,7 +19,6 @@
     "@types/react-router": "^2.0.47",
     "@types/react-router-redux": "4.0.35",
     "@types/redux": "^3.5.30",
-    "@types/whatwg-fetch": "0.0.31",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.25.0",
     "exports-loader": "^0.6.3",

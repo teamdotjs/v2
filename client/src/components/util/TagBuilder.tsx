@@ -6,6 +6,7 @@ export interface TagBuilderProps {
     name: string;
     onChange: (v: string[]) => void;
     hintText: string;
+    disabled?: boolean;
 }
 
 export interface TagBuilderState {
@@ -61,10 +62,9 @@ export class TagBuilder extends React.Component<TagBuilderProps, TagBuilderState
         const error = this.state.values.filter(s => s === this.state.inputText).length > 0
                         ? 'Word already in list'
                         : undefined;
-
         const tags = this.state.values.map((s, i) =>
             <Chip key={s}
-                onRequestDelete={this.onDeleteValue.bind(this,i)}
+                onRequestDelete={this.props.disabled ? undefined : this.onDeleteValue.bind(this,i)}
                 style={{margin: '4px'}}
             >
             {s}
@@ -78,6 +78,7 @@ export class TagBuilder extends React.Component<TagBuilderProps, TagBuilderState
                     onKeyDown={error == null ? this.onCommit.bind(this) : null}
                     onChange={this.onInputChange.bind(this)}
                     errorText={error}
+                    disabled={this.props.disabled}
                 />
                 <div style={{marginTop: error === null ? 0 : '1em', display: 'flex', flexWrap: 'wrap'}}>
                     {tags}

@@ -12,6 +12,7 @@ export interface WordCreatorProps {
     name?: string;
     value?: WordInfo[];
     onChange?: (w: WordInfo[]) => void;
+    disabled?: boolean;
 }
 
 export interface WordCreatorState {
@@ -120,7 +121,8 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             wordInfo={this.state.wordInfos[this.state.currentWordIndex]}
             value={this.state.currentWordIndex}
             onChange={this.onWordChanged.bind(this)}
-            onDelete={this.deleteWord.bind(this)} />;
+            onDelete={this.deleteWord.bind(this)}
+            disabled={this.props.disabled}/>;
 
         const selectInfo = <Subheader>
             {'No word selected'}
@@ -134,6 +136,7 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
                                     underlineShow={false}
                                     onKeyDown={this.onNewWordKeyPress.bind(this)}
                                     value={this.state.inputText}
+                                    disabled={this.props.disabled}
                                     onChange={this.onNewWordEdit.bind(this)}/>
                     <SelectableList value={this.state.currentWordIndex}
                                     onChange={this.onWordSelect.bind(this)} >

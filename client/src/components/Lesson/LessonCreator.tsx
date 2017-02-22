@@ -7,7 +7,7 @@ import {
     Practice, SectionType
 } from '../../reducers/practiceReducer';
 import {
-    TextField
+    TextField, Toolbar, ToolbarTitle
 } from 'material-ui';
 import {
     PracticeView
@@ -24,6 +24,13 @@ export interface LessonCreatorProps {
     notFound: boolean;
     practices?: Practice[];
 }
+
+const disabledMessageStyle = {
+    padding: '10px',
+    color: 'white',
+    textAlign: 'center',
+    background: '#ff4081'
+};
 
 export class LessonCreator extends BindingComponent<LessonCreatorProps> {
     constructor(props: LessonCreatorProps) {
@@ -77,6 +84,10 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
 
     render() {
         let content: any;
+        const hasPractices = this.props.practices ? this.props.practices.length > 0 : false;
+        const disabledMessage = hasPractices ?
+            <div style={disabledMessageStyle}> You cannot edit words while practices exist</div> : undefined;
+
         if (this.props.notFound) {
             content = 'Lesson Not Found';
         } else {
@@ -91,9 +102,17 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                             value={this.state['title']}
                             onChange={this.bindValueToName.bind(this)}/>
                     </Page>
-                    <Page title='Word Editor'>
+                    <Page
+                        style={{paddingTop: 0}}
+                        header={
+                        <div>
+                            <Toolbar><ToolbarTitle text='Word Editor'/></Toolbar>
+                            {disabledMessage}
+                        </div>
+                    }>
                         <WordCreator
                             name='wordinfos'
+                            disabled={hasPractices}
                             value={this.state['wordinfos']}
                             onChange={this.updateState('wordinfos')}/>
                     </Page>
