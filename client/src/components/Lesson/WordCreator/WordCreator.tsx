@@ -110,6 +110,12 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         });
     }
 
+    componentWillReceiveProps(nextProps: WordCreatorProps) {
+        this.setState({
+            wordInfos: nextProps.value || []
+        });
+    }
+
     render() {
         let wordItems = this.state.wordInfos.map((w, i) =>
             <ListItem key={i} value={i}>

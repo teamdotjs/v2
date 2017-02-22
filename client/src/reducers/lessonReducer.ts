@@ -26,9 +26,9 @@ export const lessonReducer = (state: LessonState, action: any): LessonState => {
     if (state === undefined) return {};
     switch (action.type) {
         case 'save_lesson_local':
-            return Object.assign({
+            return Object.assign({}, state, {
                 [action.lesson.id]: action.lesson
-            }, state);
+            });
         case 'create_lesson_success':
             return Object.assign({
                 [action.id]: {

@@ -85,7 +85,6 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                 newValue={this.state['wordFormNewValue'] || ''}
                 disabled={this.props.disabled}
             />
-
         </div>);
     }
 }
