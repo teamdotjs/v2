@@ -13,6 +13,7 @@ interface WordFormSelectorProps {
     newValue: string;
     onNewValueChange: (value: string) => void;
     onChange: (newValue: WordForm[]) => void;
+    disabled?: boolean;
 }
 
 const PARTS = ['noun', 'verb', 'adjective', 'determiner', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection'];
@@ -31,6 +32,7 @@ const WordFormSelector = (props: WordFormSelectorProps) => {
     };
 
     const newField = <WordInput
+        disabled={props.disabled}
         name={'new'}
         value={props.newValue}
         floatingLabelText='Add form'
@@ -55,22 +57,31 @@ const WordFormSelector = (props: WordFormSelectorProps) => {
             newForms[index].word = ev.target.value;
             props.onChange(newForms);
         };
+
+        const deleteIcon = props.disabled ? undefined :
+            <IconButton iconClassName='material-icons'
+                        tooltip='Remove'
+                        iconStyle={{color: '#AAA'}}
+                        onClick={() => props.onChange(props.forms.filter((_,i) => i !== index))}>
+             clear
+            </IconButton>;
+
         return (<div key={form.word} style={{ display: 'flex' }}>
-            <TextField name={form.word} value={form.word} style={{ width: '70%'}} onChange={changeHandleInput} />
-            <SelectField style={{ width: '40%'}} value={form.part_of_speech} onChange={changeHandleSelection} >
+            <TextField
+                name={form.word}
+                value={form.word}
+                style={{ width: '70%'}}
+                onChange={changeHandleInput}
+                disabled={props.disabled} />
+            <SelectField style={{ width: '30%'}} value={form.part_of_speech} onChange={changeHandleSelection} disabled={props.disabled}>
                 {PARTS.map(part => <MenuItem key={part + form.word} value={part} primaryText={part}/>)}
             </SelectField>
-             <IconButton    iconClassName='material-icons'
-                            tooltip='Remove'
-                            iconStyle={{color: '#AAA'}}
-                            onClick={() => props.onChange(props.forms.filter((_,i) => i !== index))}>
-             clear
-            </IconButton>
+            {deleteIcon}
         </div>);
     });
 
     return (<div>
-        {newField}
+        {props.disabled ? undefined : newField}
         {forms}
     </div>);
 };

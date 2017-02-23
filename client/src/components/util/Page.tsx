@@ -8,14 +8,20 @@ const style = {
 
 export interface PageProps {
     children?: Element[];
-    title?: string;
+    header?: string|JSX.Element;
+    style?: React.CSSProperties;
 }
 
 const Page = (props: PageProps) => {
-    const header = props.title !== undefined ? <Toolbar><ToolbarTitle text={props.title} /></Toolbar> : undefined;
+    let header: JSX.Element|undefined;
+    if (props.header instanceof String) {
+        header = <Toolbar><ToolbarTitle text={props.header} /></Toolbar>;
+    } else {
+        header = props.header;
+    }
     return (<Paper>
                 {header}
-                <div style={style}>
+                <div style={{...style, ...props.style}}>
                     {props.children}
                 </div>
             </Paper>

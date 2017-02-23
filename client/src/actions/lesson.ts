@@ -89,7 +89,7 @@ export function createLesson() {
         .then((res: Lesson) => {
             dispatch({
                 type: 'create_lesson_success',
-                id: res.id
+                lesson: res
             });
             dispatch(push('/lesson/' + res.id));
         })

@@ -14,21 +14,26 @@ export interface WordDetailsProps {
     wordInfo: WordInfo;
     onChange: (v: number, w: WordInfo) => void;
     onDelete: () => void;
+    disabled?: boolean;
 }
 
-export class WordDetails extends BindingComponent<WordDetailsProps> {
+export interface WordDetailsState extends WordInfo {
+    wordFormNewValue?: string;
+}
+
+export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsState> {
 
     constructor(props: WordDetailsProps) {
         super(props);
-        this.state = props.wordInfo as {[id: string]: any};
+        this.state = props.wordInfo;
     }
 
     componentStateChange() {
-        this.props.onChange(this.props.value, this.state as WordInfo);
+        this.props.onChange(this.props.value, this.state);
     }
 
     componentWillReceiveProps(newProps: WordDetailsProps) {
-        this.setState(newProps.wordInfo as {[id: string]: any});
+        this.setState(newProps.wordInfo);
     }
 
     onFormChange(newForms: WordForm[]) {
@@ -42,13 +47,15 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
             <WordInput hintText='Word'
                     floatingLabelText='Word'
                     name='word'
-                    value={this.state['word'] || ''}
+                    value={this.state.word}
+                    disabled={this.props.disabled}
                     onChange={this.bindValueToName.bind(this)}
                 />
 
             <IconButton onClick={this.props.onDelete}
                 style={{display: 'inline-block',float: 'right'}}
                 iconClassName='material-icons'
+                disabled={this.props.disabled}
                 tooltip='Delete'>delete</IconButton>
 
             <TextField hintText='Definition'
@@ -56,29 +63,32 @@ export class WordDetails extends BindingComponent<WordDetailsProps> {
                     multiLine={true}
                     fullWidth={true}
                     name='definition'
-                    value={this.state['definition'] || ''}
+                    disabled={this.props.disabled}
+                    value={this.state.definition}
                     onChange={this.bindValueToName.bind(this)}
                     style={{ width: '100%' }}
                 />
 
             <TagBuilder name='synonyms'
                     onChange={this.updateState('synonyms')}
-                    values={this.state['synonyms']}
-                    hintText='Synonyms'/>
+                    values={this.state.synonyms || []}
+                    hintText='Synonyms'
+                    disabled={this.props.disabled}/>
 
             <TagBuilder name='antonyms'
                     onChange={this.updateState('antonyms')}
-                    values={this.state['antonyms']}
-                    hintText='Antonyms'/>
+                    values={this.state.antonyms || []}
+                    hintText='Antonyms'
+                    disabled={this.props.disabled}/>
 
             <h3>Forms</h3>
             <WordFormSelector
                 forms={this.props.wordInfo.forms || []}
                 onChange={this.onFormChange.bind(this)}
                 onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
-                newValue={this.state['wordFormNewValue'] || ''}
+                newValue={this.state.wordFormNewValue || ''}
+                disabled={this.props.disabled}
             />
-
         </div>);
     }
 }
