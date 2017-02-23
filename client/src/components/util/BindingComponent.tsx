@@ -1,21 +1,17 @@
 import * as React from 'react';
 
-interface BindingState {
-    [s: string]: any;
-}
-
-export class BindingComponent<P> extends React.Component<P, BindingState> {
-    state: BindingState;
+export class BindingComponent<P, S> extends React.Component<P, S> {
+    state: S;
 
     componentStateChange() {
 
     }
 
-    updateState(stateField: string) {
-        return (value: any) => {
+    updateState<K extends keyof S>(stateField: K) {
+        return (value: S[K]) => {
             this.setState({
-                [stateField]: value
-            }, this.componentStateChange.bind(this));
+                [stateField as string]: value
+            } as any, this.componentStateChange.bind(this));
         };
     }
 
