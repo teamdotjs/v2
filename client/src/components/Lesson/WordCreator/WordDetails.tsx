@@ -64,7 +64,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                     fullWidth={true}
                     name='definition'
                     disabled={this.props.disabled}
-                    value={this.state.definition}
+                    value={this.state.definition || ''}
                     onChange={this.bindValueToName.bind(this)}
                     style={{ width: '100%' }}
                 />
