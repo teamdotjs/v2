@@ -43,6 +43,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
     }
 
     render() {
+        console.log(this.state);
         return (<div style={{paddingLeft: '20px'}}>
             <WordInput hintText='Word'
                     floatingLabelText='Word'
@@ -71,19 +72,19 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
 
             <TagBuilder name='synonyms'
                     onChange={this.updateState('synonyms')}
-                    values={this.state.synonyms || []}
+                    values={this.state.synonyms}
                     hintText='Synonyms'
                     disabled={this.props.disabled}/>
 
             <TagBuilder name='antonyms'
                     onChange={this.updateState('antonyms')}
-                    values={this.state.antonyms || []}
+                    values={this.state.antonyms}
                     hintText='Antonyms'
                     disabled={this.props.disabled}/>
 
             <h3>Forms</h3>
             <WordFormSelector
-                forms={this.props.wordInfo.forms || []}
+                forms={this.props.wordInfo.forms}
                 onChange={this.onFormChange.bind(this)}
                 onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
                 newValue={this.state.wordFormNewValue || ''}
