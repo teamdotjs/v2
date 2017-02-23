@@ -3,14 +3,17 @@ export interface WordForm {
     part_of_speech: string;
 }
 
-export interface WordInfo {
+export class WordInfo {
     word: string;
-    part_of_speech?: string;
-    forms?: WordForm[];
-    synonyms?: string[];
-    antonyms?: string[];
-    definition?: string;
-    context_sentences?: string[];
+    forms: WordForm[] = [];
+    synonyms: string[] = [];
+    antonyms: string[] = [];
+    definition: string = '';
+    context_sentences: string[] = [];
+
+    constructor(word: string) {
+        this.word = word;
+    }
 }
 
 export interface Lesson {
