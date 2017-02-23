@@ -7,7 +7,7 @@ import {
     Practice, SectionType
 } from '../../reducers/practiceReducer';
 import {
-    TextField
+    TextField, Toolbar, ToolbarTitle
 } from 'material-ui';
 import {
     PracticeView
@@ -25,33 +25,35 @@ export interface LessonCreatorProps {
     practices?: Practice[];
 }
 
-export class LessonCreator extends BindingComponent<LessonCreatorProps> {
+const disabledMessageStyle = {
+    padding: '10px',
+    color: 'white',
+    textAlign: 'center',
+    background: '#ff4081'
+};
+
+export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> {
     constructor(props: LessonCreatorProps) {
         super(props);
         this.state = props.value || {
-            'id': 0,
-            'title': '',
-            'wordinfos': [],
-            'practices': props.practices
+            id: 0,
+            title: '',
+            wordinfos: [],
+            practices: []
         };
     }
 
     componentWillReceiveProps(newProps: LessonCreatorProps) {
         this.setState(newProps.value || {
-            'id': 0,
-            'title': '',
-            'wordinfos': [],
-            'practices': this.state['practices']
+            id: 0,
+            title: '',
+            wordinfos: [],
+            practices: []
         });
     }
 
     get value(): Lesson {
-        return {
-            id: this.state['id'],
-            title: this.state['title'],
-            wordinfos: this.state['wordinfos'],
-            'practices': this.state['practices']
-        };
+        return this.state;
     }
 
     componentWillMount() {
@@ -77,6 +79,10 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
 
     render() {
         let content: any;
+        const hasPractices = this.props.practices ? this.props.practices.length > 0 : false;
+        const disabledMessage = hasPractices ?
+            <div style={disabledMessageStyle}> You cannot edit words while practices exist</div> : undefined;
+
         if (this.props.notFound) {
             content = 'Lesson Not Found';
         } else {
@@ -88,13 +94,21 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps> {
                             inputStyle={{fontSize: '1.5em'}}
                             floatingLabelText='Lesson Title'
                             name='title'
-                            value={this.state['title']}
+                            value={this.state.title}
                             onChange={this.bindValueToName.bind(this)}/>
                     </Page>
-                    <Page title='Word Editor'>
+                    <Page
+                        style={{paddingTop: 0}}
+                        header={
+                        <div>
+                            <Toolbar><ToolbarTitle text='Word Editor'/></Toolbar>
+                            {disabledMessage}
+                        </div>
+                    }>
                         <WordCreator
                             name='wordinfos'
-                            value={this.state['wordinfos']}
+                            disabled={hasPractices}
+                            value={this.state.wordinfos}
                             onChange={this.updateState('wordinfos')}/>
                     </Page>
                     <PracticeView
