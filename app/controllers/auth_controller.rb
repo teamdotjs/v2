@@ -34,7 +34,7 @@ class AuthController < ApplicationController
   #   Code: 200
   #   Content: { logged_in: false }
   def logout
-    session.delete(:user_id)
+    reset_session
     render json: { logged_in: false }
   end
 
@@ -54,7 +54,7 @@ class AuthController < ApplicationController
       user = User.find(session[:user_id][:value])
       render json: { logged_in: true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
     else
-      session.delete(:user_id)
+      reset_session
       render json: { logged_in: false }, status: :unauthorized # 401
     end
   end
