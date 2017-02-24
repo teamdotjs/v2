@@ -2,6 +2,8 @@ class Lesson < ApplicationRecord
   belongs_to :owner, class_name: 'User'
   has_many :wordinfos, dependent: :destroy
   has_many :practices, dependent: :destroy
+  has_many :course_lessons, dependent: :destroy
+  has_many :courses, through: :course_lessons
   before_validation { self.title = 'Untitled' if title.blank? }
   accepts_nested_attributes_for :wordinfos
   validates :title, length: { maximum: 255 }
