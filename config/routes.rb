@@ -28,6 +28,23 @@ Rails.application.routes.draw do
     match '/practice/:id' => 'practices#destroy', via: [:delete]
 
     match '/question/:id/submit_answer' => 'questions#submit_answer', via: [:post]
+
+    scope '/course' do
+      match '/' => 'courses#index', via: [:get]
+      match '/' => 'courses#create', via: [:post]
+      match '/:id' => 'courses#show', via: [:get]
+      match '/:id' => 'courses#destroy', via: [:delete]
+      scope '/:id/lesson' do
+        match '/' => 'courses#lessons', via: [:get]
+        match '/' => 'courses#add_lesson', via: [:patch]
+        match '/:l_id' => 'courses#remove_lesson', via: [:delete]
+      end
+      scope '/:id/student' do
+        match '/' => 'courses#students', via: [:get]
+        match '/' => 'courses#add_student', via: [:patch]
+        match '/:s_id' => 'courses#remove_student', via: [:delete]
+      end
+    end
   end
   #  Send static files
   match '/*path' => 'static#base', via: [:get]

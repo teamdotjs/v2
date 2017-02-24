@@ -26,6 +26,18 @@ class RoutesTest < ActionController::TestCase
   # question routes
   should route(:post, '/api/question/1/submit_answer').to('questions#submit_answer', id: 1)
 
+  # course routes
+  should route(:get, '/api/course').to('courses#index')
+  should route(:post, '/api/course').to('courses#create')
+  should route(:get, '/api/course/1').to('courses#show', id: 1)
+  should route(:delete, '/api/course/1').to('courses#destroy', id: 1)
+  should route(:get, '/api/course/1/lesson').to('courses#lessons', id: 1)
+  should route(:patch, '/api/course/1/lesson').to('courses#add_lesson', id: 1)
+  should route(:delete, 'api/course/1/lesson/1').to('courses#remove_lesson', id: 1, l_id: 1)
+  should route(:get, '/api/course/1/student').to('courses#students', id: 1)
+  should route(:patch, '/api/course/1/student').to('courses#add_student', id: 1)
+  should route(:delete, 'api/course/1/student/1').to('courses#remove_student', id: 1, s_id: 1)
+
   # static files
   should route(:get, '/a').to('static#base', path: 'a')
 end
