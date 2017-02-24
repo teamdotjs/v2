@@ -89,7 +89,7 @@ export function createLesson() {
         .then((res: Lesson) => {
             dispatch({
                 type: 'create_lesson_success',
-                id: res.id
+                lesson: res
             });
             dispatch(push('/lesson/' + res.id));
         })
@@ -121,9 +121,13 @@ export function saveLesson(l: Lesson) {
                 body: JSON.stringify({lesson: l})
             })
             .then(errorCheck)
-            .then((_res: Lesson) => {
+            .then(( res: Lesson) => {
                 dispatch({
                     type: 'save_lesson_success',
+                });
+                dispatch({
+                    type: 'create_lesson_success',
+                    lesson: res
                 });
             })
             .catch((err: Error) => {
