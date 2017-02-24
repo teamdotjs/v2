@@ -3,6 +3,8 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   should have_many(:wordinfos)
   should have_many(:lessons).with_foreign_key('owner_id')
+  should have_many(:course_students).dependent(:destroy).with_foreign_key('student_id')
+  should have_many(:courses).through(:course_students)
   should validate_presence_of(:name)
   should validate_presence_of(:email)
   should allow_value('test@test.com').for(:email)
