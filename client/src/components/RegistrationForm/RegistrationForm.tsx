@@ -14,7 +14,15 @@ export interface RegistrationProps {
     errors?: string[];
 }
 
-export class RegistrationForm extends BindingComponent<RegistrationProps> {
+export interface RegistrationState {
+    user: string;
+    name: string;
+    password1: string;
+    password2: string;
+    birthday: string;
+}
+
+export class RegistrationForm extends BindingComponent<RegistrationProps, RegistrationState> {
     constructor(_: RegistrationProps) {
         super();
         this.state = {
@@ -27,12 +35,12 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
     }
 
     isSubmittable(): boolean {
-        return this.state['password1'] !== '' &&
-               this.state['password2'] !== '' &&
-               this.state['name'] !== '' &&
-               this.state['user'] !== '' &&
-               this.validEmail(this.state['user']) &&
-               this.validBirthday(this.state['birthday']);
+        return this.state.password1 !== '' &&
+               this.state.password2 !== '' &&
+               this.state.name !== '' &&
+               this.state.user !== '' &&
+               this.validEmail(this.state.user) &&
+               this.validBirthday(this.state.birthday);
     }
 
     validEmail(email: string): boolean {
@@ -44,7 +52,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
     }
 
     formatBirthday(event: any) {
-        let last: string = this.state['birthday'];
+        let last: string = this.state.birthday;
         let birthday: string = event.target.value;
         if (last.length < birthday.length) {
             switch (birthday.length) {
@@ -67,13 +75,13 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
         let error_email: any = null;
         let error_birthday: any = null;
 
-        if (this.state['password2'] !== '' && this.state['password1'] !== this.state['password2']) {
+        if (this.state.password2 !== '' && this.state.password1 !== this.state.password2) {
             error_password = 'Passwords do not match';
         }
-        if (this.state['user'] !== '' && !this.validEmail(this.state['user'])) {
+        if (this.state.user !== '' && !this.validEmail(this.state.user)) {
             error_email = 'Invalid Email';
         }
-        if (this.state['birthday'] !== '' && !this.validBirthday(this.state['birthday'])) {
+        if (this.state.birthday !== '' && !this.validBirthday(this.state.birthday)) {
             error_birthday = 'Invalid Birthday';
         }
         const submittable = this.isSubmittable() &&
@@ -103,7 +111,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
                 {errors}
                 <TextField hintText='Email' name='user'
                             floatingLabelText='Email'
-                            value={this.state['user']}
+                            value={this.state.user}
                             onChange={this.bindValueToName.bind(this)}
                             errorText={error_email}
                             disabled={this.props.pending} />
@@ -111,28 +119,28 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
 
                 <TextField hintText='Full Name' name='name'
                             floatingLabelText='Full Name'
-                            value={this.state['name']}
+                            value={this.state.name}
                             onChange={this.bindValueToName.bind(this)}
                             disabled={this.props.pending} />
                 <br />
 
                 <TextField hintText='Password' name='password1'
                             floatingLabelText='Password'
-                            type='password' value={this.state['password1']}
+                            type='password' value={this.state.password1}
                             onChange={this.bindValueToName.bind(this)}
                             errorText={error_password}
                             disabled={this.props.pending} />
                 <br />
 
                 <TextField hintText='Confirm Password' name='password2'
-                            type='password' value={this.state['password2']}
+                            type='password' value={this.state.password2}
                             onChange={this.bindValueToName.bind(this)}
                             errorText={error_password}
                             disabled={this.props.pending} />
                 <br />
                 <TextField floatingLabelText='Birthday' name='birthday'
                             hintText='mm/dd/yyyy'
-                            value={this.state['birthday']}
+                            value={this.state.birthday}
                             onChange={this.formatBirthday.bind(this)}
                             errorText={error_birthday}
                             disabled={this.props.pending} />
@@ -144,10 +152,10 @@ export class RegistrationForm extends BindingComponent<RegistrationProps> {
     }
 
     submit(ev: Event) {
-        const email = this.state['user'];
-        const pass = this.state['password1'];
-        const name = this.state['name'];
-        const birth = this.state['birthday'];
+        const email = this.state.user;
+        const pass = this.state.password1;
+        const name = this.state.name;
+        const birth = this.state.birthday;
         if (this.props.onSubmit !== undefined) {
             this.props.onSubmit(name, pass, email, birth);
         }

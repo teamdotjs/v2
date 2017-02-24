@@ -9,9 +9,9 @@ import * as listUtil from 'material-ui/List';
 let SelectableList = (listUtil as any).makeSelectable(List);
 
 export interface WordCreatorProps {
-    name?: string;
-    value?: WordInfo[];
-    onChange?: (w: WordInfo[]) => void;
+    name: string;
+    value: WordInfo[];
+    onChange: (w: WordInfo[]) => void;
     disabled?: boolean;
 }
 
@@ -45,16 +45,12 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             [i]: word_info
         });
 
-
         this.setState({
             wordInfos,
-            currentWordIndex: this.state.currentWordIndex,
-            inputText: this.state.inputText
         }, () => {
-             // TODO state callback
-        if (this.props.onChange) {
-            this.props.onChange(wordInfos);
-        }
+            if (this.props.onChange) {
+                this.props.onChange(wordInfos);
+            }
         });
     }
 
@@ -93,7 +89,9 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
 
         this.setState({
             currentWordIndex: this.state.currentWordIndex,
-            wordInfos: this.state.wordInfos.concat([{word: this.state.inputText}]),
+            wordInfos: this.state.wordInfos.concat([
+                new WordInfo(this.state.inputText)
+            ]),
             inputText: ''
         }, () => {
             if (this.props.onChange !== undefined) {
@@ -107,6 +105,12 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             currentWordIndex: this.state.currentWordIndex,
             wordInfos: this.state.wordInfos,
             inputText: ev.target.value.toLowerCase()
+        });
+    }
+
+    componentWillReceiveProps(nextProps: WordCreatorProps) {
+        this.setState({
+            wordInfos: nextProps.value
         });
     }
 
