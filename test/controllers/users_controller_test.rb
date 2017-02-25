@@ -33,9 +33,15 @@ class UsersControllerTest < ActionController::TestCase
       name: 'Test User', email: 'test@test.com', password: 'TestPass', birthday: '1990-01-01'
     } }
     assert_response :ok
-    pattern = user_pattern
-    pattern[:user][:id] = 965022583
-    pattern[:user][:email] = 'test@test.com'
+    pattern = {
+      logged_in: true,
+      user: {
+        id: 965022583,
+        name: 'Test User',
+        email: 'test@test.com',
+        birthday: '1990-01-01'
+      }
+    }
     assert_json_match pattern, @response.body
   end
 

@@ -1,3 +1,7 @@
 english101:
   title: English 101
   owner: testuser
+
+english201:
+  title: English 201
+  owner: seconduser
