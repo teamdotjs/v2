@@ -86,6 +86,15 @@ class LessonsControllerTest < ActionController::TestCase
     assert_json_match error_response, @response.body
   end
 
+  test 'PATCH /api/lesson/:id title is editable for lesson with practice' do
+    login_as_testuser
+    lesson = lessons(:english101)
+    lesson_json = lesson.as_json
+    lesson_json['title'] = 'Test'
+    patch :update, params: { id: lesson_json['id'], lesson: lesson_json }
+    assert_equal lesson.reload.title, 'Test'
+  end
+
   test 'PATCH /api/lesson/:id bad request (wordinfo word blank)' do
     login_as_testuser
     lessons(:english101).practices.destroy_all
