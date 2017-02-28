@@ -12,6 +12,10 @@ const headers = {
 
 export function generatePractice(id: number, type: SectionType) {
     return (dispatch: any) => {
+        dispatch({
+            type: 'error_pin',
+            pin: PRACTICE_ERROR,
+        });
         dispatch({ type: 'practice_generate', id });
         fetch(`/api/lesson/${id}/practice`, {
             method: 'POST',
