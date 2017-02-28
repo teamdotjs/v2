@@ -6,6 +6,7 @@ import {Lesson} from '../../reducers/lessonReducer';
 import {
     Practice, SectionType
 } from '../../reducers/practiceReducer';
+import { PRACTICE_ERROR } from '../../reducers/errorReducer';
 import {
     TextField, Toolbar, ToolbarTitle
 } from 'material-ui';
@@ -23,6 +24,9 @@ export interface LessonCreatorProps {
     value?: Lesson;
     notFound: boolean;
     practices?: Practice[];
+    errors: {
+        [id: string]: string;
+    };
 }
 
 const disabledMessageStyle = {
@@ -116,7 +120,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
                         onPreviewPractice={() => {}}
                         onCreatePractice={this.props.generatePractice}
                         onRemovePractice={this.props.deletePractice}
-                        practices={this.props.practices || []} />
+                        practices={this.props.practices || []}
+                        errorMessage={this.props.errors[PRACTICE_ERROR]} />
                 </div>
             );
         }

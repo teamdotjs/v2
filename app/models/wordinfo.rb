@@ -27,6 +27,7 @@ class Wordinfo < ApplicationRecord
     ))
     wordinfos['synonyms'].map! { |synonym| synonym['word'] }
     wordinfos['antonyms'].map! { |antonym| antonym['word'] }
+    wordinfos['context_sentence'].map! { |ct| ct['context_sentence'] }
     wordinfos
   end
 end
