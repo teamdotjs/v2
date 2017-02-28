@@ -25,9 +25,9 @@ class Wordinfo < ApplicationRecord
       ],
       except: [:id, :user_id, :lesson_id, :created_at, :updated_at]
     ))
-    wordinfos['synonyms'].map! { |synonym| synonym['word'] }
-    wordinfos['antonyms'].map! { |antonym| antonym['word'] }
-    wordinfos['context_sentence'].map! { |ct| ct['context_sentence'] }
+    wordinfos&['synonyms']&.map! { |synonym| synonym['word'] }
+    wordinfos&['antonyms']&.map! { |antonym| antonym['word'] }
+    wordinfos&['context_sentence']&.map! { |ct| ct['context_sentence'] }
     wordinfos
   end
 end

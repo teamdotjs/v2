@@ -7,8 +7,10 @@ class Course < ApplicationRecord
   validates :title, length: { maximum: 255 }
 
   def as_json(options = {})
-    super(options.merge(
+    if options.empty? then super({
       except: [:created_at, :updated_at]
-    ))
+    })
+    else super(options)
+    end
   end
 end

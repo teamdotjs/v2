@@ -13,4 +13,10 @@ class CourseTest < ActiveSupport::TestCase
     course_pattern = { id: 393749808, title: 'Test Course', instructor_id: 965022582 }
     assert_json_match course_pattern, course.as_json
   end
+
+  test 'course as json custom options' do
+    course = courses(:testcourse)
+    course_pattern = { id: 393749808, title: 'Test Course' }
+    assert_json_match course_pattern, course.as_json(only: [:id, :title])
+  end
 end

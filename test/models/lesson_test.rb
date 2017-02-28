@@ -12,4 +12,10 @@ class LessonTest < ActiveSupport::TestCase
     lesson = lessons(:english101)
     assert_json_match lesson_pattern, lesson.as_json
   end
+
+  test 'lesson as json custom options' do
+    lesson = lessons(:english101)
+    pattern = { id: 318230600, title: 'English 101' }
+    assert_json_match pattern, lesson.as_json(only: [:id, :title])
+  end
 end

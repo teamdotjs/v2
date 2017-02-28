@@ -12,8 +12,20 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 }, on: :create
   validate :birthday_present_and_humanly
+
+  def as_json(options = {})
+    user =
+      if options.empty? then super({
+        except: [:password_digest, :created_at, :updated_at]
+      })
+      else super(options)
+      end
+    birthday = user['birthday']
+    user['birthday'] = birthday.to_s if birthday
+    user
+  end
 
   private
 
