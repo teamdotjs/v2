@@ -15,6 +15,7 @@ function mapStateToProps(state: State, props: any): any  {
         value: state.lesson[props.params.id],
         lessonId: props.params.id,
         practices,
+        errors: state.errors.pins,
     };
 }
 
