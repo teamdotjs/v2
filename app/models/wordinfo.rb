@@ -30,7 +30,7 @@ class Wordinfo < ApplicationRecord
       end
     wordinfos&.[]('synonyms')&.map! { |synonym| synonym['word'] }
     wordinfos&.[]('antonyms')&.map! { |antonym| antonym['word'] }
-    wordinfos&.[]('sentences')&.map! { |sentence| sentence['context_sentence'] }
+    wordinfos&.[]('context_sentence')&.map! { |ct| ct['context_sentence'] }
     wordinfos
   end
 end
