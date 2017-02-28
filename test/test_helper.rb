@@ -69,13 +69,18 @@ module ActiveSupport
 
     def user_pattern
       {
-        logged_in: true,
-        user: {
-          id: 965022582,
-          name: 'Test User',
-          email: 'testuser@test.com',
-          birthday: '1990-01-01'
-        }
+        id: 965022582,
+        name: 'Test User',
+        email: 'testuser@test.com',
+        birthday: '1990-01-01'
+      }
+    end
+
+    def course_pattern
+      {
+        id: 393749808,
+        title: 'Test Course',
+        instructor_id: 965022582
       }
     end
 

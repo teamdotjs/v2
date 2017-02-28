@@ -11,7 +11,7 @@ class UserTest < ActiveSupport::TestCase
   should_not allow_value('test').for(:email)
   should validate_uniqueness_of(:email).case_insensitive
   should have_secure_password
-  should validate_length_of(:password).is_at_least(6)
+  should validate_length_of(:password).is_at_least(6).on(:create)
 
   test 'validates birthday is present' do
     user = users(:testuser)
@@ -32,5 +32,16 @@ class UserTest < ActiveSupport::TestCase
     user.birthday = 200.years.ago
     user.save
     assert_includes user.errors.full_messages, 'Birthday can\'t be earlier than 1900'
+  end
+
+  test 'user as json' do
+    user = users(:testuser)
+    assert_json_match user_pattern, user.as_json
+  end
+
+  test 'user as json custom options' do
+    user = users(:testuser)
+    pattern = { id: 965022582, name: 'Test User', email: 'testuser@test.com' }
+    assert_json_match pattern, user.as_json(only: [:id, :name, :email])
   end
 end
