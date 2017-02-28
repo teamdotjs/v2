@@ -22,7 +22,7 @@ class UsersController < ApplicationController
         value: user.id,
         expires: 1.day.from_now
       }
-      render json: { logged_in: true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
+      render json: { logged_in: true, user: user }
     elsif user.errors['email']&.include?('has already been taken')
       render json: { errors: user.errors }, status: :conflict # 409
     else

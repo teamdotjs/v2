@@ -8,19 +8,22 @@ class Practice < ApplicationRecord
   validates_uniqueness_of :type, scope: :lesson
 
   def as_json(options = {})
-    practice = super(options.merge(
-      include: {
-        questions: {
-          include: [
-            { prompts: { only: [:text] } },
-            { options: { only: [:value] } }
-          ],
-          except: [:practice_id, :created_at, :updated_at]
-        }
-      },
-      except: [:lesson_id, :created_at, :updated_at]
-    ))
-    practice['questions'].each do |question|
+    practice =
+      if options.empty? then super({
+        include: {
+          questions: {
+            include: [
+              { prompts: { only: [:text] } },
+              { options: { only: [:value] } }
+            ],
+            except: [:practice_id, :created_at, :updated_at]
+          }
+        },
+        except: [:lesson_id, :created_at, :updated_at]
+      })
+      else super(options)
+      end
+    practice&.[]('questions')&.each do |question|
       question['prompts'].map! { |prompt| prompt['text'] }
       question['options'].map! { |option| option['value'] }
     end
