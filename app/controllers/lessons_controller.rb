@@ -143,7 +143,7 @@ class LessonsController < ApplicationController
       info[:forms_attributes] = info[:forms]
       info[:synonyms_attributes] = (info[:synonyms] || []).map { |s| { word: s } }
       info[:antonyms_attributes] = (info[:antonyms] || []).map { |s| { word: s } }
-      info[:sentences_attributes] = (info[:sentences] || []).map { |s| { context_sentence: s } }
+      info[:sentences_attributes] = info[:sentences]
     end
     params.require(:lesson).permit(
       :id,
