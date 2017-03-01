@@ -96,6 +96,16 @@ class PracticesControllerTest < ActionController::TestCase
     assert_json_match error_response, @response.body
   end
 
+  test 'POST /api/lesson/:id/practice/ can\'t generate sentence practice with invalid sentence' do
+    login_as_testuser
+    lessons(:english101).wordinfos.first.sentences.first.update(context_sentence: 'Test sentence')
+    post :create, params: { id: lessons(:english101).id, type: 'sentence' }
+    assert_response :conflict
+    error_message = 'probably has an invalid context sentence'
+    error_response = { errors: [error_message], error_message: error_message }
+    assert_json_match error_response, @response.body
+  end
+
   test 'POST /api/lesson/:id/practice/ generate sentence Q\'s with 1 word in lesson' do
     login_as_testuser
     post :create, params: { id: lessons(:english101).id, type: 'sentence' }
