@@ -3,26 +3,27 @@ import { QuestionView } from './QuestionView';
 import {
     Question
 } from '../../reducers/practiceReducer';
+import { TextField } from 'material-ui';
 
 export class ContextSentence extends QuestionView {
 
-    highlightWord(sentence: string, word: string): JSX.Element {
-        return <div>{sentence.split(' ').map(cur => {
-            if (!cur.search(word)) {
-                return <span key={cur} style={{ color: 'red'}}>{cur + ' '}</span>;
+    highlightWord(sentence: string): JSX.Element {
+        return <div>{sentence.replace('__________', '__________ ').split(' ').map(cur => {
+            if (!cur.search('__________')) {
+                return <TextField key={cur} name={cur} style={{width: '150px'}}/>;
             } else {
                 return cur + ' ';
             }
         })}</div>;
     }
 
-    alterContext(question: Question, answer: string): JSX.Element {
+    alterContext(question: Question): JSX.Element {
         const header = question.prompts.length > 1 ? <h5>Alternative contexts</h5> : undefined;
         return <div>
             {header}
             <ul>
                 {question.prompts.slice(1).map((prmt) => {
-                    return <li key={prmt}>{this.highlightWord(prmt, answer)}</li>;
+                    return <li key={prmt}>{this.highlightWord(prmt)}</li>;
                 })}
             </ul>
         </div>;
@@ -30,11 +31,10 @@ export class ContextSentence extends QuestionView {
 
     renderQuestion(): JSX.Element {
         const question: Question = this.props.question;
-        const answer = question.options[0];
         return <div>
             <h4>Context Sentence</h4>
-            {this.highlightWord(question.prompts[0], answer)}
-            {this.alterContext(question, answer)}
+            {this.highlightWord(question.prompts[0])}
+            {this.alterContext(question)}
         </div>;
     };
 
