@@ -10,7 +10,6 @@ export interface TagBuilderProps {
 }
 
 export interface TagBuilderState {
-    values: string[];
     inputText: string;
 }
 
@@ -18,51 +17,32 @@ export class TagBuilder extends React.Component<TagBuilderProps, TagBuilderState
     constructor(props: TagBuilderProps) {
         super(props);
         this.state = {
-            values: props.values || [],
             inputText: ''
         };
     }
 
-    componentWillReceiveProps(nextProps: TagBuilderProps) {
-        this.setState({
-            values: nextProps.values || this.state.values,
-            inputText: this.state.inputText
-        });
-    }
-
     onCommit(ev: React.KeyboardEvent<{}>) {
         if (ev.keyCode === 13) {
-            this.setState({
-                values: this.state.values.concat([this.state.inputText]),
-                inputText: ''
-            }, () => {
-                this.props.onChange(this.state.values);
-            });
+           this.props.onChange(this.props.values.concat([this.state.inputText]));
         }
     }
 
     onInputChange(ev: any) {
         this.setState({
-            values: this.state.values,
-            inputText: ev.target.value.toLowerCase()
+            inputText: ev.target.value
         });
     }
 
     onDeleteValue(i: number) {
-        const values = this.state.values;
-        this.setState({
-            values: values.slice(0, i).concat(values.slice(i + 1)),
-            inputText: this.state.inputText
-        }, () => {
-            this.props.onChange(this.state.values);
-        });
+        const values = this.props.values;
+        this.props.onChange(values.slice(0, i).concat(values.slice(i + 1)));
     }
 
     render() {
-        const error = this.state.values.filter(s => s === this.state.inputText).length > 0
+        const error = this.props.values.find(s => s === this.state.inputText)
                         ? 'Word already in list'
                         : undefined;
-        const tags = this.state.values.map((s, i) =>
+        const tags = this.props.values.map((s, i) =>
             <Chip key={s}
                 onRequestDelete={this.props.disabled ? undefined : this.onDeleteValue.bind(this,i)}
                 style={{margin: '4px'}}
