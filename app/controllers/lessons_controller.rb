@@ -86,6 +86,7 @@ class LessonsController < ApplicationController
   #   Content: { errors: ['Lesson cannot be edited while it has a practice for it'],
   #              error_message: 'Lesson cannot be edited while it has a practice for it' }
   def update
+    @lesson.update(title: params[:lesson][:title]) if params[:lesson]
     unless @lesson.practices.empty?
       message = 'Lesson cannot be edited while it has a practice for it'
       render json: { errors: [message], error_message: message }, status: :conflict # 409
