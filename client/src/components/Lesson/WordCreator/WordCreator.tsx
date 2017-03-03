@@ -16,7 +16,6 @@ export interface WordCreatorProps {
 }
 
 export interface WordCreatorState {
-    wordInfos: WordInfo[];
     currentWordIndex: number;
     inputText: string;
 }
@@ -27,7 +26,6 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
     constructor(props: WordCreatorProps) {
         super(props);
         this.state = {
-            wordInfos: props.value || [],
             currentWordIndex: -1,
             inputText: ''
         };
@@ -35,96 +33,70 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
 
     get value() {
         // The last input will always be a dummy. Don't include it
-        return this.state.wordInfos.slice(0, this.state.wordInfos.length - 1);
+        return this.props.value;
     }
 
     onWordChanged(i: number, word_info: WordInfo) {
-        let wordInfos = [] as WordInfo[];
-
-        wordInfos = Object.assign(this.state.wordInfos, {
+        const wordInfos = Object.assign(this.props.value, {
             [i]: word_info
         });
 
-        this.setState({
-            wordInfos,
-        }, () => {
-            if (this.props.onChange) {
-                this.props.onChange(wordInfos);
-            }
-        });
+        this.props.onChange(wordInfos);
     }
 
     onWordSelect(_: any, i: number) {
         this.setState({
-            wordInfos: this.state.wordInfos,
-            currentWordIndex: i,
-            inputText: this.state.inputText
+            currentWordIndex: i
         });
     }
 
     isValidWord(word: string): boolean {
         return word !== '' &&
             word.indexOf(' ') < 0 && // TODO regex
-            this.state.wordInfos.map((w: WordInfo) => w.word).indexOf(word) < 0;
+            this.props.value.find((w: WordInfo) => w.word === word) === undefined;
     }
 
     deleteWord() {
-        const wordInfos = this.state.wordInfos.filter((_: any, i: number) => i !== this.state.currentWordIndex);
-        this.setState({
-            wordInfos,
-            currentWordIndex: -1,
-            inputText: this.state.inputText
-        });
+        const wordInfos = this.props.value.filter((_: any, i: number) => i !== this.state.currentWordIndex);
 
-        if (this.props.onChange) {
-            this.props.onChange(wordInfos);
-        }
+        this.props.onChange(wordInfos);
     }
 
     onNewWordKeyPress(ev: any) {
         if (ev.keyCode !== 13 || !this.isValidWord(this.state.inputText)) {
             // TODO, show error
-            return;
+            return true;
         }
 
-        this.setState({
-            currentWordIndex: this.state.currentWordIndex,
-            wordInfos: this.state.wordInfos.concat([
+        const wordInfos = this.props.value.concat([
                 new WordInfo(this.state.inputText)
-            ]),
+        ]);
+
+        this.setState({
             inputText: ''
         }, () => {
-            if (this.props.onChange !== undefined) {
-                this.props.onChange(this.state.wordInfos);
-            }
+            this.props.onChange(wordInfos);
         });
+        return true;
     }
 
     onNewWordEdit(ev: any) {
         this.setState({
-            currentWordIndex: this.state.currentWordIndex,
-            wordInfos: this.state.wordInfos,
-            inputText: ev.target.value.toLowerCase()
-        });
-    }
-
-    componentWillReceiveProps(nextProps: WordCreatorProps) {
-        this.setState({
-            wordInfos: nextProps.value
+            inputText: ev.target.value
         });
     }
 
     render() {
-        let wordItems = this.state.wordInfos.map((w, i) =>
+        let wordItems = this.props.value.map((w, i) =>
             <ListItem key={i} value={i}>
                 <WordListItem value={i} text={w.word} />
             </ListItem>
         );
 
         const wordInfo = <WordDetails
-            wordInfo={this.state.wordInfos[this.state.currentWordIndex]}
+            wordInfo={this.props.value[this.state.currentWordIndex]}
             value={this.state.currentWordIndex}
-            onChange={this.onWordChanged.bind(this)}
+            onChange={this.onWordChanged.bind(this, this.state.currentWordIndex)}
             onDelete={this.deleteWord.bind(this)}
             disabled={this.props.disabled}/>;
 
