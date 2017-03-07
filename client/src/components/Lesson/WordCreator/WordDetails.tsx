@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
-    TextField,
-    IconButton
+    TextField
 } from 'material-ui';
 import { WordInfo, WordForm } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
@@ -12,52 +11,58 @@ import { TagBuilder } from '../../util/TagBuilder';
 export interface WordDetailsProps {
     value: number;
     wordInfo: WordInfo;
-    onChange: (v: number, w: WordInfo) => void;
-    onDelete: () => void;
+    onChange: (w: WordInfo) => void;
     disabled?: boolean;
 }
 
-export interface WordDetailsState extends WordInfo {
-    wordFormNewValue?: string;
+export interface WordDetailsState {
+    wordFormNewValue: string;
 }
 
 export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsState> {
 
     constructor(props: WordDetailsProps) {
         super(props);
-        this.state = props.wordInfo;
-    }
-
-    componentStateChange() {
-        this.props.onChange(this.props.value, this.state);
+        this.state = {wordFormNewValue: ''};
     }
 
     componentWillReceiveProps(newProps: WordDetailsProps) {
-        this.setState(newProps.wordInfo);
+        if (this.props.value !== newProps.value) {
+            this.setState({
+                wordFormNewValue: ''
+            });
+        }
     }
+
+    shouldComponentUpdate(nextProps: WordDetailsProps, nextState: WordDetailsState) {
+        return nextState !== this.state || nextProps.wordInfo !== this.props.wordInfo;
+    }
+
 
     onFormChange(newForms: WordForm[]) {
-        this.setState({
-            forms: newForms
-        }, this.componentStateChange.bind(this));
+        this.props.onChange({...this.props.wordInfo, forms: newForms});
     }
 
+    onValueChange<K extends keyof WordInfo>(field: K) {
+        return (value: WordInfo[K]) =>
+            this.props.onChange({...this.props.wordInfo, [field as string]: value});
+    }
+
+    onValueEvent<K extends keyof WordInfo>(field: K) {
+        return (ev: any) =>
+            this.props.onChange({...this.props.wordInfo, [field as string]: ev.target.value});
+    }
+
+
     render() {
-        console.log(this.state);
         return (<div style={{paddingLeft: '20px'}}>
             <WordInput hintText='Word'
                     floatingLabelText='Word'
                     name='word'
-                    value={this.state.word}
+                    value={this.props.wordInfo.word}
                     disabled={this.props.disabled}
-                    onChange={this.bindValueToName.bind(this)}
+                    onChange={this.onValueEvent('word')}
                 />
-
-            <IconButton onClick={this.props.onDelete}
-                style={{display: 'inline-block',float: 'right'}}
-                iconClassName='material-icons'
-                disabled={this.props.disabled}
-                tooltip='Delete'>delete</IconButton>
 
             <TextField hintText='Definition'
                     floatingLabelText='Definition'
@@ -65,20 +70,20 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                     fullWidth={true}
                     name='definition'
                     disabled={this.props.disabled}
-                    value={this.state.definition}
-                    onChange={this.bindValueToName.bind(this)}
+                    value={this.props.wordInfo.definition}
+                    onChange={this.onValueEvent('definition')}
                     style={{ width: '100%' }}
                 />
 
             <TagBuilder name='synonyms'
-                    onChange={this.updateState('synonyms')}
-                    values={this.state.synonyms}
+                    onChange={this.onValueChange('synonyms')}
+                    values={this.props.wordInfo.synonyms}
                     hintText='Synonyms'
                     disabled={this.props.disabled}/>
 
             <TagBuilder name='antonyms'
-                    onChange={this.updateState('antonyms')}
-                    values={this.state.antonyms}
+                    onChange={this.onValueChange('antonyms')}
+                    values={this.props.wordInfo.antonyms}
                     hintText='Antonyms'
                     disabled={this.props.disabled}/>
 

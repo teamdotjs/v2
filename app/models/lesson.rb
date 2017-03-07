@@ -31,6 +31,7 @@ class Lesson < ApplicationRecord
     lesson&.[]('wordinfos')&.each do |wordinfo|
       wordinfo['synonyms'].map! { |synonym| synonym['word'] }
       wordinfo['antonyms'].map! { |antonym| antonym['word'] }
+      wordinfo['sentences'].map! { |sentence| sentence['context_sentence'] }
     end
     lesson&.[]('practices')&.map! { |practice| practice['id'] }
     lesson

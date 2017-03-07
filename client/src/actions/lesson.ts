@@ -124,10 +124,7 @@ export function saveLesson(l: Lesson) {
             .then(( res: Lesson) => {
                 dispatch({
                     type: 'save_lesson_success',
-                });
-                dispatch({
-                    type: 'create_lesson_success',
-                    lesson: res
+                    id: res.id
                 });
             })
             .catch((err: Error) => {
