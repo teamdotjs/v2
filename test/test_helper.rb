@@ -45,7 +45,7 @@ module ActiveSupport
             forms: [{ word: 'probable', part_of_speech: '' }],
             synonyms: ['likely'],
             antonyms: ['unlikely'],
-            sentences: [{ context_sentence: 'This is probably the best test ever' }]
+            sentences: ['This is probably the best test ever']
           }
         ],
         practices: [907223594]
