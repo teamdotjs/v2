@@ -25,4 +25,10 @@ class WordinfoTest < ActiveSupport::TestCase
     wordinfo = wordinfos(:probably)
     assert_json_match lesson_pattern[:wordinfos][0], wordinfo.as_json
   end
+
+  test 'wordinfo as json custom options' do
+    wordinfo = wordinfos(:probably)
+    pattern = { word: 'probably' }
+    assert_json_match pattern, wordinfo.as_json(only: [:word])
+  end
 end

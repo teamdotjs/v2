@@ -10,7 +10,7 @@ class LessonsController < ApplicationController
   #     forms: [{ word: '', part_of_speech: '' }],
   #     synonyms: [''],
   #     antonyms: [''],
-  #     sentences: [{ context_sentence: '' }]
+  #     sentences: ['']
   #   } }] }
   before_action :signed_in?
   before_action :correct_user?, only: [:update, :destroy]
@@ -86,6 +86,7 @@ class LessonsController < ApplicationController
   #   Content: { errors: ['Lesson cannot be edited while it has a practice for it'],
   #              error_message: 'Lesson cannot be edited while it has a practice for it' }
   def update
+    @lesson.update(title: params[:lesson][:title]) if params[:lesson]
     unless @lesson.practices.empty?
       message = 'Lesson cannot be edited while it has a practice for it'
       render json: { errors: [message], error_message: message }, status: :conflict # 409
@@ -168,16 +169,16 @@ class LessonsController < ApplicationController
     wordinfos_uniq = wordinfos.uniq! { |wordinfo| wordinfo['word'].downcase }
     errors['wordinfos.word'] = ['has already been taken'] unless wordinfos_uniq.nil?
     wordinfos.each do |wordinfo|
-      errors = check_duplicates_wordinfo_nested wordinfo, 'roots', 'root', errors
-      errors = check_duplicates_wordinfo_nested wordinfo, 'forms', 'word', errors
-      errors = check_duplicates_wordinfo_nested wordinfo, 'synonyms', 'word', errors, false
-      errors = check_duplicates_wordinfo_nested wordinfo, 'antonyms', 'word', errors, false
-      errors = check_duplicates_wordinfo_nested wordinfo, 'sentences', 'context_sentence', errors
+      errors = check_duplicate_attributes wordinfo, 'roots', 'root', errors
+      errors = check_duplicate_attributes wordinfo, 'forms', 'word', errors
+      errors = check_duplicate_attributes wordinfo, 'synonyms', 'word', errors, false
+      errors = check_duplicate_attributes wordinfo, 'antonyms', 'word', errors, false
+      errors = check_duplicate_attributes wordinfo, 'sentences', 'context_sentence', errors, false
     end
     errors
   end
 
-  def check_duplicates_wordinfo_nested(wordinfo, model, attribute, errors, index = true)
+  def check_duplicate_attributes(wordinfo, model, attribute, errors, index = true)
     extractor = !index ? proc { |m| m.downcase } : proc { |m| m[attribute].downcase }
     if wordinfo[model] && !wordinfo[model].uniq!(&extractor).nil?
       errors["wordinfos.#{model}.#{attribute}"] = ['has already been taken']
