@@ -136,3 +136,25 @@ export function saveLesson(l: Lesson) {
         }, 5000);
     };
 }
+
+export function deleteLesson(id: number) {
+
+    return (dispatch: any) => {
+        dispatch({ type: 'lesson_delete', id });
+        fetch(`/api/lesson/${id}`, {
+            headers,
+            credentials: 'same-origin',
+            method: 'DELETE'
+        })
+        .then(errorCheck)
+        .then(() => {
+            dispatch({ type: 'lesson_delete_success', id });
+        })
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
+            });
+        });
+    };
+}
