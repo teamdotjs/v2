@@ -1,7 +1,10 @@
 import * as React from 'react';
 
 import {
-    FlatButton
+    RaisedButton,
+    MenuItem,
+    Menu,
+    Popover,
 } from 'material-ui';
 
 export interface AppBarRightProps {
@@ -10,17 +13,58 @@ export interface AppBarRightProps {
     onLogoutClick?: () => void;
     error?: string;
 }
-const AppBarRight = (props: AppBarRightProps) => {
-    let buttons = <FlatButton onClick={props.onLogoutClick}
-        style={{ color: 'white', float:'right'}}
-        label='Logout' />;
-    let name = <div style= {{ color: 'white', float: 'left', marginTop: '7px'}}> {props.userName} |</div>;
-    let right = <div> {name}  {buttons} </div>;
-    let notButtons = <div />;
-    return (
+
+export interface PopoverState {
+    open: boolean;
+    anchorEl: any;
+}
+
+export class AppBarRight extends React.Component<AppBarRightProps, PopoverState > {
+    constructor(props: AppBarRightProps) {
+        super(props);
+        this.context.state = {
+            open: false,
+        };
+    }
+
+    handleTouchTap = (event: Event) => {
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+  render() {
+      let loggedIn = (
         <div style={{marginTop: '6px'}}>
-            {props.isLoggedIn ? right : notButtons }
+            <RaisedButton
+            label={this.props.userName}
+            />
+            <Popover
+            open={this.state.open}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={this.handleRequestClose}
+            >
+            <Menu>
+                <MenuItem primaryText='UserProfile' />
+                <MenuItem primaryText='Sign out'
+                onTouchTap={this.props.onLogoutClick} />
+            </Menu>
+            </Popover>
         </div>
-    );
+        );
+
+        return this.props.userName ? loggedIn : <div/>;
+    };
 };
 export default AppBarRight;
