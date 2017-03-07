@@ -58,6 +58,7 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
 
     deleteWord() {
         const wordInfos = this.props.value.filter((_: any, i: number) => i !== this.state.currentWordIndex);
+        this.setState({ currentWordIndex: -1 });
 
         this.props.onChange(wordInfos);
     }
@@ -89,7 +90,11 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
     render() {
         let wordItems = this.props.value.map((w, i) =>
             <ListItem key={i} value={i}>
-                <WordListItem value={i} text={w.word} />
+                <WordListItem
+                    value={i}
+                    text={w.word}
+                    onDelete={this.deleteWord.bind(this)}
+                    disabled={this.props.disabled}/>
             </ListItem>
         );
 
@@ -97,7 +102,6 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             wordInfo={this.props.value[this.state.currentWordIndex]}
             value={this.state.currentWordIndex}
             onChange={this.onWordChanged.bind(this, this.state.currentWordIndex)}
-            onDelete={this.deleteWord.bind(this)}
             disabled={this.props.disabled}/>;
 
         const selectInfo = <Subheader>
