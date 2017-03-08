@@ -8,10 +8,10 @@ import { TextField } from 'material-ui';
 export class ContextSentence extends QuestionView {
 
     highlightWord(sentence: string): JSX.Element {
-        // Need to add a space after underscores or the following character is removed
-        return <div>{sentence.replace('__________', '__________ ').split(' ').map(cur => {
+        return <div>{sentence.split(' ').map(cur => {
             if (!cur.search('__________')) {
-                return <TextField key={cur} name={cur} style={{width: '150px'}}/>;
+                const next_char = cur.length > 10 ? cur.charAt(10) : ' ';
+                return <span><TextField key={cur} name={cur} style={{width: '150px'}}/>{next_char}</span>;
             } else {
                 return cur + ' ';
             }
