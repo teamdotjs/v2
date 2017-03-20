@@ -36,3 +36,38 @@ Sentence.create(context_sentence: 'The riverbanks were abundant in wild plants.'
 augment = Wordinfo.create(word: 'augment', definition: 'Make greater by adding to it', part_of_speech: 'verb', user: user, lesson: lesson)
 Synonym.create(word: 'increase', wordinfo: augment)
 Sentence.create(context_sentence: 'He will augment his summer income by painting houses.', wordinfo: augment)
+
+practice = Practice.create(lesson: lesson, type: 'sentence')
+question1 = Question.create(
+  practice: practice,
+  type: 'fitb',
+  prompts_attributes: [{ text: 'The __________ wrote a novel disproving the existence of a higher power.' }],
+  options_attributes: [{ value: 'atheist', is_correct: true }]
+)
+question2 = Question.create(
+  practice: practice,
+  type: 'fitb',
+  prompts_attributes: [{ text: 'As soon as the teacher stepped in the hall, the classroom descended into __________.' }],
+  options_attributes: [{ value: 'anarchy', is_correct: true }]
+)
+question3 = Question.create(
+  practice: practice,
+  type: 'fitb',
+  prompts_attributes: [{ text: 'The riverbanks were __________ in wild plants.' }],
+  options_attributes: [{ value: 'abundant', is_correct: true }]
+)
+question4 = Question.create(
+  practice: practice,
+  type: 'fitb',
+  prompts_attributes: [{ text: 'He will __________ his summer income by painting houses.' }],
+  options_attributes: [{ value: 'augment', is_correct: true }]
+)
+
+Grade.create(user: user, question: question1, value: 'author')
+Grade.create(user: user, question: question1, value: 'athiest')
+Grade.create(user: user, question: question2, value: 'chaos')
+Grade.create(user: user, question: question2, value: 'anarchy')
+Grade.create(user: user, question: question3, value: 'thriving')
+Grade.create(user: user, question: question3, value: 'abundant')
+Grade.create(user: user, question: question4, value: 'increase')
+Grade.create(user: user, question: question4, value: 'augment')
