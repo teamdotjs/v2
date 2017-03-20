@@ -96,7 +96,6 @@ module ActiveSupport
     def grade_pattern
       {
         id: 791338413,
-        user: seconduser_pattern,
         question: {
           id: 784075757,
           prompt: 'What is the synonym of probably?'

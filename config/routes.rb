@@ -27,7 +27,11 @@ Rails.application.routes.draw do
 
     match '/practice/:id' => 'practices#destroy', via: [:delete]
 
-    match '/question/:id/submit_answer' => 'questions#submit_answer', via: [:post]
+    scope '/grade' do
+      match '/' => 'grades#index', via: [:get]
+      match '/' => 'grades#create', via: [:post]
+      match '/course/:id' => 'grades#course', via: [:get]
+    end
 
     scope '/course' do
       match '/' => 'courses#index', via: [:get]

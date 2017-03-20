@@ -6,12 +6,7 @@ class Grade < ApplicationRecord
   def as_json(options = {})
     grade =
       if options.empty? then super({
-        include: [
-          { user: {
-            except: [:password_digest, :created_at, :updated_at]
-          } },
-          { question: { only: [:id] } }
-        ],
+        include: { question: { only: [:id] } },
         except: [:user_id, :question_id]
       })
       else super(options)
