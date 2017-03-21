@@ -34,11 +34,6 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
         }
     }
 
-    shouldComponentUpdate(nextProps: WordDetailsProps, nextState: WordDetailsState) {
-        return nextState !== this.state || nextProps.wordInfo !== this.props.wordInfo;
-    }
-
-
     onFormChange(newForms: WordForm[]) {
         this.props.onChange({...this.props.wordInfo, forms: newForms});
     }
