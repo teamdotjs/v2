@@ -23,7 +23,10 @@ export class TagBuilder extends React.Component<TagBuilderProps, TagBuilderState
 
     onCommit(ev: React.KeyboardEvent<{}>) {
         if (ev.keyCode === 13) {
-           this.props.onChange(this.props.values.concat([this.state.inputText]));
+            this.props.onChange(this.props.values.concat([this.state.inputText]));
+            this.setState({
+                inputText: ''
+            });
         }
     }
 
