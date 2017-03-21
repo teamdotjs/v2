@@ -6,6 +6,7 @@ import { PracticeState, practiceReducer } from './practiceReducer';
 import { ErrorState, errorReducer } from './errorReducer';
 import { LoadingState, loadingReducer } from './loadingReducer';
 import { CourseState, courseReducer } from './courseReducer';
+import { DrawerState, drawerReducer } from './drawerReducer';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
@@ -19,6 +20,7 @@ export interface State {
     practice: PracticeState;
     loading: LoadingState;
     course: CourseState;
+    drawer: DrawerState;
 }
 
 export const app = combineReducers({
@@ -31,4 +33,5 @@ export const app = combineReducers({
     practice: practiceReducer,
     loading: loadingReducer,
     course: courseReducer,
+    drawer: drawerReducer,
 });
