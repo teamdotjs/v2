@@ -3,6 +3,7 @@ import { LessonState, lessonReducer } from './lessonReducer';
 import { RegistrationState, registrationReducer } from './registrationReducer';
 import { PracticeState, practiceReducer } from './practiceReducer';
 import { ErrorState, errorReducer } from './errorReducer';
+import { DrawerState, drawerReducer } from './drawerReducer';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
@@ -13,6 +14,7 @@ export interface State {
     routing: any;
     lesson: LessonState;
     practice: PracticeState;
+    drawer: DrawerState;
 }
 
 export const app = combineReducers({
@@ -21,5 +23,6 @@ export const app = combineReducers({
     registration: registrationReducer,
     routing: routerReducer,
     lesson: lessonReducer,
-    practice: practiceReducer
+    practice: practiceReducer,
+    drawer: drawerReducer,
 });
