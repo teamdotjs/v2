@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
-    TextField,
-    IconButton
+    TextField
 } from 'material-ui';
 import { WordInfo, WordForm } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
@@ -13,7 +12,6 @@ export interface WordDetailsProps {
     value: number;
     wordInfo: WordInfo;
     onChange: (w: WordInfo) => void;
-    onDelete: () => void;
     disabled?: boolean;
 }
 
@@ -35,11 +33,6 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
             });
         }
     }
-
-    shouldComponentUpdate(nextProps: WordDetailsProps, nextState: WordDetailsState) {
-        return nextState !== this.state || nextProps.wordInfo !== this.props.wordInfo;
-    }
-
 
     onFormChange(newForms: WordForm[]) {
         this.props.onChange({...this.props.wordInfo, forms: newForms});
@@ -65,12 +58,6 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                     disabled={this.props.disabled}
                     onChange={this.onValueEvent('word')}
                 />
-
-            <IconButton onClick={this.props.onDelete}
-                style={{display: 'inline-block',float: 'right'}}
-                iconClassName='material-icons'
-                disabled={this.props.disabled}
-                tooltip='Delete'>delete</IconButton>
 
             <TextField hintText='Definition'
                     floatingLabelText='Definition'
