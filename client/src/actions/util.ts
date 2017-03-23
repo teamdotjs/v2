@@ -1,21 +1,16 @@
 import 'whatwg-fetch';
+import { ErrorResponse } from '../reducers/errorReducer';
 
 export function errorCheck(response: Response): any {
-    if (response.status >= 200 && response.status < 400) {
-        return response.json();
-    }
-    switch (response.status) {
-        case 400:
-            throw new Error('Bad Request');
-        case 409:
-            throw new Error('Conflict');
-        case 401:
-            throw new Error('Unauthorized');
-        case 500:
-            throw new Error('The server failed to respond');
-        default:
-            throw new Error('Unknown error');
-    }
+    return response.json()
+        .then((body: JSON) => {
+            if (response.ok) {
+                return body;
+            } else {
+                const error = body as ErrorResponse;
+                throw new Error(error.error_message);
+            }
+        });
 }
 
 let pending: boolean = false;

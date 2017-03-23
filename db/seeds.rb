@@ -9,6 +9,8 @@
 require 'date'
 user = User.create(email: 'user@email.com', name: 'User Name', password: 'password', birthday: 18.years.ago)
 lesson = Lesson.create(title: 'A\'s', owner: user)
+course = Course.create(title: 'English 101', instructor: user)
+course.lessons << lesson
 
 atheist = Wordinfo.create(word: 'atheist', definition: 'One who does not believe in God', part_of_speech: 'noun', user: user, lesson: lesson)
 Root.create(root: 'the', meaning: 'God', wordinfo: atheist)

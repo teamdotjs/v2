@@ -20,7 +20,7 @@ class AuthController < ApplicationController
         value: user.id,
         expires: 1.day.from_now
       }
-      render json: { logged_in: true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
+      render json: { logged_in: true, user: user }
     else
       message = 'Invalid Email/Password Combination'
       render json: { errors: [message], error_message: message }, status: :unauthorized # 401
@@ -52,7 +52,7 @@ class AuthController < ApplicationController
   def signed_in
     if session_not_expired?
       user = User.find(session[:user_id][:value])
-      render json: { logged_in: true, user: user.as_json(only: [:id, :name, :email, :birthday]) }
+      render json: { logged_in: true, user: user }
     else
       reset_session
       render json: { logged_in: false }, status: :unauthorized # 401

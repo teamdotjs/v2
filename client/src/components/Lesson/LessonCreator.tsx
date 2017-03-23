@@ -6,6 +6,7 @@ import {Lesson} from '../../reducers/lessonReducer';
 import {
     Practice, SectionType
 } from '../../reducers/practiceReducer';
+import { PRACTICE_ERROR } from '../../reducers/errorReducer';
 import {
     TextField, Toolbar, ToolbarTitle
 } from 'material-ui';
@@ -16,13 +17,16 @@ import {
 export interface LessonCreatorProps {
     children?: Element[];
     onChange?: (l: Lesson) => void;
-    loadLession?: () => void;
+    loadLesson?: () => void;
     getPractice?: (id: number) => void;
     generatePractice: (type: SectionType) => void;
     deletePractice: (id: number) => void;
     value?: Lesson;
     notFound: boolean;
     practices?: Practice[];
+    errors: {
+        [id: string]: string;
+    };
 }
 
 const disabledMessageStyle = {
@@ -58,8 +62,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
 
     componentWillMount() {
         if (this.props.notFound) {
-            if (this.props.loadLession !== undefined) {
-                this.props.loadLession();
+            if (this.props.loadLesson !== undefined) {
+                this.props.loadLesson();
             }
         }
     }
@@ -116,7 +120,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
                         onPreviewPractice={() => {}}
                         onCreatePractice={this.props.generatePractice}
                         onRemovePractice={this.props.deletePractice}
-                        practices={this.props.practices || []} />
+                        practices={this.props.practices || []}
+                        errorMessage={this.props.errors[PRACTICE_ERROR]} />
                 </div>
             );
         }

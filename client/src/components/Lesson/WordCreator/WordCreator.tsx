@@ -16,9 +16,9 @@ export interface WordCreatorProps {
 }
 
 export interface WordCreatorState {
-    wordInfos: WordInfo[];
     currentWordIndex: number;
     inputText: string;
+    error?: string;
 }
 
 export class WordCreator extends React.Component<WordCreatorProps, WordCreatorState> {
@@ -27,7 +27,6 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
     constructor(props: WordCreatorProps) {
         super(props);
         this.state = {
-            wordInfos: props.value || [],
             currentWordIndex: -1,
             inputText: ''
         };
@@ -35,97 +34,86 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
 
     get value() {
         // The last input will always be a dummy. Don't include it
-        return this.state.wordInfos.slice(0, this.state.wordInfos.length - 1);
+        return this.props.value;
     }
 
     onWordChanged(i: number, word_info: WordInfo) {
-        let wordInfos = [] as WordInfo[];
-
-        wordInfos = Object.assign(this.state.wordInfos, {
+        const wordInfos = Object.assign(this.props.value, {
             [i]: word_info
         });
 
-        this.setState({
-            wordInfos,
-        }, () => {
-            if (this.props.onChange) {
-                this.props.onChange(wordInfos);
-            }
-        });
+        this.props.onChange(wordInfos);
     }
 
     onWordSelect(_: any, i: number) {
         this.setState({
-            wordInfos: this.state.wordInfos,
             currentWordIndex: i,
-            inputText: this.state.inputText
+            error: undefined,
         });
     }
 
     isValidWord(word: string): boolean {
         return word !== '' &&
-            word.indexOf(' ') < 0 && // TODO regex
-            this.state.wordInfos.map((w: WordInfo) => w.word).indexOf(word) < 0;
+            this.props.value.find((w: WordInfo) => w.word === word) === undefined;
     }
 
     deleteWord() {
-        const wordInfos = this.state.wordInfos.filter((_: any, i: number) => i !== this.state.currentWordIndex);
-        this.setState({
-            wordInfos,
-            currentWordIndex: -1,
-            inputText: this.state.inputText
-        });
+        const wordInfos = this.props.value.filter((_: any, i: number) => i !== this.state.currentWordIndex);
+        this.setState({ currentWordIndex: -1 });
 
-        if (this.props.onChange) {
-            this.props.onChange(wordInfos);
-        }
+        this.props.onChange(wordInfos);
     }
 
     onNewWordKeyPress(ev: any) {
-        if (ev.keyCode !== 13 || !this.isValidWord(this.state.inputText)) {
-            // TODO, show error
-            return;
+        const invalid = !this.isValidWord(this.state.inputText);
+        if (invalid) {
+            const exists = this.props.value.find((w: WordInfo) => w.word === this.state.inputText);
+            if (exists) {
+                this.setState({
+                    error: `${exists.word.charAt(0).toUpperCase() + exists.word.slice(1)} is already in this lesson`,
+                });
+                return true;
+            }
+        }
+        if (ev.keyCode !== 13 || invalid) {
+            return true;
         }
 
-        this.setState({
-            currentWordIndex: this.state.currentWordIndex,
-            wordInfos: this.state.wordInfos.concat([
+        const wordInfos = this.props.value.concat([
                 new WordInfo(this.state.inputText)
-            ]),
-            inputText: ''
+        ]);
+
+        this.setState({
+            inputText: '',
+            error: undefined,
         }, () => {
-            if (this.props.onChange !== undefined) {
-                this.props.onChange(this.state.wordInfos);
-            }
+            this.props.onChange(wordInfos);
         });
+        return true;
     }
 
     onNewWordEdit(ev: any) {
         this.setState({
-            currentWordIndex: this.state.currentWordIndex,
-            wordInfos: this.state.wordInfos,
-            inputText: ev.target.value.toLowerCase()
-        });
-    }
-
-    componentWillReceiveProps(nextProps: WordCreatorProps) {
-        this.setState({
-            wordInfos: nextProps.value
+            inputText: ev.target.value,
+            error: undefined,
         });
     }
 
     render() {
-        let wordItems = this.state.wordInfos.map((w, i) =>
+        let wordItems = this.props.value.map((w, i) =>
             <ListItem key={i} value={i}>
-                <WordListItem value={i} text={w.word} />
+                <WordListItem
+                    value={i}
+                    text={w.word}
+                    onDelete={this.deleteWord.bind(this)}
+                    disabled={this.props.disabled}/>
             </ListItem>
         );
 
         const wordInfo = <WordDetails
-            wordInfo={this.state.wordInfos[this.state.currentWordIndex]}
+            wordInfo={this.props.value[this.state.currentWordIndex]}
             value={this.state.currentWordIndex}
-            onChange={this.onWordChanged.bind(this)}
-            onDelete={this.deleteWord.bind(this)}
+            onChange={this.onWordChanged.bind(this, this.state.currentWordIndex)}
             disabled={this.props.disabled}/>;
 
         const selectInfo = <Subheader>
@@ -135,13 +123,14 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         return (
             <div style={{display: 'flex'}}>
                 <div style={{width: '30%', borderRight: '1px solid lightgray'}}>
-                        <WordInput  style={{width: '100%', marginRight: '20px'}}
-                                    floatingLabelText='New Word'
-                                    underlineShow={false}
-                                    onKeyDown={this.onNewWordKeyPress.bind(this)}
-                                    value={this.state.inputText}
-                                    disabled={this.props.disabled}
-                                    onChange={this.onNewWordEdit.bind(this)}/>
+                    <WordInput  style={{width: '100%', marginRight: '20px'}}
+                                errorText={this.state.error}
+                                floatingLabelText='New Word'
+                                underlineShow={false}
+                                onKeyDown={this.onNewWordKeyPress.bind(this)}
+                                value={this.state.inputText}
+                                disabled={this.props.disabled}
+                                onChange={this.onNewWordEdit.bind(this)}/>
                     <SelectableList value={this.state.currentWordIndex}
                                     onChange={this.onWordSelect.bind(this)} >
                         {wordItems}

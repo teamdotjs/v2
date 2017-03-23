@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161111191936) do
+ActiveRecord::Schema.define(version: 20170221152101) do
 
   create_table "antonyms", force: :cascade do |t|
     t.string   "word"
@@ -18,6 +18,32 @@ ActiveRecord::Schema.define(version: 20161111191936) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["wordinfo_id"], name: "index_antonyms_on_wordinfo_id"
+  end
+
+  create_table "course_lessons", force: :cascade do |t|
+    t.integer  "course_id"
+    t.integer  "lesson_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_lessons_on_course_id"
+    t.index ["lesson_id"], name: "index_course_lessons_on_lesson_id"
+  end
+
+  create_table "course_students", force: :cascade do |t|
+    t.integer  "course_id"
+    t.integer  "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_students_on_course_id"
+    t.index ["student_id"], name: "index_course_students_on_student_id"
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string   "title",         default: "Untitled"
+    t.integer  "instructor_id"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.index ["instructor_id"], name: "index_courses_on_instructor_id"
   end
 
   create_table "forms", force: :cascade do |t|
