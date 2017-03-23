@@ -8,10 +8,8 @@ import {
 } from 'material-ui';
 
 export interface AppBarRightProps {
-    isLoggedIn: boolean;
     userName?: string;
     onLogoutClick?: () => void;
-    error?: string;
 }
 
 export interface PopoverState {
@@ -47,7 +45,7 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState 
         <div style={{marginTop: '6px'}}>
             <FlatButton
             style={{color: 'white'}}
-            label={this.props.userName}
+            label={this.props.userName || ''}
             onTouchTap={this.handleTouchTap}
             />
             <Popover
