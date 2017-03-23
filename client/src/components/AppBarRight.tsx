@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {
-    RaisedButton,
+    FlatButton,
     MenuItem,
     Menu,
     Popover,
@@ -16,18 +16,18 @@ export interface AppBarRightProps {
 
 export interface PopoverState {
     open: boolean;
-    anchorEl: any;
+    anchorEl?: any;
 }
 
 export class AppBarRight extends React.Component<AppBarRightProps, PopoverState > {
     constructor(props: AppBarRightProps) {
         super(props);
-        this.context.state = {
+        this.state = {
             open: false,
         };
     }
 
-    handleTouchTap = (event: Event) => {
+    handleTouchTap = (event: any) => {
     event.preventDefault();
 
     this.setState({
@@ -45,8 +45,10 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState 
   render() {
       let loggedIn = (
         <div style={{marginTop: '6px'}}>
-            <RaisedButton
+            <FlatButton
+            style={{color: 'white'}}
             label={this.props.userName}
+            onTouchTap={this.handleTouchTap}
             />
             <Popover
             open={this.state.open}
@@ -56,7 +58,7 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState 
             onRequestClose={this.handleRequestClose}
             >
             <Menu>
-                <MenuItem primaryText='UserProfile' />
+                <MenuItem primaryText='User Profile' />
                 <MenuItem primaryText='Sign out'
                 onTouchTap={this.props.onLogoutClick} />
             </Menu>
