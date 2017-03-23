@@ -3,6 +3,7 @@ import {
     errorCheck
 } from './util';
 import { SectionType } from '../reducers/practiceReducer';
+import { PRACTICE_ERROR } from '../reducers/errorReducer';
 
 const headers = {
     'Accept': 'application/json',
@@ -11,6 +12,10 @@ const headers = {
 
 export function generatePractice(id: number, type: SectionType) {
     return (dispatch: any) => {
+        dispatch({
+            type: 'error_pin',
+            pin: PRACTICE_ERROR,
+        });
         dispatch({ type: 'practice_generate', id });
         fetch(`/api/lesson/${id}/practice`, {
             method: 'POST',
@@ -26,8 +31,10 @@ export function generatePractice(id: number, type: SectionType) {
             dispatch({ type: 'practice_save_local', practice, id });
         })
         .catch((err: Error) => {
+            console.log(err);
             dispatch({
-                type: 'error_push',
+                type: 'error_pin',
+                pin: PRACTICE_ERROR,
                 error: err.message
             });
         });

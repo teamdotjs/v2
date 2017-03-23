@@ -17,6 +17,14 @@ export interface PracticeViewProps {
     onCreatePractice: (type: SectionType) => void;
     onPreviewPractice: () => void;
     onRemovePractice: (id: number) => void;
+    errorMessage?: string;
+};
+
+const disabledMessageStyle = {
+    padding: '10px',
+    color: 'white',
+    textAlign: 'center',
+    background: '#ff4081'
 };
 
 const tabContentStyle = {
@@ -26,6 +34,9 @@ const tabContentStyle = {
 export const PracticeView = (props: PracticeViewProps) => {
     let content = undefined;
     let availableTypes = practiceTypes;
+
+    const error = props.errorMessage !== undefined ? <div style={disabledMessageStyle}>{props.errorMessage}</div> : undefined;
+
     if (props.practices === undefined ||
         props.practices.length === 0) {
         content = <div style={tabContentStyle}><Subheader>You currently have no practices</Subheader></div>;
@@ -91,6 +102,7 @@ export const PracticeView = (props: PracticeViewProps) => {
                 {createMenu}
             </ToolbarGroup>
         </Toolbar>
+        {error}
         {content}
     </Paper>);
 };
