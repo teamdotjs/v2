@@ -7,6 +7,7 @@ import { BindingComponent } from '../../util/BindingComponent';
 import WordFormSelector from './WordFormSelector';
 import { WordInput } from '../../util/WordInput';
 import { TagBuilder } from '../../util/TagBuilder';
+import { ContextSentences } from './ContextSentences';
 
 export interface WordDetailsProps {
     value: number;
@@ -33,11 +34,6 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
             });
         }
     }
-
-    shouldComponentUpdate(nextProps: WordDetailsProps, nextState: WordDetailsState) {
-        return nextState !== this.state || nextProps.wordInfo !== this.props.wordInfo;
-    }
-
 
     onFormChange(newForms: WordForm[]) {
         this.props.onChange({...this.props.wordInfo, forms: newForms});
@@ -94,6 +90,12 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                 onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
                 newValue={this.state.wordFormNewValue || ''}
                 disabled={this.props.disabled}
+            />
+
+            <h3>Context Sentences</h3>
+            <ContextSentences name='sentences'
+                value={this.props.wordInfo.sentences}
+                onChange={this.onValueChange('sentences')}
             />
         </div>);
     }
