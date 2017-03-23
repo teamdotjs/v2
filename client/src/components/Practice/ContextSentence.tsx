@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { QuestionView } from './QuestionView';
 import {
     Question
 } from '../../reducers/practiceReducer';
 
-export class ContextSentence extends QuestionView {
+export interface ContextSentenceProps {
+    question: Question;
+};
+
+export class ContextSentence extends React.Component<ContextSentenceProps, {}> {
 
     highlightWord(sentence: string, word: string): JSX.Element {
         return <div>{sentence.split(' ').map(cur => {
@@ -28,7 +31,7 @@ export class ContextSentence extends QuestionView {
         </div>;
     }
 
-    renderQuestion(): JSX.Element {
+    render(): JSX.Element {
         const question: Question = this.props.question;
         const answer = question.options[0];
         return <div>

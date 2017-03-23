@@ -16,4 +16,10 @@ class PracticeTest < ActiveSupport::TestCase
     practice = practices(:synonym_mc)
     assert_json_match practice_pattern, practice.as_json
   end
+
+  test 'practice as json custom options' do
+    practice = practices(:synonym_mc)
+    pattern = { id: 907223594, type: 'synonym' }
+    assert_json_match pattern, practice.as_json(only: [:id, :type])
+  end
 end

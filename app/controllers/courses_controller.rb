@@ -20,7 +20,10 @@ class CoursesController < ApplicationController
   #   Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def index
-    render json: Course.all
+    current_user = session[:user_id][:value]
+    render json: Course.includes(:course_students)
+      .where('instructor_id = ? OR course_students.student_id = ?', current_user, current_user)
+      .references(:course_students)
   end
 
   # POST /api/course
@@ -34,7 +37,11 @@ class CoursesController < ApplicationController
   #   Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def create
-    render json: Course.all
+    course_params = { instructor_id: session[:user_id][:value] }
+    title = params[:title]
+    course_params[:title] = title if title
+    course = Course.create(course_params)
+    render json: course
   end
 
   # GET /api/course/:id
@@ -70,7 +77,8 @@ class CoursesController < ApplicationController
   #   Content: { errors: ['Couldn't find Course with 'id'=int'],
   #              error_message: 'Course could not be found' }
   def destroy
-    render json: @course
+    @course.destroy
+    render json: { deleted: true }
   end
 
   # GET /api/course/:id/lesson
@@ -87,7 +95,7 @@ class CoursesController < ApplicationController
   #   Content: { errors: ['Couldn't find Course with 'id'=int'],
   #              error_message: 'Course could not be found' }
   def lessons
-    render json: Course.find(params[:id])
+    render json: Course.find(params[:id]).lessons.as_json(only: [:id, :title])
   end
 
   # PATCH /api/course/:id/lesson
@@ -108,8 +116,24 @@ class CoursesController < ApplicationController
   #   (4) Code: 409
   #   Content: { errors: ['Lesson already added to this course'],
   #              error_message: 'Lesson already added to this course' }
+  #   (5) Code: 409
+  #   Content: { errors: ['Lesson can't be added to a different instructor's course'],
+  #              error_message: 'Lesson can't be added to a different instructor's course' }
   def add_lesson
-    render json: @course
+    begin
+      @course.lessons << Lesson.find(params[:lesson_id])
+    rescue ActiveRecord::RecordInvalid => error
+      message =
+        if error.record.errors['lesson']&.include?('has already been taken')
+          'Lesson already added to this course'
+        else
+          error.record.errors.full_messages[0]
+        end
+      render json: { errors: [message], error_message: message },
+             status: :conflict # 409
+      return
+    end
+    render json: @course.reload.lessons.as_json(only: [:id, :title])
   end
 
   # DELETE /api/course/:id/lesson/:l_id
@@ -127,11 +151,9 @@ class CoursesController < ApplicationController
   #   (3) Code: 404
   #   Content: { errors: ['Couldn't find Course with 'id'=int'],
   #              error_message: 'Course could not be found' }
-  #   (4) Code: 409
-  #   Content: { errors: ['Lesson is not in this course'],
-  #              error_message: 'Lesson is not in this course' }
   def remove_lesson
-    render json: @course
+    @course.lessons.destroy Lesson.find(params[:l_id])
+    render json: @course.reload.lessons.as_json(only: [:id, :title])
   end
 
   # GET /api/course/:id/student
@@ -148,7 +170,7 @@ class CoursesController < ApplicationController
   #   Content: { errors: ['Couldn't find Course with 'id'=int'],
   #              error_message: 'Course could not be found' }
   def students
-    render json: Course.find(params[:id])
+    render json: Course.find(params[:id]).students
   end
 
   # PATCH /api/course/:id/student
@@ -169,8 +191,24 @@ class CoursesController < ApplicationController
   #   (4) Code: 409
   #   Content: { errors: ['Student already added to this course'],
   #              error_message: 'Student already added to this course' }
+  #   (5) Code: 409
+  #   Content: { errors: ['Student can't be the same as instructor'],
+  #              error_message: 'Student can't be the same as instructor' }
   def add_student
-    render json: @course
+    begin
+      @course.students << User.find(params[:student_id])
+    rescue ActiveRecord::RecordInvalid => error
+      message =
+        if error.record.errors['student']&.include?('has already been taken')
+          'Student already added to this course'
+        else
+          error.record.errors.full_messages[0]
+        end
+      render json: { errors: [message], error_message: message },
+             status: :conflict # 409
+      return
+    end
+    render json: @course.reload.students
   end
 
   # DELETE /api/course/:id/student/:s_id
@@ -188,11 +226,9 @@ class CoursesController < ApplicationController
   #   (3) Code: 404
   #   Content: { errors: ['Couldn't find Course with 'id'=int'],
   #              error_message: 'Course could not be found' }
-  #   (4) Code: 409
-  #   Content: { errors: ['Student is not in this course'],
-  #              error_message: 'Student is not in this course' }
   def remove_student
-    render json: @course
+    @course.students.destroy User.find(params[:s_id])
+    render json: @course.reload.students
   end
 
   private

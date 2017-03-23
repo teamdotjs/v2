@@ -15,6 +15,7 @@ function mapStateToProps(state: State, props: any): any  {
         value: state.lesson[props.params.id],
         lessonId: props.params.id,
         practices,
+        errors: state.errors.pins,
     };
 }
 
@@ -22,7 +23,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
     dispatch(loadLesson(ownProps.params.id));
     dispatch(loadPractice(ownProps.params.id));
     return {
-        loadLession: () => {
+        loadLesson: () => {
             dispatch(loadLesson(ownProps.params.id));
             dispatch(loadPractice(ownProps.params.id));
         },
