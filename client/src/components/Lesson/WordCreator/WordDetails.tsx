@@ -51,7 +51,6 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
 
 
     render() {
-        console.log(this.props.wordInfo);
         return (<div style={{paddingLeft: '20px'}}>
             <WordInput hintText='Word'
                     floatingLabelText='Word'
