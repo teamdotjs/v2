@@ -5,7 +5,6 @@ import {logout} from '../actions/user';
 
 function mapStateToProps(state: State): AppBarRightProps {
     return {
-        isLoggedIn: state.session.isLoggedIn,
         userName: state.session.user !== undefined ? state.session.user.name : '',
     };
 }
