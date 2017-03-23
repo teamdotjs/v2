@@ -249,7 +249,10 @@ class CoursesControllerTest < ActionController::TestCase
     login_as_testuser
     get :students, params: { id: courses(:testcourse).id }
     assert_response :ok
-    assert_json_match [seconduser_pattern], @response.body
+    pattern = [{
+      id: 956415904, name: 'Second User', email: 'seconduser@test.com', birthday: '1990-01-01'
+    }]
+    assert_json_match pattern, @response.body
   end
 
   test 'PATCH /api/course/:id/student unauthorized' do
@@ -308,7 +311,10 @@ class CoursesControllerTest < ActionController::TestCase
     delete :remove_student, params: { id: courses(:testcourse).id, s_id: users(:seconduser).id }
     patch :add_student, params: { id: courses(:testcourse).id, student_id: users(:seconduser).id }
     assert_response :ok
-    assert_json_match [seconduser_pattern], @response.body
+    pattern = [{
+      id: 956415904, name: 'Second User', email: 'seconduser@test.com', birthday: '1990-01-01'
+    }]
+    assert_json_match pattern, @response.body
   end
 
   test 'DELETE /api/course/:id/student/:s_id unauthorized' do
@@ -348,7 +354,10 @@ class CoursesControllerTest < ActionController::TestCase
     login_as_testuser
     delete :remove_student, params: { id: courses(:testcourse).id, s_id: users(:testuser).id }
     assert_response :ok
-    assert_json_match [seconduser_pattern], @response.body
+    pattern = [{
+      id: 956415904, name: 'Second User', email: 'seconduser@test.com', birthday: '1990-01-01'
+    }]
+    assert_json_match pattern, @response.body
   end
 
   test 'DELETE /api/course/:id/student/:s_id success' do

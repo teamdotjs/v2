@@ -5,7 +5,6 @@ class UserTest < ActiveSupport::TestCase
   should have_many(:lessons).with_foreign_key('owner_id')
   should have_many(:course_students).dependent(:destroy).with_foreign_key('student_id')
   should have_many(:courses).through(:course_students)
-  should have_many(:grades).dependent(:destroy)
   should validate_presence_of(:name)
   should validate_presence_of(:email)
   should allow_value('test@test.com').for(:email)
@@ -37,7 +36,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'user as json' do
     user = users(:testuser)
-    assert_json_match testuser_pattern, user.as_json
+    assert_json_match user_pattern, user.as_json
   end
 
   test 'user as json custom options' do

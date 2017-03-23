@@ -67,20 +67,11 @@ module ActiveSupport
       }
     end
 
-    def testuser_pattern
+    def user_pattern
       {
         id: 965022582,
         name: 'Test User',
         email: 'testuser@test.com',
-        birthday: '1990-01-01'
-      }
-    end
-
-    def seconduser_pattern
-      {
-        id: 956415904,
-        name: 'Second User',
-        email: 'seconduser@test.com',
         birthday: '1990-01-01'
       }
     end
@@ -90,19 +81,6 @@ module ActiveSupport
         id: 393749808,
         title: 'Test Course',
         instructor_id: 965022582
-      }
-    end
-
-    def grade_pattern
-      {
-        id: 791338413,
-        question: {
-          id: 784075757,
-          prompt: 'What is the synonym of probably?'
-        },
-        value: 'likely',
-        duration: 0,
-        is_correct: true
       }
     end
 

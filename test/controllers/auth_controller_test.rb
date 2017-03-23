@@ -27,7 +27,7 @@ class AuthControllerTest < ActionController::TestCase
   test 'POST /api/auth/login success' do
     post :login, params: { email: 'testuser@test.com', password: 'TestPass' }
     assert_response :ok
-    pattern = { logged_in: true, user: testuser_pattern }
+    pattern = { logged_in: true, user: user_pattern }
     assert_json_match pattern, @response.body
   end
 
@@ -75,7 +75,7 @@ class AuthControllerTest < ActionController::TestCase
     login_as_testuser
     get :signed_in
     assert_response :ok
-    pattern = { logged_in: true, user: testuser_pattern }
+    pattern = { logged_in: true, user: user_pattern }
     assert_json_match pattern, @response.body
   end
 end

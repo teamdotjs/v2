@@ -23,10 +23,8 @@ class RoutesTest < ActionController::TestCase
   should route(:get, '/api/lesson/1/practice/1').to('practices#show', id: 1, p_id: 1)
   should route(:delete, '/api/practice/1').to('practices#destroy', id: 1)
 
-  # grade routes
-  should route(:get, '/api/grade').to('grades#index')
-  should route(:post, '/api/grade').to('grades#create')
-  should route(:get, '/api/grade/course/1').to('grades#course', id: 1)
+  # question routes
+  should route(:post, '/api/question/1/submit_answer').to('questions#submit_answer', id: 1)
 
   # course routes
   should route(:get, '/api/course').to('courses#index')
