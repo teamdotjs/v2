@@ -9,7 +9,7 @@ export class WordInfo {
     synonyms: string[] = [];
     antonyms: string[] = [];
     definition: string = '';
-    context_sentences: string[] = [];
+    sentences: string[] = [];
 
     constructor(word: string) {
         this.word = word;
