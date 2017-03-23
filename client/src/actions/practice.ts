@@ -31,6 +31,7 @@ export function generatePractice(id: number, type: SectionType) {
             dispatch({ type: 'practice_save_local', practice, id });
         })
         .catch((err: Error) => {
+            console.log(err);
             dispatch({
                 type: 'error_pin',
                 pin: PRACTICE_ERROR,
