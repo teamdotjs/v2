@@ -18,6 +18,7 @@ export interface WordCreatorProps {
 export interface WordCreatorState {
     currentWordIndex: number;
     inputText: string;
+    error?: string;
 }
 
 export class WordCreator extends React.Component<WordCreatorProps, WordCreatorState> {
@@ -46,13 +47,13 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
 
     onWordSelect(_: any, i: number) {
         this.setState({
-            currentWordIndex: i
+            currentWordIndex: i,
+            error: undefined,
         });
     }
 
     isValidWord(word: string): boolean {
         return word !== '' &&
-            word.indexOf(' ') < 0 && // TODO regex
             this.props.value.find((w: WordInfo) => w.word === word) === undefined;
     }
 
@@ -64,8 +65,17 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
     }
 
     onNewWordKeyPress(ev: any) {
-        if (ev.keyCode !== 13 || !this.isValidWord(this.state.inputText)) {
-            // TODO, show error
+        const invalid = !this.isValidWord(this.state.inputText);
+        if (invalid) {
+            const exists = this.props.value.find((w: WordInfo) => w.word === this.state.inputText);
+            if (exists) {
+                this.setState({
+                    error: `${exists.word.charAt(0).toUpperCase() + exists.word.slice(1)} is already in this lesson`,
+                });
+                return true;
+            }
+        }
+        if (ev.keyCode !== 13 || invalid) {
             return true;
         }
 
@@ -74,7 +84,8 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         ]);
 
         this.setState({
-            inputText: ''
+            inputText: '',
+            error: undefined,
         }, () => {
             this.props.onChange(wordInfos);
         });
@@ -83,7 +94,8 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
 
     onNewWordEdit(ev: any) {
         this.setState({
-            inputText: ev.target.value
+            inputText: ev.target.value,
+            error: undefined,
         });
     }
 
@@ -111,13 +123,14 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
         return (
             <div style={{display: 'flex'}}>
                 <div style={{width: '30%', borderRight: '1px solid lightgray'}}>
-                        <WordInput  style={{width: '100%', marginRight: '20px'}}
-                                    floatingLabelText='New Word'
-                                    underlineShow={false}
-                                    onKeyDown={this.onNewWordKeyPress.bind(this)}
-                                    value={this.state.inputText}
-                                    disabled={this.props.disabled}
-                                    onChange={this.onNewWordEdit.bind(this)}/>
+                    <WordInput  style={{width: '100%', marginRight: '20px'}}
+                                errorText={this.state.error}
+                                floatingLabelText='New Word'
+                                underlineShow={false}
+                                onKeyDown={this.onNewWordKeyPress.bind(this)}
+                                value={this.state.inputText}
+                                disabled={this.props.disabled}
+                                onChange={this.onNewWordEdit.bind(this)}/>
                     <SelectableList value={this.state.currentWordIndex}
                                     onChange={this.onWordSelect.bind(this)} >
                         {wordItems}

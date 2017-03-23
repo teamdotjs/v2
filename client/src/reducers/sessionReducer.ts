@@ -1,7 +1,15 @@
 export interface SessionState {
     isLoggedIn: boolean;
     pending?: boolean;
+    user?: User;
     error?: string;
+}
+
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    bDay: Date;
 }
 
 export const sessionReducer = (state: SessionState, action: any): SessionState => {
@@ -11,6 +19,7 @@ export const sessionReducer = (state: SessionState, action: any): SessionState =
             return {
                 pending: false,
                 isLoggedIn: true,
+                user: action.user,
             };
         case 'login_request':
             return {
