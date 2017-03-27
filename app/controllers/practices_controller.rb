@@ -26,7 +26,11 @@ class PracticesController < ApplicationController
   #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
   #              error_message: 'Lesson could not be found' }
   def index
-    render json: Lesson.find(params[:id]).practices
+    practices = Lesson.find(params[:id]).practices.as_json
+    practices.each do |practice|
+      practice['questions'].each { |q| q['options'].shuffle! }
+    end
+    render json: practices
   end
 
   # GET /api/lesson/:id/practice/:p_id
@@ -43,7 +47,9 @@ class PracticesController < ApplicationController
   #   Content: { errors: ['Couldn't find Practice with 'id'=int'],
   #              error_message: 'Practice could not be found' }
   def show
-    render json: Practice.find(params[:p_id])
+    practice = Practice.find(params[:p_id]).as_json
+    practice['questions'].each { |q| q['options'].shuffle! }
+    render json: practice
   end
 
   # POST /api/lesson/:id/practice/
@@ -103,7 +109,10 @@ class PracticesController < ApplicationController
       practice.attributes = { questions_attributes: questions_attributes }
       practice.save
     end
-    render json: practice.reload unless json_rendered
+    return if json_rendered
+    practice = practice.reload.as_json
+    practice['questions'].each { |q| q['options'].shuffle! }
+    render json: practice
   end
 
   # DELETE /api/practice/:id
