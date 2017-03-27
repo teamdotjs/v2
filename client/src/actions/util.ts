@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import { ErrorResponse } from '../reducers/errorReducer';
+import { LoadingState } from '../reducers/loadingReducer';
 
 export function errorCheck(response: Response): any {
     return response.json()
@@ -24,4 +25,30 @@ export function throttle(fn: () => void, threshhold: number) {
             pending = false;
         }, threshhold);
     }
+}
+
+export const createAction = (namespace: string) => (payload: any) => (dispatch: any) => {
+    dispatch({
+        type: 'LOADING',
+        namespace,
+        isLoading: false,
+        action: payload.type,
+    });
+    return dispatch(payload);
+};
+
+export const createLoading = (namespace: string) => (action: string) => (dispatch: any) => {
+    return dispatch({
+        type: 'LOADING',
+        namespace,
+        isLoading: true,
+        action,
+    });
+};
+
+export function isLoading(namespace: string, state: LoadingState): boolean {
+    if (state[namespace] === undefined) return false;
+    return Object.keys(state[namespace]).map((key: string) => {
+        return state[namespace][key];
+    }).reduce((acc: boolean, cur: boolean) => acc || cur, false);
 }

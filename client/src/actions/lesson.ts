@@ -1,10 +1,15 @@
 import 'whatwg-fetch';
 import {
     errorCheck,
-    throttle
+    throttle,
+    createAction,
+    createLoading,
 } from './util';
 import { push } from 'react-router-redux';
-import { Lesson } from '../reducers/lessonReducer';
+import {
+    Lesson,
+    LESSON_LOAD_SUCCESS,
+} from '../reducers/lessonReducer';
 
 export interface CreateLessonPending {
     type: 'create_lesson_pending';
@@ -24,11 +29,12 @@ const headers = {
     'Content-Type': 'application/json'
 };
 
+const lessonDispatch = createAction('LESSON');
+const loading = createLoading('LESSON');
+
 export function loadLessons() {
     return (dispatch: any) => {
-        dispatch({
-            type: 'load_lessons_pending'
-        });
+        dispatch(loading(LESSON_LOAD_SUCCESS));
         fetch('/api/lesson', {
             headers,
             credentials: 'same-origin'
@@ -36,10 +42,10 @@ export function loadLessons() {
         .then(errorCheck)
         .then((res: any[]) => {
             res.forEach(l => l.wordinfos.forEach((w: any) => w.id = undefined));
-            dispatch({
-                type: 'load_all_lesssons_success',
+            dispatch(lessonDispatch({
+                type: LESSON_LOAD_SUCCESS,
                 lessons: res as Lesson[]
-            });
+            }));
         })
         .catch((err: Error) => {
             dispatch({
