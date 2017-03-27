@@ -1,7 +1,9 @@
 import 'whatwg-fetch';
 import {
     errorCheck,
-    throttle
+    throttle,
+    createAction,
+    createLoading,
 } from './util';
 import { push } from 'react-router-redux';
 import { Lesson } from '../reducers/lessonReducer';
@@ -25,21 +27,25 @@ const headers = {
     'Content-Type': 'application/json'
 };
 
+const lessonDispatch = createAction('LESSON');
+const loading = createLoading('LESSON');
+
 export function loadLessons() {
     return (dispatch: any) => {
         dispatch({
             type: 'load_lesson_summaries_pending'
         });
+        dispatch(loading('load_lesson_summaries_success'));
         fetch('/api/lesson', {
             headers,
             credentials: 'same-origin'
         })
         .then(errorCheck)
         .then((res: LessonSummary[]) => {
-            dispatch({
+            dispatch(lessonDispatch({
                 type: 'load_lesson_summaries_success',
                 lessonSummaries: res
-            });
+            }));
         })
         .catch((err: Error) => {
             dispatch({
