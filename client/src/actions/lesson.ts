@@ -58,19 +58,17 @@ export function loadLessons() {
 
 export function loadLesson(id: number) {
     return (dispatch: any) => {
-        dispatch({
-            type: 'load_lesson_pending'
-        });
+        dispatch(loading('save_lesson_local'));
         fetch('/api/lesson/' + id, {
             headers,
             credentials: 'same-origin'
         })
         .then(errorCheck)
         .then((res: Lesson) => {
-            dispatch({
+            dispatch(lessonDispatch({
                 type: 'save_lesson_local',
                 lesson: res
-            });
+            }));
         })
         .catch((err: Error) => {
             dispatch({
@@ -83,9 +81,7 @@ export function loadLesson(id: number) {
 
 export function createLesson() {
     return (dispatch: any) => {
-        dispatch({
-            type: 'create_lesson_pending'
-        });
+        dispatch(loading('create_lesson_success'));
         fetch('/api/lesson', {
             method: 'POST',
             headers,
@@ -93,10 +89,10 @@ export function createLesson() {
         })
         .then(errorCheck)
         .then((res: Lesson) => {
-            dispatch({
+            dispatch(lessonDispatch({
                 type: 'create_lesson_success',
                 lesson: res
-            });
+            }));
             dispatch(push('/lesson/' + res.id));
         })
         .catch((err: Error) => {
@@ -117,9 +113,7 @@ export function saveLesson(l: Lesson) {
         });
 
         throttle(() => {
-            dispatch({
-                type: 'save_lesson_pending'
-            });
+            dispatch(loading('save_lesson_success'));
             fetch('/api/lesson/' + l.id, {
                 method: 'PATCH',
                 headers,
@@ -128,10 +122,10 @@ export function saveLesson(l: Lesson) {
             })
             .then(errorCheck)
             .then(( res: Lesson) => {
-                dispatch({
+                dispatch(lessonDispatch({
                     type: 'save_lesson_success',
                     id: res.id
-                });
+                }));
             })
             .catch((err: Error) => {
                 dispatch({
@@ -147,6 +141,7 @@ export function deleteLesson(id: number) {
 
     return (dispatch: any) => {
         dispatch({ type: 'lesson_delete', id });
+        dispatch(loading('lesson_delete_success'));
         fetch(`/api/lesson/${id}`, {
             headers,
             credentials: 'same-origin',
@@ -154,7 +149,7 @@ export function deleteLesson(id: number) {
         })
         .then(errorCheck)
         .then(() => {
-            dispatch({ type: 'lesson_delete_success', id });
+            dispatch(lessonDispatch({ type: 'lesson_delete_success', id }));
         })
         .catch((err: Error) => {
             dispatch({
