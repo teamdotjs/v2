@@ -10,6 +10,7 @@ export class WordInfo {
     antonyms: string[] = [];
     definition: string = '';
     sentences: string[] = [];
+    part_of_speech: string = '';
 
     constructor(word: string) {
         this.word = word;
@@ -24,6 +25,8 @@ export interface Lesson {
 }
 
 export type LessonState = {[id: number]: Lesson};
+
+export const parts_of_speech = ['noun', 'verb', 'adjective', 'adverb'];
 
 export const lessonReducer = (state: LessonState, action: any): LessonState => {
     if (state === undefined) return {};
