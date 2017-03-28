@@ -26,7 +26,7 @@ export interface Lesson {
 
 export type LessonState = {[id: number]: Lesson};
 
-export const parts_of_speech = ['noun', 'verb', 'adjective', 'adverb'];
+export const parts_of_speech = ['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection', 'determiner'];
 
 export const lessonReducer = (state: LessonState, action: any): LessonState => {
     if (state === undefined) return {};
