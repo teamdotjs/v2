@@ -6,12 +6,12 @@ import {
 } from 'material-ui';
 
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import {Lesson} from '../reducers/lessonReducer';
+import {LessonSummary} from '../reducers/lessonSummaryReducer';
 import Page from './util/Page';
 import * as React from 'react';
 
 export interface HomeProps {
-    lessons?: Lesson[];
+    lessons?: LessonSummary[];
     onCreateLessonClick?: () => void;
     onClickLesson?: (id: number) => void;
 }
