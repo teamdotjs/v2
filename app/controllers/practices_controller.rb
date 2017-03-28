@@ -136,11 +136,11 @@ class PracticesController < ApplicationController
       words = wordinfo.forms.map(&:word)
       words << wordinfo.word
       answer = ''
-      words.each { |word| answer = word if sentence.include? word }
+      words.each { |word| answer = word if sentence.downcase.include? word.downcase }
       if answer == ''
         return [{ error_message: "#{wordinfo.word} has an invalid context sentence" }]
       end
-      sentence.sub!(answer, '__________') # replace answer with underscores
+      sentence.sub!(/#{Regexp.quote(answer)}/i, '__________') # replace answer with underscores
       questions_attributes << {
         type: 'fitb',
         prompts_attributes: [{ text: sentence }],
