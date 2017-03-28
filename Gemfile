@@ -2,13 +2,13 @@ source 'https://rubygems.org'
 ruby '2.3.3'
 
 # Only use Active Record, Active Support, and Railties from rails
-gem 'activerecord', '~> 5.0.0', '>= 5.0.1'
-gem 'activesupport', '~> 5.0.0', '>= 5.0.1'
-gem 'railties', '~> 5.0.0', '>= 5.0.1'
+gem 'activerecord', '~> 5.0.0', '>= 5.0.2'
+gem 'activesupport', '~> 5.0.0', '>= 5.0.2'
+gem 'railties', '~> 5.0.0', '>= 5.0.2'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.8.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors', '~> 0.4.0'
+gem 'rack-cors', '~> 0.4.1'
 # Ruby linter
 gem 'rubocop', '~> 0.47'
 # Hash passwords
@@ -25,14 +25,14 @@ group :test do
   # One-liners that test common rails functionality
   gem 'shoulda', '~> 3.5'
   # Code coverage
-  gem 'simplecov', '~> 0.12.0'
+  gem 'simplecov', '~> 0.14.1'
   # Assert json objects match
   gem 'json_expressions', '~> 0.8.3'
 end
 
 group :production do
   # Use postgresql as the database for Active Record
-  gem 'pg', '~> 0.19'
+  gem 'pg', '~> 0.20'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

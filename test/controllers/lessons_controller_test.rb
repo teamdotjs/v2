@@ -12,7 +12,10 @@ class LessonsControllerTest < ActionController::TestCase
     login_as_testuser
     get :index
     assert_response :ok
-    assert_json_match [lesson_pattern], @response.body
+    pattern = lesson_pattern
+    pattern.delete(:wordinfos)
+    pattern.delete(:practices)
+    assert_json_match [pattern], @response.body
   end
 
   test 'GET /api/lesson/:id unauthorized' do
