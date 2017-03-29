@@ -3,6 +3,8 @@ export interface WordForm {
     part_of_speech: string;
 }
 
+export type PartType = 'noun' | 'verb' | 'adjective' | 'adverb' | 'pronoun' | 'preposition' | 'conjunction' | 'interjection' | 'determiner';
+
 export class WordInfo {
     word: string;
     forms: WordForm[] = [];
@@ -10,7 +12,7 @@ export class WordInfo {
     antonyms: string[] = [];
     definition: string = '';
     sentences: string[] = [];
-    part_of_speech: string = '';
+    part_of_speech: PartType;
 
     constructor(word: string) {
         this.word = word;
@@ -26,7 +28,7 @@ export interface Lesson {
 
 export type LessonState = {[id: number]: Lesson};
 
-export const parts_of_speech = ['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection', 'determiner'];
+export const parts_of_speech: PartType[] = ['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection', 'determiner'];
 
 export const lessonReducer = (state: LessonState, action: any): LessonState => {
     if (state === undefined) return {};

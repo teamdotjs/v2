@@ -4,7 +4,7 @@ import {
     SelectField,
     MenuItem
 } from 'material-ui';
-import { WordInfo, WordForm, parts_of_speech } from '../../../reducers/lessonReducer';
+import { WordInfo, WordForm, PartType, parts_of_speech } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
 import WordFormSelector from './WordFormSelector';
 import { WordInput } from '../../util/WordInput';
@@ -51,9 +51,8 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
             this.props.onChange({...this.props.wordInfo, [field as string]: ev.target.value});
     }
 
-    changeHandleSelection = (_a: any, _b: any, value: string) => {
-        this.props.wordInfo.part_of_speech = value;
-        this.props.onChange(this.props.wordInfo);
+    changeHandleSelection = (_a: any, _b: any, value: PartType) => {
+        this.props.onChange({...this.props.wordInfo, 'part_of_speech': value});
     }
 
     render() {
