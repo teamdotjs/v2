@@ -1,5 +1,6 @@
 import { SessionState, sessionReducer } from './sessionReducer';
 import { LessonState, lessonReducer } from './lessonReducer';
+import { LessonSummaryState, lessonSummaryReducer } from './lessonSummaryReducer';
 import { RegistrationState, registrationReducer } from './registrationReducer';
 import { PracticeState, practiceReducer } from './practiceReducer';
 import { ErrorState, errorReducer } from './errorReducer';
@@ -12,6 +13,7 @@ export interface State {
     registration: RegistrationState;
     routing: any;
     lesson: LessonState;
+    lessonSummary: LessonSummaryState;
     practice: PracticeState;
 }
 
@@ -21,5 +23,6 @@ export const app = combineReducers({
     registration: registrationReducer,
     routing: routerReducer,
     lesson: lessonReducer,
+    lessonSummary: lessonSummaryReducer,
     practice: practiceReducer
 });

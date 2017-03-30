@@ -11,7 +11,8 @@ class LessonsController < ApplicationController
   #     synonyms: [''],
   #     antonyms: [''],
   #     sentences: ['']
-  #   } }] }
+  #   } }],
+  #   practices: [int] }
   before_action :signed_in?
   before_action :correct_user?, only: [:update, :destroy]
 
@@ -21,12 +22,13 @@ class LessonsController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: [{ lesson }]
+  #   Content: [{ id: int, title: '' }]
   # Error response:
   #   Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def index
     render json: Lesson.where(owner_id: session[:user_id][:value])
+      .as_json(except: [:owner_id, :created_at, :updated_at])
   end
 
   # POST /api/lesson
