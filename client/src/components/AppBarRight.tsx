@@ -40,6 +40,13 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState 
     });
   };
 
+ handleLogoutClose = () => {
+     this.setState({
+         open: false,
+     });
+     this.props.onLogoutClick ? this.props.onLogoutClick() : '';
+ };
+
   render() {
       let loggedIn = (
         <div style={{marginTop: '6px'}}>
@@ -58,7 +65,7 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState 
             <Menu>
                 <MenuItem primaryText='User Profile' />
                 <MenuItem primaryText='Sign out'
-                onTouchTap={this.props.onLogoutClick} />
+                onTouchTap={this.handleLogoutClose} />
             </Menu>
             </Popover>
         </div>
