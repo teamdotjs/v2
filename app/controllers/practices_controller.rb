@@ -26,7 +26,9 @@ class PracticesController < ApplicationController
   #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
   #              error_message: 'Lesson could not be found' }
   def index
-    practices = Lesson.find(params[:id]).practices.as_json
+    practices = Lesson.find(params[:id]).practices
+                      .includes(questions: [:prompts, :options])
+                      .references(:questions).as_json
     practices.each do |practice|
       practice['questions'].each { |q| q['options'].shuffle! }
     end
@@ -47,7 +49,9 @@ class PracticesController < ApplicationController
   #   Content: { errors: ['Couldn't find Practice with 'id'=int'],
   #              error_message: 'Practice could not be found' }
   def show
-    practice = Practice.find(params[:p_id]).as_json
+    practice = Practice.includes(questions: [:prompts, :options])
+                       .references(:questions)
+                       .find(params[:p_id]).as_json
     practice['questions'].each { |q| q['options'].shuffle! }
     render json: practice
   end
@@ -94,9 +98,9 @@ class PracticesController < ApplicationController
 
       # question generation
       questions_attributes = case type
-                             when 'sentence' then generate_sentence_questions @lesson
-                             when 'definition' then generate_definition_questions @lesson
-                             when 'synonym' then generate_synonym_questions @lesson
+                             when 'sentence' then generate_sentence_questions
+                             when 'definition' then generate_definition_questions
+                             when 'synonym' then generate_synonym_questions
                              end
       # question generation errors
       if questions_attributes[0].key?(:error_message)
@@ -110,7 +114,8 @@ class PracticesController < ApplicationController
       practice.save
     end
     return if json_rendered
-    practice = practice.reload.as_json
+    practice = Practice.includes(questions: [:prompts, :options, :grades])
+                       .references(:questions).find(practice.id).as_json
     practice['questions'].each { |q| q['options'].shuffle! }
     render json: practice
   end
@@ -135,7 +140,10 @@ class PracticesController < ApplicationController
 
   private
 
-  def generate_sentence_questions(lesson)
+  def generate_sentence_questions
+    lesson = Lesson.includes(wordinfos: [:forms, :sentences])
+                   .references(:wordinfos)
+                   .find(params[:id])
     questions_attributes = []
     lesson.wordinfos.each do |wordinfo|
       if wordinfo.sentences.empty?
@@ -159,15 +167,15 @@ class PracticesController < ApplicationController
     questions_attributes
   end
 
-  def generate_definition_questions(lesson)
-    if lesson.wordinfos.length < 4
+  def generate_definition_questions
+    if @lesson.wordinfos.length < 4
       return [{
         error_message: 'There are not enough words in this lesson to generate a practice'
       }]
     end
     questions_attributes = []
-    words = lesson.wordinfos.map(&:word)
-    lesson.wordinfos.each do |wordinfo|
+    words = @lesson.wordinfos.map(&:word)
+    @lesson.wordinfos.each do |wordinfo|
       if wordinfo.definition.blank?
         return [{ error_message: "#{wordinfo.word} does not have a definition" }]
       end
@@ -187,7 +195,8 @@ class PracticesController < ApplicationController
     questions_attributes
   end
 
-  def generate_synonym_questions(lesson)
+  def generate_synonym_questions
+    lesson = Lesson.includes(wordinfos: [:synonyms]).references(:wordinfos).find(params[:id])
     if lesson.wordinfos.length < 4
       return [{
         error_message: 'There are not enough words in this lesson to generate a practice'
@@ -226,7 +235,9 @@ class PracticesController < ApplicationController
   end
 
   def practice_correct_user?
-    @practice = Practice.find(params[:id])
+    @practice = Practice.includes(questions: [:prompts, :options, :grades])
+                        .references(:questions)
+                        .find(params[:id])
     return if @practice.lesson.owner_id == session[:user_id][:value]
     render json: { errors: ['Forbidden'], error_message: 'Forbidden' }, status: :forbidden # 403
   end
