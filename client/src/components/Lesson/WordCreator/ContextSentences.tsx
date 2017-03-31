@@ -2,19 +2,22 @@ import * as React from 'react';
 import {
     TextField
 } from 'material-ui';
-
+import{WordInfo, WordForm} from '../../../reducers/lessonReducer';
 import {
     ChangeEvent
 } from '../../util/ChangeEvent';
 
 export interface ContextSentencesProps {
     name: string;
+    word: WordInfo;
     value: string[];
     onChange: (value: string[]) => void;
+    onChangeError: (error: string[]) => void;
 }
 
 export interface ContextSentencesState {
     value: string[];
+    error: string[];
 }
 
 export class ContextSentences extends React.Component<ContextSentencesProps, ContextSentencesState> {
@@ -26,6 +29,10 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
 
     constructor(props: ContextSentencesProps) {
         super(props);
+        this.state = {
+            value: ([] as string[]),
+            error: ([] as string[]),
+        };
     }
 
     textFieldonChange(i: number) {
@@ -39,13 +46,36 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
             newVal = newVal.filter((sentence, i) =>
                 sentence !== '' || i === this.props.value.length);
             this.props.onChange(newVal);
+            if (ev.target) {
+                const search = ([] as number[]);
+                if (newVal[i] !== undefined) {
+                    search.push(newVal[i].search(this.props.word.word));
+                    this.props.word.forms.forEach((item: WordForm) => {search.push(newVal[i].search(item.word)); });
+                    if ( search.find((value: number) => value !== -1 ) !== undefined) {
+                        const error = Object.assign(this.state.error, {[i]: '',
+                        });
+                        this.props.onChangeError(error);
+                    }
+                    else {
+                        const error = Object.assign(this.state.error,
+                        {[i]: 'Sentence does not contain: '.concat(this.props.word.word).concat(' or one of its forms')
+                            });
+                        this.props.onChangeError(error);
+                    }
+                }
+                else {
+                    const error = Object.assign(this.state.error, {[i]: ''
+                        });
+                    this.props.onChangeError(error);
+                }
+            }
             return true;
         };
     }
 
     render() {
         const inputs = this.props.value.concat(['']).map((sentence, i) =>
-            <TextField fullWidth={true} name={'' + i} value={sentence} onChange={this.textFieldonChange(i)} key={i} hintText='New Context Sentence' />
+            <TextField fullWidth={true} name={'' + i} value={sentence} onChange={this.textFieldonChange(i)} key={i} hintText='New Context Sentence' errorText={(this.state.error[i] !== undefined) ? this.state.error[i] : ''}/>
         );
         return (
             <div>
