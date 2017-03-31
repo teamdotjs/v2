@@ -11,7 +11,6 @@ function mapStateToProps(state: State, props: any): any  {
         state.lesson[props.params.id].practices.map((id: number) => state.practice[id])
                                                .filter(p => p !== undefined);
     return {
-        notFound: !(props.params.id in state.lesson),
         value: state.lesson[props.params.id],
         lessonId: props.params.id,
         practices,

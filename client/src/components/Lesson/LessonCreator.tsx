@@ -20,7 +20,6 @@ export interface LessonCreatorProps {
     generatePractice: (type: SectionType) => void;
     deletePractice: (id: number) => void;
     value?: Lesson;
-    notFound: boolean;
     practices?: Practice[];
     errors: {
         [id: string]: string;
@@ -77,7 +76,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
         const disabledMessage = hasPractices ?
             <div style={disabledMessageStyle}> You cannot edit words while practices exist</div> : undefined;
 
-        if (this.props.notFound) {
+        if (this.props.value === undefined) {
             content = 'Lesson Not Found';
         } else {
             content = (
