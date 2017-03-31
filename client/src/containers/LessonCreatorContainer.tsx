@@ -23,15 +23,8 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
     dispatch(loadLesson(ownProps.params.id));
     dispatch(loadPractice(ownProps.params.id));
     return {
-        loadLesson: () => {
-            dispatch(loadLesson(ownProps.params.id));
-            dispatch(loadPractice(ownProps.params.id));
-        },
         onChange: (lesson: Lesson) => {
             dispatch(saveLesson(lesson));
-        },
-        getPractice: (lessonId: number) => {
-            dispatch(loadPractice(lessonId));
         },
         generatePractice: (type: SectionType) => {
             dispatch(generatePractice(ownProps.params.id, type));

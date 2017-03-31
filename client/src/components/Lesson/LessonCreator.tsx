@@ -17,8 +17,6 @@ import {
 export interface LessonCreatorProps {
     children?: Element[];
     onChange?: (l: Lesson) => void;
-    loadLesson?: () => void;
-    getPractice?: (id: number) => void;
     generatePractice: (type: SectionType) => void;
     deletePractice: (id: number) => void;
     value?: Lesson;
@@ -58,14 +56,6 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
 
     get value(): Lesson {
         return this.state;
-    }
-
-    componentWillMount() {
-        if (this.props.notFound) {
-            if (this.props.loadLesson !== undefined) {
-                this.props.loadLesson();
-            }
-        }
     }
 
     componentStateChange() {
