@@ -113,6 +113,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
 
             <h3>Context Sentences</h3>
             <ContextSentences name='sentences'
+                disabled={this.props.disabled}
                 value={this.props.wordInfo.sentences}
                 onChange={this.onValueChange('sentences')}
             />

@@ -11,6 +11,7 @@ export interface ContextSentencesProps {
     name: string;
     value: string[];
     onChange: (value: string[]) => void;
+    disabled?: boolean;
 }
 
 export interface ContextSentencesState {
@@ -44,8 +45,15 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
     }
 
     render() {
-        const inputs = this.props.value.concat(['']).map((sentence, i) =>
-            <TextField fullWidth={true} name={'' + i} value={sentence} onChange={this.textFieldonChange(i)} key={i} hintText='New Context Sentence' />
+        const sentences = this.props.disabled ? this.props.value : this.props.value.concat(['']);
+        const inputs = sentences.map((sentence, i) =>
+            <TextField fullWidth={true}
+                name={'' + i}
+                value={sentence}
+                onChange={this.textFieldonChange(i)}
+                key={i}
+                hintText='New Context Sentence'
+                disabled={this.props.disabled} />
         );
         return (
             <div>
