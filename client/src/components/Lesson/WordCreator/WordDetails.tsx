@@ -98,7 +98,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                 roots={this.props.wordInfo.roots}
                 onChange={this.onRootChange.bind(this)}
                 onNewValueChange={ (val: string) => this.setState({ wordRootNewValue: val }) }
-                newValue={this.state.wordRootNewValue || ''}
+                newValue={this.state.wordRootNewValue}
                 disabled={this.props.disabled}
             />
 
@@ -107,7 +107,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                 forms={this.props.wordInfo.forms}
                 onChange={this.onFormChange.bind(this)}
                 onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
-                newValue={this.state.wordFormNewValue || ''}
+                newValue={this.state.wordFormNewValue}
                 disabled={this.props.disabled}
             />
 
