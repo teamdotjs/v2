@@ -2,9 +2,10 @@ import * as React from 'react';
 import {
     TextField
 } from 'material-ui';
-import { WordInfo, WordForm } from '../../../reducers/lessonReducer';
+import { WordInfo, WordForm, WordRoot } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
 import WordFormSelector from './WordFormSelector';
+import WordRootSelector from './WordRootSelector';
 import { WordInput } from '../../util/WordInput';
 import { TagBuilder } from '../../util/TagBuilder';
 import { ContextSentences } from './ContextSentences';
@@ -18,25 +19,34 @@ export interface WordDetailsProps {
 
 export interface WordDetailsState {
     wordFormNewValue: string;
+    wordRootNewValue: string;
 }
 
 export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsState> {
 
     constructor(props: WordDetailsProps) {
         super(props);
-        this.state = {wordFormNewValue: ''};
+        this.state = {
+            wordFormNewValue: '',
+            wordRootNewValue: ''
+        };
     }
 
     componentWillReceiveProps(newProps: WordDetailsProps) {
         if (this.props.value !== newProps.value) {
             this.setState({
-                wordFormNewValue: ''
+                wordFormNewValue: '',
+                wordRootNewValue: ''
             });
         }
     }
 
     onFormChange(newForms: WordForm[]) {
         this.props.onChange({...this.props.wordInfo, forms: newForms});
+    }
+
+    onRootChange(newRoots: WordRoot[]) {
+        this.props.onChange({...this.props.wordInfo, roots: newRoots});
     }
 
     onValueChange<K extends keyof WordInfo>(field: K) {
@@ -82,6 +92,15 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                     values={this.props.wordInfo.antonyms}
                     hintText='Antonyms'
                     disabled={this.props.disabled}/>
+
+            <h3>Roots</h3>
+            <WordRootSelector
+                roots={this.props.wordInfo.roots}
+                onChange={this.onRootChange.bind(this)}
+                onNewValueChange={ (val: string) => this.setState({ wordRootNewValue: val }) }
+                newValue={this.state.wordRootNewValue || ''}
+                disabled={this.props.disabled}
+            />
 
             <h3>Forms</h3>
             <WordFormSelector
