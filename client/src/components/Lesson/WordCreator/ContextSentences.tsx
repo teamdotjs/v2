@@ -9,7 +9,7 @@ import {
 
 export interface ContextSentencesProps {
     name: string;
-    word: WordInfo;
+    wordInfo: WordInfo;
     value: string[];
     onChange: (value: string[]) => void;
     onChangeError: (error: string[]) => void;
@@ -47,18 +47,18 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
                 sentence !== '' || i === this.props.value.length);
             this.props.onChange(newVal);
             if (ev.target) {
-                const search = ([] as number[]);
+                const result = ([] as number[]);
                 if (newVal[i] !== undefined) {
-                    search.push(newVal[i].search(this.props.word.word));
-                    this.props.word.forms.forEach((item: WordForm) => {search.push(newVal[i].search(item.word)); });
-                    if ( search.find((value: number) => value !== -1 ) !== undefined) {
+                    result.push(newVal[i].search(this.props.wordInfo.word));
+                    this.props.wordInfo.forms.forEach((item: WordForm) => {result.push(newVal[i].search(item.word)); });
+                    if ( result.find((value: number) => value !== -1 ) !== undefined) {
                         const error = Object.assign(this.state.error, {[i]: '',
                         });
                         this.props.onChangeError(error);
                     }
                     else {
                         const error = Object.assign(this.state.error,
-                        {[i]: 'Sentence does not contain: '.concat(this.props.word.word).concat(' or one of its forms')
+                        {[i]: 'Sentence does not contain: '.concat(this.props.wordInfo.word).concat(' or one of its forms')
                             });
                         this.props.onChangeError(error);
                     }

@@ -96,7 +96,7 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
             <ContextSentences name='sentences'
                 value={this.props.wordInfo.sentences}
                 onChange={this.onValueChange('sentences')}
-                word={this.props.wordInfo}
+                wordInfo={this.props.wordInfo}
                 onChangeError={this.onValueChange}
             />
         </div>);
