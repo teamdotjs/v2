@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {
-    TextField
+    TextField,
+    SelectField,
+    MenuItem
 } from 'material-ui';
-import { WordInfo, WordForm, WordRoot } from '../../../reducers/lessonReducer';
+import { WordInfo, WordForm, PartType, parts_of_speech, WordRoot } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
 import WordFormSelector from './WordFormSelector';
 import WordRootSelector from './WordRootSelector';
@@ -59,16 +61,32 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
             this.props.onChange({...this.props.wordInfo, [field as string]: ev.target.value});
     }
 
+    changeHandleSelection = (_a: any, _b: any, value: PartType) => {
+        this.props.onChange({...this.props.wordInfo, 'part_of_speech': value});
+    }
 
     render() {
         return (<div style={{paddingLeft: '20px'}}>
-            <WordInput hintText='Word'
-                    floatingLabelText='Word'
-                    name='word'
-                    value={this.props.wordInfo.word}
-                    disabled={this.props.disabled}
-                    onChange={this.onValueEvent('word')}
-                />
+            <div style={{ display: 'flex' }}>
+                <WordInput hintText='Word'
+                        floatingLabelText='Word'
+                        name='word'
+                        value={this.props.wordInfo.word}
+                        style={{ width: '65%' }}
+                        disabled={this.props.disabled}
+                        onChange={this.onValueEvent('word')}
+                    />
+
+                <SelectField
+                    style={{ width: '30%', margin: '24px 0 0 5%' }}
+                    value={this.props.wordInfo.part_of_speech}
+                    onChange={this.changeHandleSelection}
+                    disabled={this.props.disabled}>
+                    {parts_of_speech.map(part =>
+                        <MenuItem key={part + this.props.wordInfo.word} value={part} primaryText={part}/>
+                    )}
+                </SelectField>
+            </div>
 
             <TextField hintText='Definition'
                     floatingLabelText='Definition'

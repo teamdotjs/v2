@@ -34,9 +34,9 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
     };
 }
 
-const HomeContainer = connect(
+const LessonCreatorContainer = connect(
     mapStateToProps,
     mapDispatchToProps
 )(LessonCreator);
 
-export default HomeContainer;
+export default LessonCreatorContainer;
