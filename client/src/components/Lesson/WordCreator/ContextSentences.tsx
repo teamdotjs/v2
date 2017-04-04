@@ -30,8 +30,8 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
     constructor(props: ContextSentencesProps) {
         super(props);
         this.state = {
-            value: ([] as string[]),
-            error: ([] as string[]),
+            value: [],
+            error: [],
         };
     }
 
@@ -47,7 +47,7 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
                 sentence !== '' || i === this.props.value.length);
             this.props.onChange(newVal);
             if (ev.target) {
-                const result = ([] as number[]);
+                const result: number[] = [];
                 if (newVal[i] !== undefined) {
                     result.push(newVal[i].search(this.props.wordInfo.word));
                     this.props.wordInfo.forms.forEach((item: WordForm) => {result.push(newVal[i].search(item.word)); });
