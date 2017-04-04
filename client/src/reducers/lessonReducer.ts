@@ -3,6 +3,11 @@ export interface WordForm {
     part_of_speech: string;
 }
 
+export interface WordRoot {
+    root: string;
+    meaning: string;
+}
+
 export class WordInfo {
     word: string;
     forms: WordForm[] = [];
@@ -10,6 +15,7 @@ export class WordInfo {
     antonyms: string[] = [];
     definition: string = '';
     sentences: string[] = [];
+    roots: WordRoot[] = [];
 
     constructor(word: string) {
         this.word = word;
