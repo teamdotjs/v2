@@ -8,8 +8,11 @@ export interface WordRoot {
     meaning: string;
 }
 
+export type PartType = 'noun' | 'verb' | 'adjective' | 'adverb' | 'pronoun' | 'preposition' | 'conjunction' | 'interjection' | 'determiner';
+
 export class WordInfo {
     word: string;
+    part_of_speech: PartType;
     forms: WordForm[] = [];
     synonyms: string[] = [];
     antonyms: string[] = [];
@@ -33,6 +36,8 @@ export const LESSON_LOAD = 'LESSON_LOAD';
 export const LESSON_LOAD_SUCCESS = 'LESSON_LOAD_SUCCESS';
 
 export type LessonState = {[id: number]: Lesson};
+
+export const parts_of_speech: PartType[] = ['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection', 'determiner'];
 
 export const lessonReducer = (state: LessonState, action: any): LessonState => {
     if (state === undefined) return {};
