@@ -12,9 +12,10 @@ export class ContextSentence extends React.Component<ContextSentenceProps, {}> {
 
     highlightWord(sentence: string): JSX.Element {
         return <div>{sentence.split(' ').map(cur => {
-            if (!cur.search('__________')) {
-                const next_char = cur.length > 10 ? cur.charAt(10) : ' ';
-                return <span><TextField key={cur} name={cur} style={{width: '150px'}}/>{next_char}</span>;
+            // 10 underscores are used to represent the word
+            // search returns position of string found, -1 if not found
+            if (cur.search('__________') !== -1) {
+                return <span><TextField key={cur} name={cur} style={{width: '150px'}}/>{cur.slice(10) + ' '}</span>;
             } else {
                 return cur + ' ';
             }
