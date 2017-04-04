@@ -11,7 +11,8 @@ class LessonsController < ApplicationController
   #     synonyms: [''],
   #     antonyms: [''],
   #     sentences: ['']
-  #   } }] }
+  #   } }],
+  #   practices: [int] }
   before_action :signed_in?
   before_action :correct_user?, only: [:update, :destroy]
 
@@ -21,12 +22,13 @@ class LessonsController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: [{ lesson }]
+  #   Content: [{ id: int, title: '' }]
   # Error response:
   #   Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def index
     render json: Lesson.where(owner_id: session[:user_id][:value])
+      .as_json(except: [:owner_id, :created_at, :updated_at])
   end
 
   # POST /api/lesson
@@ -61,7 +63,10 @@ class LessonsController < ApplicationController
   #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
   #              error_message: 'Lesson could not be found' }
   def show
-    render json: Lesson.find(params[:id])
+    lesson = Lesson.includes(wordinfos: [:roots, :forms, :synonyms, :antonyms, :sentences])
+                   .references(:wordinfos)
+                   .find(params[:id])
+    render json: lesson
   end
 
   # PATCH /api/lesson/:id
@@ -99,7 +104,7 @@ class LessonsController < ApplicationController
     end
     lesson_saved = true
     ActiveRecord::Base.transaction do
-      Wordinfo.where(id: @lesson.wordinfo_ids).destroy_all
+      @lesson.wordinfos.destroy_all
       @lesson.attributes = lesson_params
       unless @lesson.save
         lesson_saved = false
@@ -110,7 +115,8 @@ class LessonsController < ApplicationController
       render json: { errors: @lesson.errors }, status: :bad_request # 400
       return
     end
-    render json: @lesson.reload
+    render json: Lesson.includes(wordinfos: [:roots, :forms, :synonyms, :antonyms, :sentences])
+      .references(:wordinfos).find(params[:id])
   end
 
   # DELETE /api/lesson/:id
@@ -187,7 +193,9 @@ class LessonsController < ApplicationController
   end
 
   def correct_user?
-    @lesson = Lesson.find(params[:id])
+    @lesson = Lesson.includes(wordinfos: [:roots, :forms, :synonyms, :antonyms, :sentences])
+                    .references(:wordinfos)
+                    .find(params[:id])
     return if @lesson.owner_id == session[:user_id][:value]
     render json: { errors: ['Forbidden'], error_message: 'Forbidden' }, status: :forbidden # 403
   end

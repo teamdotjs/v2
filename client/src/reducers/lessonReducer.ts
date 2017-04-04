@@ -3,16 +3,22 @@ export interface WordForm {
     part_of_speech: string;
 }
 
+export interface WordRoot {
+    root: string;
+    meaning: string;
+}
+
 export type PartType = 'noun' | 'verb' | 'adjective' | 'adverb' | 'pronoun' | 'preposition' | 'conjunction' | 'interjection' | 'determiner';
 
 export class WordInfo {
     word: string;
+    part_of_speech: PartType;
     forms: WordForm[] = [];
     synonyms: string[] = [];
     antonyms: string[] = [];
     definition: string = '';
     sentences: string[] = [];
-    part_of_speech: PartType;
+    roots: WordRoot[] = [];
 
     constructor(word: string) {
         this.word = word;
