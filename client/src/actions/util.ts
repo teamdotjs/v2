@@ -28,13 +28,13 @@ export function throttle(fn: () => void, threshhold: number) {
 }
 
 export const createAction = (namespace: string) => (payload: any) => (dispatch: any) => {
-    dispatch({
+    dispatch(payload);
+    return dispatch({
         type: 'LOADING',
         namespace,
         isLoading: false,
         action: payload.type,
     });
-    return dispatch(payload);
 };
 
 export const createLoading = (namespace: string) => (action: string) => (dispatch: any) => {

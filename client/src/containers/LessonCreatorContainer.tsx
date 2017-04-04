@@ -5,6 +5,7 @@ import { SectionType } from '../reducers/practiceReducer';
 import { State } from '../reducers/index';
 import { saveLesson, loadLesson } from '../actions/lesson';
 import { loadPractice, generatePractice, deletePractice } from '../actions/practice';
+import { isLoading } from '../actions/util';
 
 function mapStateToProps(state: State, props: any): any  {
     let practices = state.lesson[props.params.id] === undefined ? [] :
@@ -15,6 +16,7 @@ function mapStateToProps(state: State, props: any): any  {
         lessonId: props.params.id,
         practices,
         errors: state.errors.pins,
+        loading: isLoading('LESSON', state.loading)
     };
 }
 
