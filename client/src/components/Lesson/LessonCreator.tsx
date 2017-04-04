@@ -6,6 +6,7 @@ import {Lesson} from '../../reducers/lessonReducer';
 import {
     Practice, SectionType
 } from '../../reducers/practiceReducer';
+import { PRACTICE_ERROR } from '../../reducers/errorReducer';
 import {
     TextField, Toolbar, ToolbarTitle
 } from 'material-ui';
@@ -16,13 +17,13 @@ import {
 export interface LessonCreatorProps {
     children?: Element[];
     onChange?: (l: Lesson) => void;
-    loadLession?: () => void;
-    getPractice?: (id: number) => void;
     generatePractice: (type: SectionType) => void;
     deletePractice: (id: number) => void;
     value?: Lesson;
-    notFound: boolean;
     practices?: Practice[];
+    errors: {
+        [id: string]: string;
+    };
 }
 
 const disabledMessageStyle = {
@@ -56,14 +57,6 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
         return this.state;
     }
 
-    componentWillMount() {
-        if (this.props.notFound) {
-            if (this.props.loadLession !== undefined) {
-                this.props.loadLession();
-            }
-        }
-    }
-
     componentStateChange() {
         if (this.props.onChange !== undefined) {
             this.props.onChange(this.value);
@@ -83,7 +76,7 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
         const disabledMessage = hasPractices ?
             <div style={disabledMessageStyle}> You cannot edit words while practices exist</div> : undefined;
 
-        if (this.props.notFound) {
+        if (this.props.value === undefined) {
             content = 'Lesson Not Found';
         } else {
             content = (
@@ -116,7 +109,8 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
                         onPreviewPractice={() => {}}
                         onCreatePractice={this.props.generatePractice}
                         onRemovePractice={this.props.deletePractice}
-                        practices={this.props.practices || []} />
+                        practices={this.props.practices || []}
+                        errorMessage={this.props.errors[PRACTICE_ERROR]} />
                 </div>
             );
         }

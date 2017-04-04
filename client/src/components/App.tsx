@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Link} from 'react-router';
 import AppBar from 'material-ui/AppBar';
-import LogoutContainer from '../containers/LogoutContainer';
+import AppBarRight from '../containers/AppBarRightContainer';
 import ErrorContainer from '../containers/ErrorContainer';
 export interface AppProps {
     children?: Element[];
@@ -13,7 +13,7 @@ const App = (props: AppProps) => {
         <ErrorContainer />
         <AppBar
             title={title}
-            iconElementRight= { <LogoutContainer /> }/>
+            iconElementRight= { <AppBarRight/> }/>
             <div style={{maxWidth: '800px', margin: '0 auto'}}>
                 {props.children}
             </div>

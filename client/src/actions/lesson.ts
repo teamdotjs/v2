@@ -5,6 +5,7 @@ import {
 } from './util';
 import { push } from 'react-router-redux';
 import { Lesson } from '../reducers/lessonReducer';
+import { LessonSummary } from '../reducers/lessonSummaryReducer';
 
 export interface CreateLessonPending {
     type: 'create_lesson_pending';
@@ -27,18 +28,17 @@ const headers = {
 export function loadLessons() {
     return (dispatch: any) => {
         dispatch({
-            type: 'load_lessons_pending'
+            type: 'load_lesson_summaries_pending'
         });
         fetch('/api/lesson', {
             headers,
             credentials: 'same-origin'
         })
         .then(errorCheck)
-        .then((res: any[]) => {
-            res.forEach(l => l.wordinfos.forEach((w: any) => w.id = undefined));
+        .then((res: LessonSummary[]) => {
             dispatch({
-                type: 'load_all_lesssons_success',
-                lessons: res as Lesson[]
+                type: 'load_lesson_summaries_success',
+                lessonSummaries: res
             });
         })
         .catch((err: Error) => {
@@ -124,10 +124,7 @@ export function saveLesson(l: Lesson) {
             .then(( res: Lesson) => {
                 dispatch({
                     type: 'save_lesson_success',
-                });
-                dispatch({
-                    type: 'create_lesson_success',
-                    lesson: res
+                    id: res.id
                 });
             })
             .catch((err: Error) => {
@@ -137,5 +134,27 @@ export function saveLesson(l: Lesson) {
                 });
             });
         }, 5000);
+    };
+}
+
+export function deleteLesson(id: number) {
+
+    return (dispatch: any) => {
+        dispatch({ type: 'lesson_delete', id });
+        fetch(`/api/lesson/${id}`, {
+            headers,
+            credentials: 'same-origin',
+            method: 'DELETE'
+        })
+        .then(errorCheck)
+        .then(() => {
+            dispatch({ type: 'lesson_delete_success', id });
+        })
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
+            });
+        });
     };
 }

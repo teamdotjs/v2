@@ -1,63 +1,74 @@
 import * as React from 'react';
 import {
-    TextField,
-    IconButton
+    TextField
 } from 'material-ui';
-import { WordInfo, WordForm } from '../../../reducers/lessonReducer';
+import { WordInfo, WordForm, WordRoot } from '../../../reducers/lessonReducer';
 import { BindingComponent } from '../../util/BindingComponent';
 import WordFormSelector from './WordFormSelector';
+import WordRootSelector from './WordRootSelector';
 import { WordInput } from '../../util/WordInput';
 import { TagBuilder } from '../../util/TagBuilder';
+import { ContextSentences } from './ContextSentences';
 
 export interface WordDetailsProps {
     value: number;
     wordInfo: WordInfo;
-    onChange: (v: number, w: WordInfo) => void;
-    onDelete: () => void;
+    onChange: (w: WordInfo) => void;
     disabled?: boolean;
 }
 
-export interface WordDetailsState extends WordInfo {
-    wordFormNewValue?: string;
+export interface WordDetailsState {
+    wordFormNewValue: string;
+    wordRootNewValue: string;
 }
 
 export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsState> {
 
     constructor(props: WordDetailsProps) {
         super(props);
-        this.state = props.wordInfo;
-    }
-
-    componentStateChange() {
-        this.props.onChange(this.props.value, this.state);
+        this.state = {
+            wordFormNewValue: '',
+            wordRootNewValue: ''
+        };
     }
 
     componentWillReceiveProps(newProps: WordDetailsProps) {
-        this.setState(newProps.wordInfo);
+        if (this.props.value !== newProps.value) {
+            this.setState({
+                wordFormNewValue: '',
+                wordRootNewValue: ''
+            });
+        }
     }
 
     onFormChange(newForms: WordForm[]) {
-        this.setState({
-            forms: newForms
-        }, this.componentStateChange.bind(this));
+        this.props.onChange({...this.props.wordInfo, forms: newForms});
     }
 
+    onRootChange(newRoots: WordRoot[]) {
+        this.props.onChange({...this.props.wordInfo, roots: newRoots});
+    }
+
+    onValueChange<K extends keyof WordInfo>(field: K) {
+        return (value: WordInfo[K]) =>
+            this.props.onChange({...this.props.wordInfo, [field as string]: value});
+    }
+
+    onValueEvent<K extends keyof WordInfo>(field: K) {
+        return (ev: any) =>
+            this.props.onChange({...this.props.wordInfo, [field as string]: ev.target.value});
+    }
+
+
     render() {
-        console.log(this.state);
         return (<div style={{paddingLeft: '20px'}}>
             <WordInput hintText='Word'
                     floatingLabelText='Word'
                     name='word'
-                    value={this.state.word}
+                    value={this.props.wordInfo.word}
                     disabled={this.props.disabled}
-                    onChange={this.bindValueToName.bind(this)}
+                    onChange={this.onValueEvent('word')}
                 />
-
-            <IconButton onClick={this.props.onDelete}
-                style={{display: 'inline-block',float: 'right'}}
-                iconClassName='material-icons'
-                disabled={this.props.disabled}
-                tooltip='Delete'>delete</IconButton>
 
             <TextField hintText='Definition'
                     floatingLabelText='Definition'
@@ -65,30 +76,45 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                     fullWidth={true}
                     name='definition'
                     disabled={this.props.disabled}
-                    value={this.state.definition}
-                    onChange={this.bindValueToName.bind(this)}
+                    value={this.props.wordInfo.definition}
+                    onChange={this.onValueEvent('definition')}
                     style={{ width: '100%' }}
                 />
 
             <TagBuilder name='synonyms'
-                    onChange={this.updateState('synonyms')}
-                    values={this.state.synonyms}
+                    onChange={this.onValueChange('synonyms')}
+                    values={this.props.wordInfo.synonyms}
                     hintText='Synonyms'
                     disabled={this.props.disabled}/>
 
             <TagBuilder name='antonyms'
-                    onChange={this.updateState('antonyms')}
-                    values={this.state.antonyms}
+                    onChange={this.onValueChange('antonyms')}
+                    values={this.props.wordInfo.antonyms}
                     hintText='Antonyms'
                     disabled={this.props.disabled}/>
+
+            <h3>Roots</h3>
+            <WordRootSelector
+                roots={this.props.wordInfo.roots}
+                onChange={this.onRootChange.bind(this)}
+                onNewValueChange={ (val: string) => this.setState({ wordRootNewValue: val }) }
+                newValue={this.state.wordRootNewValue}
+                disabled={this.props.disabled}
+            />
 
             <h3>Forms</h3>
             <WordFormSelector
                 forms={this.props.wordInfo.forms}
                 onChange={this.onFormChange.bind(this)}
                 onNewValueChange={ (val: string) => this.setState({ wordFormNewValue: val }) }
-                newValue={this.state.wordFormNewValue || ''}
+                newValue={this.state.wordFormNewValue}
                 disabled={this.props.disabled}
+            />
+
+            <h3>Context Sentences</h3>
+            <ContextSentences name='sentences'
+                value={this.props.wordInfo.sentences}
+                onChange={this.onValueChange('sentences')}
             />
         </div>);
     }

@@ -8,6 +8,7 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'db/**/*'
+    - 'lib/tasks/import_words.rake'
   TargetRubyVersion: 2.3
 
 Metrics/LineLength:

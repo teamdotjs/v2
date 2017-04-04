@@ -5,7 +5,7 @@ export interface Question {
     options: string[];
 };
 
-export type SectionType = 'synonym' | 'sentence';
+export type SectionType = 'synonym' | 'sentence' | 'definition';
 
 export interface Practice {
     id: number;
@@ -18,7 +18,7 @@ export interface PracticeState {
     [id: number]: Practice;
 };
 
-export const practiceTypes = ['synonym', 'sentence'] as SectionType[];
+export const practiceTypes = ['synonym', 'sentence', 'definition'] as SectionType[];
 
 export const practiceReducer = (state: PracticeState, action: any): PracticeState => {
     if (state === undefined) return {};

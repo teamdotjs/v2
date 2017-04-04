@@ -10,8 +10,9 @@ class LessonsController < ApplicationController
   #     forms: [{ word: '', part_of_speech: '' }],
   #     synonyms: [''],
   #     antonyms: [''],
-  #     sentences: [{ context_sentence: '' }]
-  #   } }] }
+  #     sentences: ['']
+  #   } }],
+  #   practices: [int] }
   before_action :signed_in?
   before_action :correct_user?, only: [:update, :destroy]
 
@@ -21,12 +22,13 @@ class LessonsController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: [{ lesson }]
+  #   Content: [{ id: int, title: '' }]
   # Error response:
   #   Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def index
     render json: Lesson.where(owner_id: session[:user_id][:value])
+      .as_json(except: [:owner_id, :created_at, :updated_at])
   end
 
   # POST /api/lesson
@@ -61,7 +63,10 @@ class LessonsController < ApplicationController
   #   Content: { errors: ['Couldn't find Lesson with 'id'=int'],
   #              error_message: 'Lesson could not be found' }
   def show
-    render json: Lesson.find(params[:id])
+    lesson = Lesson.includes(wordinfos: [:roots, :forms, :synonyms, :antonyms, :sentences])
+                   .references(:wordinfos)
+                   .find(params[:id])
+    render json: lesson
   end
 
   # PATCH /api/lesson/:id
@@ -99,7 +104,7 @@ class LessonsController < ApplicationController
     end
     lesson_saved = true
     ActiveRecord::Base.transaction do
-      Wordinfo.where(id: @lesson.wordinfo_ids).destroy_all
+      @lesson.wordinfos.destroy_all
       @lesson.attributes = lesson_params
       unless @lesson.save
         lesson_saved = false
@@ -110,7 +115,8 @@ class LessonsController < ApplicationController
       render json: { errors: @lesson.errors }, status: :bad_request # 400
       return
     end
-    render json: @lesson.reload
+    render json: Lesson.includes(wordinfos: [:roots, :forms, :synonyms, :antonyms, :sentences])
+      .references(:wordinfos).find(params[:id])
   end
 
   # DELETE /api/lesson/:id
@@ -143,7 +149,7 @@ class LessonsController < ApplicationController
       info[:forms_attributes] = info[:forms]
       info[:synonyms_attributes] = (info[:synonyms] || []).map { |s| { word: s } }
       info[:antonyms_attributes] = (info[:antonyms] || []).map { |s| { word: s } }
-      info[:sentences_attributes] = info[:sentences]
+      info[:sentences_attributes] = (info[:sentences] || []).map { |s| { context_sentence: s } }
     end
     params.require(:lesson).permit(
       :id,
@@ -169,16 +175,16 @@ class LessonsController < ApplicationController
     wordinfos_uniq = wordinfos.uniq! { |wordinfo| wordinfo['word'].downcase }
     errors['wordinfos.word'] = ['has already been taken'] unless wordinfos_uniq.nil?
     wordinfos.each do |wordinfo|
-      errors = check_duplicates_wordinfo_nested wordinfo, 'roots', 'root', errors
-      errors = check_duplicates_wordinfo_nested wordinfo, 'forms', 'word', errors
-      errors = check_duplicates_wordinfo_nested wordinfo, 'synonyms', 'word', errors, false
-      errors = check_duplicates_wordinfo_nested wordinfo, 'antonyms', 'word', errors, false
-      errors = check_duplicates_wordinfo_nested wordinfo, 'sentences', 'context_sentence', errors
+      errors = check_duplicate_attributes wordinfo, 'roots', 'root', errors
+      errors = check_duplicate_attributes wordinfo, 'forms', 'word', errors
+      errors = check_duplicate_attributes wordinfo, 'synonyms', 'word', errors, false
+      errors = check_duplicate_attributes wordinfo, 'antonyms', 'word', errors, false
+      errors = check_duplicate_attributes wordinfo, 'sentences', 'context_sentence', errors, false
     end
     errors
   end
 
-  def check_duplicates_wordinfo_nested(wordinfo, model, attribute, errors, index = true)
+  def check_duplicate_attributes(wordinfo, model, attribute, errors, index = true)
     extractor = !index ? proc { |m| m.downcase } : proc { |m| m[attribute].downcase }
     if wordinfo[model] && !wordinfo[model].uniq!(&extractor).nil?
       errors["wordinfos.#{model}.#{attribute}"] = ['has already been taken']
@@ -187,7 +193,9 @@ class LessonsController < ApplicationController
   end
 
   def correct_user?
-    @lesson = Lesson.find(params[:id])
+    @lesson = Lesson.includes(wordinfos: [:roots, :forms, :synonyms, :antonyms, :sentences])
+                    .references(:wordinfos)
+                    .find(params[:id])
     return if @lesson.owner_id == session[:user_id][:value]
     render json: { errors: ['Forbidden'], error_message: 'Forbidden' }, status: :forbidden # 403
   end
