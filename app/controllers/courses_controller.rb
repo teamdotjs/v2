@@ -87,7 +87,7 @@ class CoursesController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: [{ id: int, title: '' }]
+  #   Content: [{ id: int, title: '', course_ids: [int] }]
   # Error response:
   #   (1) Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
@@ -104,7 +104,7 @@ class CoursesController < ApplicationController
   #   lesson_id (int)
   # Success response:
   #   Code: 200
-  #   Content: [{ id: int, title: '' }]
+  #   Content: [{ id: int, title: '', course_ids: [int] }]
   # Error response:
   #   (1) Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
@@ -142,7 +142,7 @@ class CoursesController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: [{ id: int, title: '' }]
+  #   Content: [{ id: int, title: '', course_ids: [int] }]
   # Error response:
   #   (1) Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }

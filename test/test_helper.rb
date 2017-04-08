@@ -48,7 +48,8 @@ module ActiveSupport
             sentences: ['This is probably the best test ever']
           }
         ],
-        practices: [907223594]
+        practices: [907223594],
+        course_ids: [393749808]
       }
     end
 
