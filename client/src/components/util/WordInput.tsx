@@ -4,7 +4,7 @@ import {TextField} from 'material-ui';
 let dummy = new TextField({name: 'dummy'});
 type TextFieldProps = typeof dummy.props;
 
-const bannedChar = /[^a-zA-Z'-]/g;
+const bannedChar = /[^a-zA-Z' -]/g;
 
 function wrap(props: any) {
     return Object.assign({}, props, {
