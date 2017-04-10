@@ -78,8 +78,9 @@ export class WordDetails extends BindingComponent<WordDetailsProps, WordDetailsS
                     />
 
                 <SelectField
-                    style={{ width: '30%', margin: '24px 0 0 5%' }}
+                    style={{ width: '30%', marginLeft: '5%' }}
                     value={this.props.wordInfo.part_of_speech}
+                    floatingLabelText='Part of speech'
                     onChange={this.changeHandleSelection}
                     disabled={this.props.disabled}>
                     {parts_of_speech.map(part =>
