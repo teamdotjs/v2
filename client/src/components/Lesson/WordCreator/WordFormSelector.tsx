@@ -13,7 +13,6 @@ interface WordFormSelectorProps {
     newValue: string;
     onNewValueChange: (value: string) => void;
     onChange: (newValue: WordForm[]) => void;
-    disabled?: boolean;
 }
 
 const WordFormSelector = (props: WordFormSelectorProps) => {
@@ -30,7 +29,6 @@ const WordFormSelector = (props: WordFormSelectorProps) => {
     };
 
     const newField = <WordInput
-        disabled={props.disabled}
         name={'new'}
         value={props.newValue}
         floatingLabelText='Add form'
@@ -56,36 +54,31 @@ const WordFormSelector = (props: WordFormSelectorProps) => {
             props.onChange(newForms);
         };
 
-        const deleteIcon = props.disabled ? undefined :
-            <IconButton iconClassName='material-icons'
-                        tooltip='Remove'
-                        iconStyle={{color: '#AAA'}}
-                        onClick={() => props.onChange(props.forms.filter((_,i) => i !== index))}>
-             clear
-            </IconButton>;
-
         return (<div key={form.word} style={{ display: 'flex' }}>
             <TextField
                 name={form.word}
                 value={form.word}
                 style={{ width: '65%' }}
-                onChange={changeHandleInput}
-                disabled={props.disabled} />
+                onChange={changeHandleInput} />
             <SelectField
                 style={{ width: '30%', marginLeft: '5%' }}
                 value={form.part_of_speech}
-                onChange={changeHandleSelection}
-                disabled={props.disabled}>
+                onChange={changeHandleSelection}>
                 {parts_of_speech.map(part =>
                     <MenuItem key={part + form.word} value={part} primaryText={part}/>
                 )}
             </SelectField>
-            {deleteIcon}
+            <IconButton iconClassName='material-icons'
+                tooltip='Remove'
+                iconStyle={{color: '#AAA'}}
+                onClick={() => props.onChange(props.forms.filter((_,i) => i !== index))}>
+                clear
+            </IconButton>
         </div>);
     });
 
     return (<div>
-        {props.disabled ? undefined : newField}
+        {newField}
         {forms}
     </div>);
 };
