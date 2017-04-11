@@ -76,8 +76,9 @@ export class WordDetailsEditor extends BindingComponent<WordDetailsEditorProps, 
                     />
 
                 <SelectField
-                    style={{ width: '30%', margin: '24px 0 0 5%' }}
+                    style={{ width: '30%', marginLeft: '5%' }}
                     value={this.props.wordInfo.part_of_speech}
+                    floatingLabelText='Part of speech'
                     onChange={this.changeHandleSelection}>
                     {parts_of_speech.map(part =>
                         <MenuItem key={part + this.props.wordInfo.word} value={part} primaryText={part}/>
