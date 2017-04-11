@@ -1,6 +1,7 @@
 import * as React from 'react';
 import BindingComponent from '../util/BindingComponent';
 import Dialog from '../util/Dialog';
+import {DateInput} from '../util/DateInput';
 
 import {
     RaisedButton,
@@ -138,7 +139,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps, Regist
                             errorText={error_password}
                             disabled={this.props.pending} />
                 <br />
-                <TextField floatingLabelText='Birthday' name='birthday'
+                <DateInput floatingLabelText='Birthday' name='birthday'
                             hintText='mm/dd/yyyy'
                             value={this.state.birthday}
                             onChange={this.formatBirthday.bind(this)}
