@@ -11,7 +11,6 @@ interface WordRootSelectorProps {
     newValue: string;
     onNewValueChange: (value: string) => void;
     onChange: (newValue: WordRoot[]) => void;
-    disabled?: boolean;
 }
 
 const WordRootSelector = (props: WordRootSelectorProps) => {
@@ -28,7 +27,6 @@ const WordRootSelector = (props: WordRootSelectorProps) => {
     };
 
     const newField = <WordInput
-        disabled={props.disabled}
         name={'new'}
         value={props.newValue}
         floatingLabelText='Add root'
@@ -54,35 +52,30 @@ const WordRootSelector = (props: WordRootSelectorProps) => {
             props.onChange(newRoots);
         };
 
-        const deleteIcon = props.disabled ? undefined :
-            <IconButton iconClassName='material-icons'
-                        tooltip='Remove'
-                        iconStyle={{color: '#AAA'}}
-                        onClick={() => props.onChange(props.roots.filter((_, i) => i !== index))}>
-             clear
-            </IconButton>;
-
         return (<div key={root.root} style={{ display: 'flex' }}>
             <TextField
                 name={root.root}
                 value={root.root}
                 hintText='Root'
                 style={{ width: '20%'}}
-                onChange={onRootChange}
-                disabled={props.disabled} />
+                onChange={onRootChange} />
             <TextField
                 name={root.meaning}
                 value={root.meaning}
                 hintText='Root meaning'
                 style={{ width: '75%', marginLeft: '5%' }}
-                onChange={onMeaningChange}
-                disabled={props.disabled} />
-            {deleteIcon}
+                onChange={onMeaningChange} />
+            <IconButton iconClassName='material-icons'
+                tooltip='Remove'
+                iconStyle={{color: '#AAA'}}
+                onClick={() => props.onChange(props.roots.filter((_, i) => i !== index))}>
+                clear
+            </IconButton>
         </div>);
     });
 
     return (<div>
-        {props.disabled ? undefined : newField}
+        {newField}
         {roots}
     </div>);
 };

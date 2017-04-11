@@ -12,7 +12,7 @@ export type PartType = 'noun' | 'verb' | 'adjective' | 'adverb' | 'pronoun' | 'p
 
 export class WordInfo {
     word: string;
-    part_of_speech: PartType;
+    part_of_speech: PartType = 'noun';
     forms: WordForm[] = [];
     synonyms: string[] = [];
     antonyms: string[] = [];
