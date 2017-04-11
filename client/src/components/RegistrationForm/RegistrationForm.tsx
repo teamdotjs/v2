@@ -52,25 +52,6 @@ export class RegistrationForm extends BindingComponent<RegistrationProps, Regist
         return birthday.match(/^\d{2}\/\d{2}\/\d{4}$/) !== null;
     }
 
-    formatBirthday(event: any) {
-        let last: string = this.state.birthday;
-        let birthday: string = event.target.value;
-        if (last.length < birthday.length) {
-            switch (birthday.length) {
-                case 2:
-                case 5:
-                    birthday = birthday + '/';
-                    break;
-                case 3:
-                case 6:
-                    birthday = birthday.slice(0, birthday.length - 1) + '/';
-            }
-        }
-        this.setState({
-            birthday: birthday
-        });
-    }
-
     render() {
         let error_password: any = null;
         let error_email: any = null;
@@ -142,7 +123,7 @@ export class RegistrationForm extends BindingComponent<RegistrationProps, Regist
                 <DateInput floatingLabelText='Birthday' name='birthday'
                             hintText='mm/dd/yyyy'
                             value={this.state.birthday}
-                            onChange={this.formatBirthday.bind(this)}
+                            onChange={this.bindValueToName.bind(this)}
                             errorText={error_birthday}
                             disabled={this.props.pending} />
                 <br />

@@ -10,7 +10,6 @@ function wrap(props: any) {
     return Object.assign({}, props, {
         onChange: (ev: any) => {
             ev.target.value = ev.target.value.toLowerCase().replace(bannedChar, '');
-            ev.target.value = ev.target.value.toLowerCase().replace('//', '/');
             if ( props.onChange ) { props.onChange(ev); }
         }
     });
