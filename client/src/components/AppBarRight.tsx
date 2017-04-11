@@ -50,7 +50,7 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState>
     };
 
     render() {
-        let loggedIn = (<div style={{display: 'inline-flex'}}>
+        return (<div style={{display: 'inline-flex'}}>
             { this.props.loading ?
                 <CircularProgress color='white' size={20} style={{margin: 'auto'}} />
                 : undefined
