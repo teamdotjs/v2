@@ -55,7 +55,7 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState>
                 <CircularProgress color='white' size={20} style={{margin: 'auto'}} />
                 : undefined
             }
-            <div style={{ marginTop: '6px' }}>
+              <div style={{ marginTop: '6px' }}>
                 <FlatButton
                     style={{ color: 'white' }}
                     label={this.props.userName || ''}
@@ -68,15 +68,14 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState>
                     targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                     onRequestClose={this.handleRequestClose}
                 >
-                    <Menu>
-                        <MenuItem primaryText='User Profile' />
-                        <MenuItem primaryText='Sign out'
-                            onTouchTap={this.handleLogoutClose} />
-                    </Menu>
+                  <Menu>
+                      <MenuItem primaryText='User Profile' />
+                      <MenuItem primaryText='Sign out'
+                          onTouchTap={this.handleLogoutClose} />
+                  </Menu>
                 </Popover>
             </div>
         </div>);
-        return this.props.userName ? loggedIn : <div />;
     };
 };
 export default AppBarRight;
