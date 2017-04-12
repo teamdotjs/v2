@@ -8,7 +8,7 @@ import {
 } from '../../reducers/practiceReducer';
 import { PRACTICE_ERROR } from '../../reducers/errorReducer';
 import {
-    TextField, Toolbar, ToolbarTitle
+    TextField, Toolbar, ToolbarTitle, LinearProgress
 } from 'material-ui';
 import {
     PracticeView
@@ -24,6 +24,7 @@ export interface LessonCreatorProps {
     errors: {
         [id: string]: string;
     };
+    loading: boolean;
 }
 
 const disabledMessageStyle = {
@@ -76,7 +77,9 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
         const disabledMessage = hasPractices ?
             <div style={disabledMessageStyle}> You cannot edit words while practices exist</div> : undefined;
 
-        if (this.props.value === undefined) {
+        if (this.props.loading && this.props.value === undefined) {
+            content = <LinearProgress />;
+        } else if (this.props.value === undefined) {
             content = 'Lesson Not Found';
         } else {
             content = (
