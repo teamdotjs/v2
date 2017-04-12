@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import {
     errorCheck,
     throttle,
-    createAction,
+    createSuccess,
     createLoading,
 } from './util';
 import { push } from 'react-router-redux';
@@ -27,7 +27,7 @@ const headers = {
     'Content-Type': 'application/json'
 };
 
-const lessonDispatch = createAction('LESSON');
+const lessonSuccess = createSuccess('LESSON');
 const loading = createLoading('LESSON');
 
 export function loadLessons() {
@@ -42,7 +42,7 @@ export function loadLessons() {
         })
         .then(errorCheck)
         .then((res: LessonSummary[]) => {
-            dispatch(lessonDispatch({
+            dispatch(lessonSuccess({
                 type: 'load_lesson_summaries_success',
                 lessonSummaries: res
             }));
@@ -65,7 +65,7 @@ export function loadLesson(id: number) {
         })
         .then(errorCheck)
         .then((res: Lesson) => {
-            dispatch(lessonDispatch({
+            dispatch(lessonSuccess({
                 type: 'save_lesson_local',
                 lesson: res
             }));
@@ -89,7 +89,7 @@ export function createLesson() {
         })
         .then(errorCheck)
         .then((res: Lesson) => {
-            dispatch(lessonDispatch({
+            dispatch(lessonSuccess({
                 type: 'create_lesson_success',
                 lesson: res
             }));
@@ -122,7 +122,7 @@ export function saveLesson(l: Lesson) {
             })
             .then(errorCheck)
             .then(( res: Lesson) => {
-                dispatch(lessonDispatch({
+                dispatch(lessonSuccess({
                     type: 'save_lesson_success',
                     id: res.id
                 }));
@@ -149,7 +149,7 @@ export function deleteLesson(id: number) {
         })
         .then(errorCheck)
         .then(() => {
-            dispatch(lessonDispatch({ type: 'lesson_delete_success', id }));
+            dispatch(lessonSuccess({ type: 'lesson_delete_success', id }));
         })
         .catch((err: Error) => {
             dispatch({

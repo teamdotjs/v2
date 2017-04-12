@@ -27,7 +27,7 @@ export function throttle(fn: () => void, threshhold: number) {
     }
 }
 
-export const createAction = (namespace: string) => (payload: any) => (dispatch: any) => {
+export const createSuccess = (namespace: string) => (payload: any) => (dispatch: any) => {
     dispatch(payload);
     return dispatch({
         type: 'LOADING',
