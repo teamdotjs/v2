@@ -32,6 +32,9 @@ export interface Lesson {
     practices: number[];
 }
 
+export const LESSON_LOAD = 'LESSON_LOAD';
+export const LESSON_LOAD_SUCCESS = 'LESSON_LOAD_SUCCESS';
+
 export type LessonState = {[id: number]: Lesson};
 
 export const parts_of_speech: PartType[] = ['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection', 'determiner'];
@@ -40,11 +43,11 @@ export const lessonReducer = (state: LessonState, action: any): LessonState => {
     if (state === undefined) return {};
     switch (action.type) {
         case 'save_lesson_local':
-        case 'create_lesson_success':
+        case LESSON_LOAD:
             return {...state,
                 [action.lesson.id]: action.lesson
             };
-        case 'load_all_lesssons_success':
+        case LESSON_LOAD_SUCCESS:
             return action.lessons.reduce((s: any, lesson: Lesson) => {
                 s[lesson.id] = lesson;
                 return s;
