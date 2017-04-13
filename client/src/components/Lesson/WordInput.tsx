@@ -4,14 +4,14 @@ import {
 } from 'material-ui';
 import {WordInfo} from '../../reducers/lessonReducer';
 
-export interface WordCreatorProps {
+export interface WordInputProps {
     value?: WordInfo;
     onChange?: (w: WordInfo) => void;
 }
 
-export class WordInput extends React.Component<WordCreatorProps, WordInfo> {
+export class WordInput extends React.Component<WordInputProps, WordInfo> {
 
-    constructor(props: WordCreatorProps) {
+    constructor(props: WordInputProps) {
         super(props);
         this.state = {word: props.value !== undefined ? props.value.word : ''} as WordInfo;
     }

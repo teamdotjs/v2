@@ -59,7 +59,7 @@ class LessonsControllerTest < ActionController::TestCase
     login_as_testuser
     post :create
     assert_response :ok
-    pattern = { id: 318230601, title: 'Untitled', wordinfos: [], practices: [] }
+    pattern = { id: 318230601, title: 'Untitled', wordinfos: [], practices: [], course_ids: [] }
     assert_json_match pattern, @response.body
   end
 

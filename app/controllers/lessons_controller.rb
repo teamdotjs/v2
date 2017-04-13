@@ -1,6 +1,7 @@
 class LessonsController < ApplicationController
   # { lesson } = {
   #   id: int,
+  #   course_ids: [int],
   #   title: '',
   #   wordinfos: [{
   #     word: '',
@@ -24,7 +25,7 @@ class LessonsController < ApplicationController
   #   none
   # Success response:
   #   Code: 200
-  #   Content: [{ id: int, title: '' }]
+  #   Content: [{ id: int, title: '', course_ids: [int] }]
   # Error response:
   #   Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }

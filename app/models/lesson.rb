@@ -34,6 +34,7 @@ class Lesson < ApplicationRecord
       wordinfo['sentences'].map! { |sentence| sentence['context_sentence'] }
     end
     lesson&.[]('practices')&.map! { |practice| practice['id'] }
+    lesson['course_ids'] = course_ids
     lesson
   end
 end

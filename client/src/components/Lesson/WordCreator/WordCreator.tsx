@@ -3,6 +3,7 @@ import {WordInfo} from '../../../reducers/lessonReducer';
 import { TextField, List, ListItem, Subheader } from 'material-ui';
 import { WordListItem } from './WordListItem';
 import { WordDetails } from './WordDetails';
+import { WordDetailsEditor } from './WordDetailsEditor';
 import { WordInput } from '../../util/WordInput';
 import * as listUtil from 'material-ui/List';
 
@@ -110,27 +111,32 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             </ListItem>
         );
 
-        const wordInfo = <WordDetails
-            wordInfo={this.props.value[this.state.currentWordIndex]}
-            value={this.state.currentWordIndex}
-            onChange={this.onWordChanged.bind(this, this.state.currentWordIndex)}
-            disabled={this.props.disabled}/>;
+        const wordInfo = this.props.disabled
+            ? <WordDetails
+                wordInfo={this.props.value[this.state.currentWordIndex]}
+                value={this.state.currentWordIndex}/>
+            : <WordDetailsEditor
+                wordInfo={this.props.value[this.state.currentWordIndex]}
+                value={this.state.currentWordIndex}
+                onChange={this.onWordChanged.bind(this, this.state.currentWordIndex)}/>;
 
         const selectInfo = <Subheader>
             {'No word selected'}
         </Subheader>;
 
+        const wordInput = this.props.disabled ? undefined :
+            <WordInput style={{width: '100%', marginRight: '20px'}}
+                       errorText={this.state.error}
+                       floatingLabelText='New Word'
+                       underlineShow={false}
+                       onKeyDown={this.onNewWordKeyPress.bind(this)}
+                       value={this.state.inputText}
+                       onChange={this.onNewWordEdit.bind(this)}/>;
+
         return (
             <div style={{display: 'flex'}}>
                 <div style={{width: '30%', borderRight: '1px solid lightgray'}}>
-                    <WordInput  style={{width: '100%', marginRight: '20px'}}
-                                errorText={this.state.error}
-                                floatingLabelText='New Word'
-                                underlineShow={false}
-                                onKeyDown={this.onNewWordKeyPress.bind(this)}
-                                value={this.state.inputText}
-                                disabled={this.props.disabled}
-                                onChange={this.onNewWordEdit.bind(this)}/>
+                    { wordInput }
                     <SelectableList value={this.state.currentWordIndex}
                                     onChange={this.onWordSelect.bind(this)} >
                         {wordItems}
