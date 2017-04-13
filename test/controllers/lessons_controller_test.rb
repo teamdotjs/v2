@@ -18,6 +18,13 @@ class LessonsControllerTest < ActionController::TestCase
     assert_json_match [pattern], @response.body
   end
 
+  test 'GET /api/lesson?filter=not_in_course success' do
+    login_as_testuser
+    get :index, params: { filter: 'not_in_course' }
+    assert_response :ok
+    assert_json_match [], @response.body
+  end
+
   test 'GET /api/lesson/:id unauthorized' do
     get :show, params: { id: lessons(:english101).id }
     assert_response :unauthorized
