@@ -1,7 +1,9 @@
 import 'whatwg-fetch';
 import {
     errorCheck,
-    throttle
+    throttle,
+    createSuccess,
+    createLoading,
 } from './util';
 import { push } from 'react-router-redux';
 import { Lesson } from '../reducers/lessonReducer';
@@ -25,21 +27,25 @@ const headers = {
     'Content-Type': 'application/json'
 };
 
+const lessonSuccess = createSuccess('LESSON');
+const loading = createLoading('LESSON');
+
 export function loadLessons() {
     return (dispatch: any) => {
         dispatch({
             type: 'load_lesson_summaries_pending'
         });
+        dispatch(loading('load_lesson_summaries_success'));
         fetch('/api/lesson', {
             headers,
             credentials: 'same-origin'
         })
         .then(errorCheck)
         .then((res: LessonSummary[]) => {
-            dispatch({
+            dispatch(lessonSuccess({
                 type: 'load_lesson_summaries_success',
                 lessonSummaries: res
-            });
+            }));
         })
         .catch((err: Error) => {
             dispatch({
@@ -52,19 +58,17 @@ export function loadLessons() {
 
 export function loadLesson(id: number) {
     return (dispatch: any) => {
-        dispatch({
-            type: 'load_lesson_pending'
-        });
+        dispatch(loading('save_lesson_local'));
         fetch('/api/lesson/' + id, {
             headers,
             credentials: 'same-origin'
         })
         .then(errorCheck)
         .then((res: Lesson) => {
-            dispatch({
+            dispatch(lessonSuccess({
                 type: 'save_lesson_local',
                 lesson: res
-            });
+            }));
         })
         .catch((err: Error) => {
             dispatch({
@@ -77,9 +81,7 @@ export function loadLesson(id: number) {
 
 export function createLesson() {
     return (dispatch: any) => {
-        dispatch({
-            type: 'create_lesson_pending'
-        });
+        dispatch(loading('create_lesson_success'));
         fetch('/api/lesson', {
             method: 'POST',
             headers,
@@ -87,10 +89,10 @@ export function createLesson() {
         })
         .then(errorCheck)
         .then((res: Lesson) => {
-            dispatch({
+            dispatch(lessonSuccess({
                 type: 'create_lesson_success',
                 lesson: res
-            });
+            }));
             dispatch(push('/lesson/' + res.id));
         })
         .catch((err: Error) => {
@@ -111,9 +113,7 @@ export function saveLesson(l: Lesson) {
         });
 
         throttle(() => {
-            dispatch({
-                type: 'save_lesson_pending'
-            });
+            dispatch(loading('save_lesson_success'));
             fetch('/api/lesson/' + l.id, {
                 method: 'PATCH',
                 headers,
@@ -122,10 +122,10 @@ export function saveLesson(l: Lesson) {
             })
             .then(errorCheck)
             .then(( res: Lesson) => {
-                dispatch({
+                dispatch(lessonSuccess({
                     type: 'save_lesson_success',
                     id: res.id
-                });
+                }));
             })
             .catch((err: Error) => {
                 dispatch({
@@ -141,6 +141,7 @@ export function deleteLesson(id: number) {
 
     return (dispatch: any) => {
         dispatch({ type: 'lesson_delete', id });
+        dispatch(loading('lesson_delete_success'));
         fetch(`/api/lesson/${id}`, {
             headers,
             credentials: 'same-origin',
@@ -148,7 +149,7 @@ export function deleteLesson(id: number) {
         })
         .then(errorCheck)
         .then(() => {
-            dispatch({ type: 'lesson_delete_success', id });
+            dispatch(lessonSuccess({ type: 'lesson_delete_success', id }));
         })
         .catch((err: Error) => {
             dispatch({
