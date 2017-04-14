@@ -21,9 +21,11 @@ function mapStateToProps(state: State, props: any): any  {
 }
 
 function mapDispatchToProps(dispatch: any, ownProps: any): any {
-    dispatch(loadLesson(ownProps.params.id));
-    dispatch(loadPractice(ownProps.params.id));
     return {
+        onLoad: () => {
+            dispatch(loadLesson(ownProps.params.id));
+            dispatch(loadPractice(ownProps.params.id));
+        },
         onChange: (lesson: Lesson) => {
             dispatch(saveLesson(lesson));
         },

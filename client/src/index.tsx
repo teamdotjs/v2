@@ -32,7 +32,7 @@ ReactDOM.render(
                     <Route component={DashboardContainer}>
                         <IndexRoute component={HomeContainer} />
                         <Route path='lesson/:id' component={LessonCreatorContainer} />
-                        <Route path='mycourses' component={CourseContainer} />
+                        <Route path='course/:id' component={CourseContainer} />
                     </Route>
                 </Route>
             </Router>

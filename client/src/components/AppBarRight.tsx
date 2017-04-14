@@ -59,6 +59,7 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState>
                 <FlatButton
                     style={{ color: 'white' }}
                     label={this.props.userName || ''}
+                    children={[]}
                     onTouchTap={this.handleTouchTap}
                 />
                 <Popover
