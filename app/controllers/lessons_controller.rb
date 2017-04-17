@@ -1,6 +1,7 @@
 class LessonsController < ApplicationController
   # { lesson } = {
   #   id: int,
+  #   course_ids: [int],
   #   title: '',
   #   wordinfos: [{
   #     word: '',
@@ -16,19 +17,22 @@ class LessonsController < ApplicationController
   before_action :signed_in?
   before_action :correct_user?, only: [:update, :destroy]
 
-  # GET /api/lesson
+  # GET /api/lesson?filter=not_in_course
   # Desc: return all lessons created by current user
+  #   If filter query param provided and value is 'not_in_course',
+  #   return only the lessons that aren't in a course
   # Request body params:
   #   none
   # Success response:
   #   Code: 200
-  #   Content: [{ id: int, title: '' }]
+  #   Content: [{ id: int, title: '', course_ids: [int] }]
   # Error response:
   #   Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def index
-    render json: Lesson.where(owner_id: session[:user_id][:value])
-      .as_json(except: [:owner_id, :created_at, :updated_at])
+    lessons = Lesson.where(owner_id: session[:user_id][:value])
+    lessons = lessons.select { |l| l.courses.empty? } if params[:filter] == 'not_in_course'
+    render json: lessons.as_json(except: [:owner_id, :created_at, :updated_at])
   end
 
   # POST /api/lesson
