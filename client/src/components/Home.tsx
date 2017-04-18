@@ -4,16 +4,13 @@ import {
     Subheader,
 } from 'material-ui';
 
-import {LessonSummary} from '../reducers/lessonSummaryReducer';
 import {Course} from '../reducers/courseReducer';
 import Page from './util/Page';
 import * as React from 'react';
 
 export interface HomeProps {
     courses?: Course[];
-    lessons?: LessonSummary[];
     loading?: boolean;
-    onCreateLessonClick?: () => void;
     onClickCourse?: (id: number) => void;
 }
 

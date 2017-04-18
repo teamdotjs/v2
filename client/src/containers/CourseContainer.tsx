@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import {loadCourse, loadCourseLessonSummaries} from '../actions/course';
+import { createLesson } from '../actions/lesson';
 import { Course } from '../reducers/courseReducer';
 import { Course as CourseComp } from '../components/Course';
 import { State } from '../reducers/index';
@@ -23,15 +24,15 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
         onClickLesson(id: number) {
             dispatch(push('/study/' + id));
         },
-        onCreateLesson() {
-            // TODO: Allow lesson creation
+        onCreateLessonClick() {
+            dispatch(createLesson(ownProps.params.id));
         }
     };
 }
 
-const LessonCreatorContainer = connect(
+const CourseCreatorContainer = connect(
     mapStateToProps,
     mapDispatchToProps
 )(CourseComp);
 
-export default LessonCreatorContainer;
+export default CourseCreatorContainer;

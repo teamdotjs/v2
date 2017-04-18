@@ -35,7 +35,7 @@ class LessonsController < ApplicationController
     render json: lessons.as_json(except: [:owner_id, :created_at, :updated_at])
   end
 
-  # POST /api/lesson
+  # POST /api/lesson?course_id=int
   # Desc: creates a new lesson for the current user
   # Request body params:
   #   title (string - optional - defaults to 'Untitled')
@@ -45,11 +45,27 @@ class LessonsController < ApplicationController
   # Error response:
   #   (1) Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+  #   (2) Code: 403
+  #   Content: { errors: ['Forbidden'], error_message: 'Forbidden' }
+  #   (3) Code: 404
+  #   Content: { errors: ['Couldn't find Course with 'id'=int'],
+  #              error_message: 'Course could not be found' }
   def create
+    if params[:course_id]
+      course = Course.find(params[:course_id])
+      if course.instructor_id != session[:user_id][:value]
+        render json: { errors: ['Forbidden'], error_message: 'Forbidden' }, status: :forbidden # 403
+        return
+      end
+    end
     lesson_params = { owner_id: session[:user_id][:value] }
     title = params[:title]
     lesson_params[:title] = title if title
     lesson = Lesson.create(lesson_params)
+    if course
+      course.lessons << lesson
+      lesson.reload
+    end
     render json: lesson
   end
 
