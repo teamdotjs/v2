@@ -87,7 +87,7 @@ class LessonsControllerTest < ActionController::TestCase
     post :create, params: { course_id: courses(:testcourse) }
     assert_response :ok
     pattern = { id: 318230601, title: 'Untitled', wordinfos: [],
-                practices: [], course_ids: [393749808] }
+                owner_id: 965022582, practices: [], course_ids: [393749808] }
     assert_json_match pattern, @response.body
   end
 

@@ -32,9 +32,9 @@ ReactDOM.render(
                     <Route path='register' component={RegistrationFormContainer} />
                     <Route component={DashboardContainer}>
                         <IndexRoute component={HomeContainer} />
-                        <Route path='lesson/:id' component={LessonCreatorContainer} />
+                        <Route path='lesson/:id' component={StudyContainer} />
+                        <Route path='lesson/:id/edit' component={LessonCreatorContainer} />
                         <Route path='course/:id' component={CourseContainer} />
-                        <Route path='study/:id' component={StudyContainer} />
                     </Route>
                 </Route>
             </Router>

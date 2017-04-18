@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
     dispatch(loadLesson(ownProps.params.id));
     return {
         onClickEdit() {
-            dispatch(push('/lesson/' + ownProps.params.id));
+            dispatch(push(`/lesson/${ownProps.params.id}/edit`));
         }
     };
 }
