@@ -21,7 +21,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
     dispatch(loadCourse(ownProps.params.id));
     return {
         onClickLesson(id: number) {
-            dispatch(push('/lesson/' + id));
+            dispatch(push('/study/' + id));
         },
         onCreateLesson() {
             // TODO: Allow lesson creation

@@ -12,6 +12,7 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import { loginCheck } from './actions/user';
 import HomeContainer from './containers/HomeContainer';
 import CourseContainer from './containers/CourseContainer';
+import StudyContainer from './containers/StudyContainer';
 
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -33,6 +34,7 @@ ReactDOM.render(
                         <IndexRoute component={HomeContainer} />
                         <Route path='lesson/:id' component={LessonCreatorContainer} />
                         <Route path='course/:id' component={CourseContainer} />
+                        <Route path='study/:id' component={StudyContainer} />
                     </Route>
                 </Route>
             </Router>

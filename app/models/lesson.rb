@@ -24,7 +24,7 @@ class Lesson < ApplicationRecord
           } },
           { practices: { only: [:id] } }
         ],
-        except: [:owner_id, :created_at, :updated_at]
+        except: [:created_at, :updated_at]
       })
       else super(options)
       end
