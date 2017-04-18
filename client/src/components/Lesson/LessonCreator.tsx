@@ -17,6 +17,7 @@ import {
 export interface LessonCreatorProps {
     children?: Element[];
     onChange?: (l: Lesson) => void;
+    onLoad: () => void;
     generatePractice: (type: SectionType) => void;
     deletePractice: (id: number) => void;
     value?: Lesson;
@@ -52,6 +53,10 @@ export class LessonCreator extends BindingComponent<LessonCreatorProps, Lesson> 
             wordinfos: [],
             practices: []
         });
+    }
+
+    componentWillMount() {
+        this.props.onLoad();
     }
 
     get value(): Lesson {
