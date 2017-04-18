@@ -15,6 +15,7 @@ class LessonsControllerTest < ActionController::TestCase
     pattern = lesson_pattern
     pattern.delete(:wordinfos)
     pattern.delete(:practices)
+    pattern.delete(:owner_id)
     assert_json_match [pattern], @response.body
   end
 
@@ -59,7 +60,8 @@ class LessonsControllerTest < ActionController::TestCase
     login_as_testuser
     post :create
     assert_response :ok
-    pattern = { id: 318230601, title: 'Untitled', wordinfos: [], practices: [], course_ids: [] }
+    pattern = { id: 318230601, title: 'Untitled', owner_id: 965022582,
+                wordinfos: [], practices: [], course_ids: [] }
     assert_json_match pattern, @response.body
   end
 
@@ -85,7 +87,7 @@ class LessonsControllerTest < ActionController::TestCase
     post :create, params: { course_id: courses(:testcourse) }
     assert_response :ok
     pattern = { id: 318230601, title: 'Untitled', wordinfos: [],
-                practices: [], course_ids: [393749808] }
+                owner_id: 965022582, practices: [], course_ids: [393749808] }
     assert_json_match pattern, @response.body
   end
 
