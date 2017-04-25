@@ -50,11 +50,16 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState>
     };
 
     render() {
-        let loggedIn = (
-            <div style={{ marginTop: '6px' }}>
+        return (<div style={{display: 'inline-flex'}}>
+            { this.props.loading ?
+                <CircularProgress color='white' size={20} style={{margin: 'auto'}} />
+                : undefined
+            }
+              <div style={{ marginTop: '6px' }}>
                 <FlatButton
                     style={{ color: 'white' }}
                     label={this.props.userName || ''}
+                    children={[]}
                     onTouchTap={this.handleTouchTap}
                 />
                 <Popover
@@ -64,16 +69,14 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState>
                     targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                     onRequestClose={this.handleRequestClose}
                 >
-                    <Menu>
-                        <MenuItem primaryText='User Profile' />
-                        <MenuItem primaryText='Sign out'
-                            onTouchTap={this.handleLogoutClose} />
-                    </Menu>
+                  <Menu>
+                      <MenuItem primaryText='User Profile' />
+                      <MenuItem primaryText='Sign out'
+                          onTouchTap={this.handleLogoutClose} />
+                  </Menu>
                 </Popover>
             </div>
-        );
-
-        return this.props.userName ? loggedIn : <div />;
+        </div>);
     };
 };
 export default AppBarRight;
