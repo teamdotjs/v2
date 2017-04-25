@@ -2,26 +2,25 @@ import { connect } from 'react-redux';
 import Drawer, { DrawerProps } from '../components/Drawer';
 import { State } from '../reducers/index';
 import { push } from 'react-router-redux';
+import { loadCourses } from '../actions/course';
 import { toggleDrawer } from '../actions/drawer';
 
-function mapStateToProps(state: State): DrawerProps {
+function mapStateToProps(state: State): Partial<DrawerProps> {
     return {
-      open: state.drawer.open,
-      lessons: Object.keys(state.lesson).map((id: any) => {
-        return {
-            id,
-            title: state.lesson[id].title,
-        };
-      }),
+        open: state.drawer.open,
+        courses: Object.keys(state.course).map((id: any) => state.course[id]),
     };
 }
 
-function mapDispatchToProps(dispatch: any): {} {
+function mapDispatchToProps(dispatch: any): Partial<DrawerProps> {
     return {
         onRequestChange: (open: boolean) => dispatch(toggleDrawer(open)),
-        onClickLesson: (id: number) => {
-            dispatch(push(`/lesson/${id}`));
+        onClickCourse: (id: number) => {
+            dispatch(push(`/course/${id}`));
             dispatch(toggleDrawer(false));
+        },
+        onLoad() {
+            dispatch(loadCourses());
         },
     };
 }

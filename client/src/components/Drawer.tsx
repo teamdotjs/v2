@@ -1,38 +1,44 @@
 import * as React from 'react';
+import Subheader from 'material-ui/Subheader';
 import MUIDrawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
 
 let dummy = new MUIDrawer();
 type MUIDrawerProps = typeof dummy.props;
+
 export interface DrawerProps extends MUIDrawerProps {
-  lessons: {id: number, title: string}[];
-  onClickLesson?: (id: number) => void;
+  courses: {id: number, title: string}[];
+  onClickCourse?: (id: number) => void;
+  onLoad: () => void;
 }
 
-const DrawerContainer = (props: DrawerProps) => {
-    const lessons = props.lessons.map(({ id, title }) => {
-      return <MenuItem primaryText={ title } onClick={ () => {
-        if (props.onClickLesson !== undefined) {
-          props.onClickLesson(id);
-        }
-      }}/>;
-    });
-    return (<MUIDrawer docked={false} {...props}>
-      <AppBar onLeftIconButtonTouchTap={() => {
-        if(props.onRequestChange !== undefined) {
-          props.onRequestChange(false, '');
-        }
-      }} />
-      <Menu>
-        <MenuItem primaryText='Your Lessons' />
-        <Divider />
-        {lessons}
-      </Menu>
-  </MUIDrawer>);
-};
+class DrawerContainer extends React.Component<DrawerProps, {}> {
+    componentWillMount() {
+        if (this.props.onLoad) this.props.onLoad();
+    }
 
+    render() {
+      const courses = this.props.courses.map(({ id, title }) => {
+        return <MenuItem key={id} primaryText={ title } onClick={ () => {
+          if (this.props.onClickCourse !== undefined) {
+            this.props.onClickCourse(id);
+          }
+        }}/>;
+      });
+      return (<MUIDrawer docked={false} {...this.props}>
+        <AppBar onLeftIconButtonTouchTap={() => {
+          if(this.props.onRequestChange !== undefined) {
+            this.props.onRequestChange(false, '');
+          }
+        }} />
+        <Menu>
+          <Subheader>Your Courses</Subheader>
+          {courses}
+        </Menu>
+    </MUIDrawer>);
+  }
+}
 export default DrawerContainer;
