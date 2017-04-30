@@ -24,7 +24,7 @@ class Lesson < ApplicationRecord
           } },
           { practices: { only: [:id] } }
         ],
-        except: [:owner_id, :created_at, :updated_at]
+        except: [:created_at, :updated_at]
       })
       else super(options)
       end
@@ -34,6 +34,7 @@ class Lesson < ApplicationRecord
       wordinfo['sentences'].map! { |sentence| sentence['context_sentence'] }
     end
     lesson&.[]('practices')&.map! { |practice| practice['id'] }
+    lesson['course_ids'] = course_ids
     lesson
   end
 end

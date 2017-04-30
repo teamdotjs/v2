@@ -11,6 +11,8 @@ import LessonCreatorContainer from './containers/LessonCreatorContainer';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { loginCheck } from './actions/user';
 import HomeContainer from './containers/HomeContainer';
+import CourseContainer from './containers/CourseContainer';
+import StudyContainer from './containers/StudyContainer';
 
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -30,7 +32,9 @@ ReactDOM.render(
                     <Route path='register' component={RegistrationFormContainer} />
                     <Route component={DashboardContainer}>
                         <IndexRoute component={HomeContainer} />
-                        <Route path='lesson/:id' component={LessonCreatorContainer} />
+                        <Route path='lesson/:id' component={StudyContainer} />
+                        <Route path='lesson/:id/edit' component={LessonCreatorContainer} />
+                        <Route path='course/:id' component={CourseContainer} />
                     </Route>
                 </Route>
             </Router>

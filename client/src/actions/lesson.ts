@@ -79,10 +79,10 @@ export function loadLesson(id: number) {
     };
 }
 
-export function createLesson() {
+export function createLesson(course_id: number) {
     return (dispatch: any) => {
         dispatch(loading('create_lesson_success'));
-        fetch('/api/lesson', {
+        fetch(`/api/lesson?course_id=${course_id}`, {
             method: 'POST',
             headers,
             credentials: 'same-origin'

@@ -36,6 +36,7 @@ module ActiveSupport
       {
         id: 318230600,
         title: 'English 101',
+        owner_id: 965022582,
         wordinfos: [
           {
             word: 'probably',
@@ -48,7 +49,8 @@ module ActiveSupport
             sentences: ['This is probably the best test ever']
           }
         ],
-        practices: [907223594]
+        practices: [907223594],
+        course_ids: [393749808]
       }
     end
 

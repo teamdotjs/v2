@@ -107,7 +107,7 @@ class CoursesControllerTest < ActionController::TestCase
     login_as_testuser
     get :lessons, params: { id: courses(:testcourse).id }
     assert_response :ok
-    pattern = [{ id: 318230600, title: 'English 101' }]
+    pattern = [{ id: 318230600, title: 'English 101', course_ids: [393749808] }]
     assert_json_match pattern, @response.body
   end
 
@@ -171,7 +171,8 @@ class CoursesControllerTest < ActionController::TestCase
     @controller = controller
     patch :add_lesson, params: { id: courses(:testcourse).id, lesson_id: lesson_id }
     assert_response :ok
-    pattern = [{ id: 318230600, title: 'English 101' }, { id: 318230601, title: 'Untitled' }]
+    pattern = [{ id: 318230600, title: 'English 101', course_ids: [393749808] },
+               { id: 318230601, title: 'Untitled', course_ids: [393749808] }]
     assert_json_match pattern, @response.body
   end
 
@@ -212,7 +213,7 @@ class CoursesControllerTest < ActionController::TestCase
     login_as_testuser
     delete :remove_lesson, params: { id: courses(:testcourse).id, l_id: lessons(:english201).id }
     assert_response :ok
-    pattern = [{ id: 318230600, title: 'English 101' }]
+    pattern = [{ id: 318230600, title: 'English 101', course_ids: [393749808] }]
     assert_json_match pattern, @response.body
   end
 

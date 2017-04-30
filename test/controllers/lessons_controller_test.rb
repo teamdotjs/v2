@@ -15,7 +15,15 @@ class LessonsControllerTest < ActionController::TestCase
     pattern = lesson_pattern
     pattern.delete(:wordinfos)
     pattern.delete(:practices)
+    pattern.delete(:owner_id)
     assert_json_match [pattern], @response.body
+  end
+
+  test 'GET /api/lesson?filter=not_in_course success' do
+    login_as_testuser
+    get :index, params: { filter: 'not_in_course' }
+    assert_response :ok
+    assert_json_match [], @response.body
   end
 
   test 'GET /api/lesson/:id unauthorized' do
@@ -52,7 +60,34 @@ class LessonsControllerTest < ActionController::TestCase
     login_as_testuser
     post :create
     assert_response :ok
-    pattern = { id: 318230601, title: 'Untitled', wordinfos: [], practices: [] }
+    pattern = { id: 318230601, title: 'Untitled', owner_id: 965022582,
+                wordinfos: [], practices: [], course_ids: [] }
+    assert_json_match pattern, @response.body
+  end
+
+  test 'POST /api/lesson course not found' do
+    login_as_seconduser
+    post :create, params: { course_id: 1 }
+    assert_response :not_found
+    error_response = { errors: ['Couldn\'t find Course with \'id\'=1'],
+                       error_message: 'Course could not be found' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'POST /api/lesson can\'t create lesson in another instructor\'s course' do
+    login_as_seconduser
+    post :create, params: { course_id: courses(:testcourse) }
+    assert_response :forbidden
+    error_response = { errors: ['Forbidden'], error_message: 'Forbidden' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'POST /api/lesson create course in lesson' do
+    login_as_testuser
+    post :create, params: { course_id: courses(:testcourse) }
+    assert_response :ok
+    pattern = { id: 318230601, title: 'Untitled', wordinfos: [],
+                owner_id: 965022582, practices: [], course_ids: [393749808] }
     assert_json_match pattern, @response.body
   end
 
