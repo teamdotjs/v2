@@ -51,7 +51,7 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
     }
     validateSentence(sentence: string, i: number) {
         const reg = new RegExp('\\b(' + this.props.wordInfo.word.toLocaleLowerCase() + '|' + this.props.wordInfo.forms.map(f => f.word.toLocaleLowerCase()).join('|') + ')\\b');
-        if (sentence !== undefined) {
+        if (sentence !== undefined ) {
             if (reg.test(sentence.toLocaleLowerCase())) {
                 const error = Object.assign(this.state.error, {
                 [i]: '',
@@ -65,12 +65,6 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
                     });
                 this.props.onChangeError(error);
             }
-        }
-        else {
-            const error = Object.assign(this.state.error, {
-            [i]: ''
-            });
-            this.props.onChangeError(error);
         }
     }
     render() {
