@@ -12,6 +12,7 @@ import * as React from 'react';
 
 export interface HomeProps {
     lessons?: LessonSummary[];
+    loading?: boolean;
     onCreateLessonClick?: () => void;
     onClickLesson?: (id: number) => void;
 }
@@ -37,6 +38,10 @@ export const Home = (props: HomeProps) => {
         );
     } else {
         content = <Subheader>You currently have no lessons</Subheader>;
+    }
+
+    if (props.loading) {
+        content = <Subheader>Loading...</Subheader>;
     }
 
     return (<Page>

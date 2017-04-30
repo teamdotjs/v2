@@ -3,10 +3,12 @@ import Home, { HomeProps } from '../components/Home';
 import { State } from '../reducers/index';
 import { createLesson, loadLessons } from '../actions/lesson';
 import { push } from 'react-router-redux';
+import { isLoading } from '../actions/util';
 
 function mapStateToProps(state: State): HomeProps {
     return {
-        lessons: Object.keys(state.lessonSummary).map((idx: any) => state.lessonSummary[idx])
+        lessons: Object.keys(state.lessonSummary).map((idx: any) => state.lessonSummary[idx]),
+        loading: isLoading('LESSON', state.loading),
     };
 }
 
