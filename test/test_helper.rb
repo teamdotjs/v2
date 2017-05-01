@@ -108,6 +108,16 @@ module ActiveSupport
       }
     end
 
+    def grade_summaries_pattern
+      {
+        id: 318230600,
+        title: 'English 101',
+        grade_summaries: [
+          { type: 'synonym', total_correct: 1, total_questions: 1 }
+        ]
+      }
+    end
+
     private
 
     def login(email, password)

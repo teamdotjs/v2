@@ -47,6 +47,20 @@ class GradesControllerTest < ActionController::TestCase
     assert @response.body
   end
 
+  test 'GET /api/grade/summaries unauthorized' do
+    get :index_summaries
+    assert_response :unauthorized
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'GET /api/grade/summaries success' do
+    login_as_seconduser
+    get :index_summaries
+    assert_response :ok
+    assert_json_match [grade_summaries_pattern], @response.body
+  end
+
   test 'GET /api/grade/course/:id unauthorized' do
     get :course, params: { id: courses(:testcourse).id }
     assert_response :unauthorized
@@ -76,5 +90,37 @@ class GradesControllerTest < ActionController::TestCase
     get :course, params: { id: courses(:testcourse).id }
     assert_response :ok
     assert_json_match [{ user: seconduser_pattern, grades: [grade_pattern] }], @response.body
+  end
+
+  test 'GET /api/grade/course/:id/summaries unauthorized' do
+    get :course_summaries, params: { id: courses(:testcourse).id }
+    assert_response :unauthorized
+    error_response = { errors: ['Unauthorized'], error_message: 'Unauthorized' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'GET /api/grade/course/:id/summaries forbidden' do
+    login_as_seconduser
+    get :course_summaries, params: { id: courses(:testcourse).id }
+    assert_response :forbidden
+    error_response = { errors: ['Forbidden'], error_message: 'Forbidden' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'GET /api/grade/course/:id/summaries course not found' do
+    login_as_testuser
+    get :course_summaries, params: { id: 1 }
+    assert_response :not_found
+    error_response = { errors: ['Couldn\'t find Course with \'id\'=1'],
+                       error_message: 'Course could not be found' }
+    assert_json_match error_response, @response.body
+  end
+
+  test 'GET /api/grade/course/:id/summaries success' do
+    login_as_testuser
+    get :course_summaries, params: { id: courses(:testcourse).id }
+    assert_response :ok
+    pattern = [{ user: seconduser_pattern, lessons: [grade_summaries_pattern] }]
+    assert_json_match pattern, @response.body
   end
 end
