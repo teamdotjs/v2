@@ -18,7 +18,9 @@ export const UserGrades = (props: UserGradesProps) => {
         } else if (grade_summary.total_correct === null) {
             return <TableRowColumn>- / {grade_summary.total_questions}</TableRowColumn>;
         } else {
-            return <TableRowColumn>{grade_summary.total_correct} / {grade_summary.total_questions}</TableRowColumn>;
+            return <TableRowColumn>
+                {grade_summary.total_correct} / {grade_summary.total_questions}
+            </TableRowColumn>;
         }
     }
 
@@ -46,7 +48,9 @@ export const UserGrades = (props: UserGradesProps) => {
 
     let lessons = props.grades.map((lesson) => {
         return <TableRow key={lesson.id}>
-            <TableRowColumn colSpan={2} style={{whiteSpace: 'normal'}}>{lesson.title}</TableRowColumn>
+            <TableRowColumn colSpan={2} style={{whiteSpace: 'normal'}}>
+                {lesson.title}
+            </TableRowColumn>
             {displayGrade(lesson, 'synonym')}
             {displayGrade(lesson, 'definition')}
             {displayGrade(lesson, 'sentence')}

@@ -14,7 +14,9 @@ export interface CourseGradesProps {
 export const CourseGrades = (props: CourseGradesProps) => {
     function displayTotalGrade(lesson: LessonGradeSummary) {
         if (lesson.grade_summaries.length === 0) {
-            return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>- / -</TableRowColumn>;
+            return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>
+                - / -
+            </TableRowColumn>;
         } else {
             let practice_taken = false;
             let num_correct = 0;
@@ -27,9 +29,13 @@ export const CourseGrades = (props: CourseGradesProps) => {
                 num_questions += grade_summary.total_questions;
             });
             if (practice_taken) {
-                return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>{num_correct} / {num_questions}</TableRowColumn>;
+                return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>
+                    {num_correct} / {num_questions}
+                </TableRowColumn>;
             } else {
-                return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>- / {num_questions}</TableRowColumn>;
+                return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>
+                    - / {num_questions}
+                </TableRowColumn>;
             }
         }
     }
@@ -42,14 +48,20 @@ export const CourseGrades = (props: CourseGradesProps) => {
                     <TableRow>
                         <TableHeaderColumn style={{width: '100px'}}>Student</TableHeaderColumn>
                         {props.grades[0].lessons.map((lesson: LessonGradeSummary) =>
-                            <TableHeaderColumn key={lesson.id + lesson.title} style={{whiteSpace: 'normal', width: '50px'}}>{lesson.title}</TableHeaderColumn>
+                            <TableHeaderColumn
+                                key={lesson.id + lesson.title}
+                                style={{whiteSpace: 'normal', width: '50px'}}>
+                                {lesson.title}
+                            </TableHeaderColumn>
                         )}
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
                     {props.grades.map((grade_summary) =>
                         <TableRow key={grade_summary.user.id}>
-                            <TableRowColumn style={{whiteSpace: 'normal', width: '100px'}}>{grade_summary.user.name}</TableRowColumn>
+                            <TableRowColumn style={{whiteSpace: 'normal', width: '100px'}}>
+                                {grade_summary.user.name}
+                            </TableRowColumn>
                             {grade_summary.lessons.map((lesson) =>
                                 displayTotalGrade(lesson)
                             )}
