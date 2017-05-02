@@ -32,19 +32,20 @@ export const Home = (props: HomeProps) => {
     if (courses.length > 0) {
         content = (
             <List style={{ textAlign: 'left' }}>
-                <Subheader>My Courses </Subheader>
+                <Subheader>My Courses
+                    <FloatingActionButton
+                            mini={true}
+                            style={{ float: 'right' }}
+                            label='New Lesson'
+                            onClick={
+                                () => props.onCreateCourseClick ?
+                                    props.onCreateCourseClick() :
+                                    undefined
+                            }>
+                            <ContentAdd />
+                        </FloatingActionButton>
+                </Subheader>
                 {courses}
-                <FloatingActionButton
-                    mini={true}
-                    style={{ float: 'right' }}
-                    label='New Lesson'
-                    onClick={
-                        () => props.onCreateCourseClick ?
-                            props.onCreateCourseClick() :
-                            undefined
-                    }>
-                    <ContentAdd />
-                </FloatingActionButton>
             </List>
         );
     } else {
