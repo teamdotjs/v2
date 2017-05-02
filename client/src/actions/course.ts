@@ -72,14 +72,8 @@ export function createCourse() {
         dispatch(loading('create_course_success'));
         fetch(`/api/course`, {
             method: 'POST',
-            headers:  {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers,
             credentials: 'same-origin',
-            body: JSON.stringify({
-                name
-            })
         })
         .then(errorCheck)
         .then((res: Course) => {

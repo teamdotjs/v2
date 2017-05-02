@@ -34,16 +34,16 @@ export const Home = (props: HomeProps) => {
             <List style={{ textAlign: 'left' }}>
                 <Subheader>My Courses
                     <FloatingActionButton
-                            mini={true}
-                            style={{ float: 'right' }}
-                            label='New Lesson'
-                            onClick={
-                                () => props.onCreateCourseClick ?
-                                    props.onCreateCourseClick() :
-                                    undefined
-                            }>
-                            <ContentAdd />
-                        </FloatingActionButton>
+                        mini={true}
+                        style={{ float: 'right' }}
+                        label='New Lesson'
+                        onClick={
+                            () => props.onCreateCourseClick ?
+                                props.onCreateCourseClick() :
+                                undefined
+                        }>
+                        <ContentAdd />
+                    </FloatingActionButton>
                 </Subheader>
                 {courses}
             </List>
