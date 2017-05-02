@@ -4,6 +4,7 @@ import {
     createSuccess,
     createLoading,
 } from './util';
+import { push } from 'react-router-redux';
 import { Course } from '../reducers/courseReducer';
 import { LessonSummary } from '../reducers/lessonSummaryReducer';
 /* TODO
@@ -65,6 +66,38 @@ export function loadCourse(id: number) {
         });
     };
 }
+
+export function createCourse() {
+    return (dispatch: any) => {
+        dispatch(loading('create_course_success'));
+        fetch(`/api/course`, {
+            method: 'POST',
+            headers:  {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin',
+            body: JSON.stringify({
+                name
+            })
+        })
+        .then(errorCheck)
+        .then((res: Course) => {
+            dispatch(courseSuccess({
+                type: 'create_course_success',
+                lesson: res
+            }));
+            dispatch(push('/course/' + res.id));
+        })
+        .catch((err: Error) => {
+            dispatch({
+                type: 'error_push',
+                error: err.message
+            });
+        });
+    };
+}
+
 
 export function loadCourseLessonSummaries(id: number) {
     return (dispatch: any) => {
