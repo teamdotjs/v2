@@ -11,6 +11,7 @@ import {
 export interface AppBarRightProps {
     userName?: string;
     onLogoutClick?: () => void;
+    onClickGrades?: () => void;
     loading: boolean;
 }
 
@@ -34,20 +35,20 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState>
             open: true,
             anchorEl: event.currentTarget,
         });
-    };
+    }
 
     handleRequestClose = () => {
         this.setState({
             open: false,
         });
-    };
+    }
 
-    handleLogoutClose = () => {
+    handleMenuClose = (onClick?: () => void) => {
         this.setState({
             open: false,
         });
-        this.props.onLogoutClick ? this.props.onLogoutClick() : '';
-    };
+        onClick ? onClick() : '';
+    }
 
     render() {
         return (<div style={{display: 'inline-flex'}}>
@@ -70,9 +71,10 @@ export class AppBarRight extends React.Component<AppBarRightProps, PopoverState>
                     onRequestClose={this.handleRequestClose}
                 >
                   <Menu>
-                      <MenuItem primaryText='User Profile' />
+                      <MenuItem primaryText='Grades'
+                          onClick={() => this.handleMenuClose(this.props.onClickGrades)} />
                       <MenuItem primaryText='Sign out'
-                          onTouchTap={this.handleLogoutClose} />
+                          onTouchTap={() => this.handleMenuClose(this.props.onLogoutClick)} />
                   </Menu>
                 </Popover>
             </div>
