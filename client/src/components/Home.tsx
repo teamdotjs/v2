@@ -15,7 +15,6 @@ export interface HomeProps {
     loading?: boolean;
     onClickCourse?: (id: number) => void;
     onCreateCourseClick?: () => void;
-    inputText?: string;
 }
 
 export const Home = (props: HomeProps) => {
