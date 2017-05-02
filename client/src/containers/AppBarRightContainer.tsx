@@ -3,6 +3,7 @@ import AppBarRight, { AppBarRightProps } from '../components/AppBarRight';
 import { State } from '../reducers/index';
 import {logout} from '../actions/user';
 import { isLoading } from '../actions/util';
+import { push } from 'react-router-redux';
 
 function mapStateToProps(state: State): AppBarRightProps {
     return {
@@ -15,6 +16,9 @@ function mapDispatchToProps(dispatch: any): {} {
     return {
         onLogoutClick: () => {
             dispatch(logout());
+        },
+        onClickGrades: () => {
+            dispatch(push('/grades'));
         }
     };
 }

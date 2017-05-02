@@ -26,7 +26,9 @@ class RoutesTest < ActionController::TestCase
   # grade routes
   should route(:get, '/api/grade').to('grades#index')
   should route(:post, '/api/grade').to('grades#create')
+  should route(:get, '/api/grade/summaries').to('grades#index_summaries')
   should route(:get, '/api/grade/course/1').to('grades#course', id: 1)
+  should route(:get, '/api/grade/course/1/summaries').to('grades#course_summaries', id: 1)
 
   # course routes
   should route(:get, '/api/course').to('courses#index')
