@@ -36,7 +36,7 @@ export const Home = (props: HomeProps) => {
                 {courses}
                 <FlatButton style={{ float: 'left', backgroundColor: 'lightgray' }} label='New Course'
                     onClick={
-                        () => props.onCreateCourseClick ? 
+                        () => props.onCreateCourseClick ?
                             props.onCreateCourseClick() :
                             undefined
                     }>
