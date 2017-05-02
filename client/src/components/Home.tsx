@@ -2,12 +2,13 @@ import {
     List,
     ListItem,
     Subheader,
-    FlatButton,
+    FloatingActionButton,
 } from 'material-ui';
 
 import { Course } from '../reducers/courseReducer';
 import Page from './util/Page';
 import * as React from 'react';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 export interface HomeProps {
     courses?: Course[];
@@ -34,13 +35,17 @@ export const Home = (props: HomeProps) => {
             <List style={{ textAlign: 'left' }}>
                 <Subheader>My Courses </Subheader>
                 {courses}
-                <FlatButton style={{ float: 'left', backgroundColor: 'lightgray' }} label='New Course'
+                <FloatingActionButton
+                    mini={true}
+                    style={{ float: 'right' }}
+                    label='New Lesson'
                     onClick={
                         () => props.onCreateCourseClick ?
                             props.onCreateCourseClick() :
                             undefined
                     }>
-                </FlatButton>
+                    <ContentAdd />
+                </FloatingActionButton>
             </List>
         );
     } else {
