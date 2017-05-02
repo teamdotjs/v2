@@ -44,7 +44,9 @@ class GradesController < ApplicationController
   #   (1) Code: 401
   #   Content: { errors: ['Unauthorized'], error_message: 'Unauthorized' }
   def index_summaries
-    user = User.find(session[:user_id][:value])
+    user = User.includes(courses: [lessons: [practices: :questions]])
+               .references(:courses)
+               .find(session[:user_id][:value])
     summaries = aggregate_grades(user, user.courses)
     render json: summaries
   end
@@ -128,7 +130,9 @@ class GradesController < ApplicationController
   private
 
   def correct_user?
-    @course = Course.find(params[:id])
+    @course = Course.includes(lessons: [practices: :questions])
+                    .references(:lessons)
+                    .find(params[:id])
     return if @course.instructor_id == session[:user_id][:value]
     render json: { errors: ['Forbidden'], error_message: 'Forbidden' }, status: :forbidden # 403
   end
@@ -142,7 +146,7 @@ class GradesController < ApplicationController
           grade_summaries << {
             type: practice.type,
             total_correct: nil,
-            total_questions: practice.questions.count
+            total_questions: practice.questions.length
           }
         end
         lesson_summary = {
