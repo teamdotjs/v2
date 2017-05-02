@@ -36,7 +36,7 @@ export const Home = (props: HomeProps) => {
                     <FloatingActionButton
                         mini={true}
                         style={{ float: 'right' }}
-                        label='New Lesson'
+                        label='New Course'
                         onClick={
                             () => props.onCreateCourseClick ?
                                 props.onCreateCourseClick() :
