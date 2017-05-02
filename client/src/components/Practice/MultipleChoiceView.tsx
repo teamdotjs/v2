@@ -6,9 +6,7 @@ import {
     RadioButtonGroup, RadioButton
 } from 'material-ui';
 
-export interface MultipleChoiceViewProps {
-    question: Question;
-};
+import {QuestionViewProps} from './QuestionView';
 
 const styles = {
   block: {
@@ -19,7 +17,7 @@ const styles = {
   },
 };
 
-export class MultipleChoiceView extends React.Component<MultipleChoiceViewProps, {}> {
+export class MultipleChoiceView extends React.Component<QuestionViewProps, {}> {
 
     render(): JSX.Element {
         const question: Question = this.props.question;

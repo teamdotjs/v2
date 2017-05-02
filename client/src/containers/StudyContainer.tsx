@@ -1,20 +1,27 @@
 import { connect } from 'react-redux';
-import Study from '../components/Lesson/Study';
+import { Study, StudyProps } from '../components/Lesson/Study';
 import { State } from '../reducers/index';
 import { loadLesson } from '../actions/lesson';
+import { loadPractice } from '../actions/practice';
 import { isLoading } from '../actions/util';
 import { push } from 'react-router-redux';
 
-function mapStateToProps(state: State, props: any): any  {
+function mapStateToProps(state: State, props: any): Partial<StudyProps>  {
+    const practices = state.lesson[props.params.id] === undefined ? [] :
+        state.lesson[props.params.id].practices.map((id: number) => state.practice[id])
+                                               .filter(p => p !== undefined);
     return {
         lesson: state.lesson[props.params.id],
         loading: isLoading('LESSON', state.loading),
-        userId: state.session.user === undefined ? undefined : state.session.user.id
+        userId: state.session.user === undefined ? undefined : state.session.user.id,
+        practices
     };
 }
 
 function mapDispatchToProps(dispatch: any, ownProps: any): any {
     dispatch(loadLesson(ownProps.params.id));
+    dispatch(loadPractice(ownProps.params.id));
+
     return {
         onClickEdit() {
             dispatch(push(`/lesson/${ownProps.params.id}/edit`));
