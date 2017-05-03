@@ -6,14 +6,17 @@ import {
     ListItem,
     Subheader,
     FloatingActionButton,
+    FlatButton
 } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 export interface CourseProps {
+    is_instructor?: boolean;
     title?: string;
     lessons?: Lesson[];
     onClickLesson?: (id: number) => void;
     onCreateLessonClick: () => void;
+    onClickGrades: () => void;
     loading?: boolean;
 }
 
@@ -44,15 +47,25 @@ export const Course = (props: CourseProps) => {
         content = <Subheader>Loading...</Subheader>;
     }
     return  <div style={{textAlign: 'left'}}>
-                    <Page
-                        style={{marginTop: 0}}
-                        >
-                                                <h2>{props.title}</h2>
+                    <Page style={{marginTop: 0}}>
+                        <div>
+                            <h2 style={{display: 'inline-block'}}>{props.title}</h2>
+                            {props.is_instructor
+                                ? <FlatButton
+                                    onClick={props.onClickGrades}
+                                    primary={true}
+                                    label='View Grades' />
+                                : undefined}
+                        </div>
 
-                    <FloatingActionButton mini={true} style={{float: 'right'}} label='New Lesson'
-                                          onClick={props.onCreateLessonClick}>
-                        <ContentAdd />
-                    </FloatingActionButton>
+                        <FloatingActionButton
+                            mini={true}
+                            style={{float: 'right'}}
+                            label='New Lesson'
+                            onClick={props.onCreateLessonClick}>
+                            <ContentAdd />
+                        </FloatingActionButton>
+
                         {content}
                     </Page>
         </div>;

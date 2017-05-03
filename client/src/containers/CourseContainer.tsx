@@ -10,6 +10,9 @@ import { push } from 'react-router-redux';
 function mapStateToProps(state: State, props: any): Partial<CourseProps>  {
     const course: Course | undefined = state.course[props.params.id];
     return course ? {
+        is_instructor: state.session.user === undefined ?
+                       false :
+                       state.session.user.id === course.instructor_id,
         title: course.title,
         // TODO: Be more efficient here
         lessons: Object.keys(state.lessonSummary).map((k: any) => state.lessonSummary[k])
@@ -26,6 +29,9 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
         },
         onCreateLessonClick() {
             dispatch(createLesson(ownProps.params.id));
+        },
+        onClickGrades() {
+            dispatch(push(`/course/${ownProps.params.id}/grades`));
         }
     };
 }
