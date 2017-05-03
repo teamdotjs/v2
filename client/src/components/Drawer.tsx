@@ -28,7 +28,7 @@ class DrawerContainer extends React.Component<DrawerProps, {}> {
           }
         }}/>;
       });
-      return (<MUIDrawer docked={false} {...this.props}>
+      return (<MUIDrawer docked={false} {...this.props as MUIDrawerProps}>
         <AppBar onLeftIconButtonTouchTap={() => {
           if(this.props.onRequestChange !== undefined) {
             this.props.onRequestChange(false, '');
