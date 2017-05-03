@@ -5,7 +5,7 @@ import { State } from '../reducers/index';
 import { isLoading } from '../actions/util';
 import Page from '../components/util/Page';
 import { loadPractice } from '../actions/practice';
-import { updateLocalAnswer } from '../actions/practiceTaker';
+import { updateLocalAnswer, submitPractice } from '../actions/practiceTaker';
 
 function mapStateToProps(state: State, props: any): Partial<SinglePracticeTakerProps> {
     return {
@@ -23,6 +23,9 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
         },
         updateQuestion(newValue: any, id: number) {
             dispatch(updateLocalAnswer(ownProps.params.pid, newValue, id));
+        },
+        complete() {
+            dispatch(submitPractice(ownProps.params.pid));
         },
     };
 }

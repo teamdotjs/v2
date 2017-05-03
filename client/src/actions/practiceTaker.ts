@@ -1,3 +1,5 @@
+import { State } from '../reducers';
+
 export const UPDATE_QUESTION = 'UPDATE_QUESTION';
 
 export function updateLocalAnswer(practice: number, newValue: any, question: number) {
@@ -8,5 +10,12 @@ export function updateLocalAnswer(practice: number, newValue: any, question: num
       question,
       newValue,
     });
+  };
+}
+
+export function submitPractice(id: number) {
+  return (_dispatch: any, getState: () => State) => {
+    const practice = getState().practiceTaking[id];
+    console.log(practice);
   };
 }

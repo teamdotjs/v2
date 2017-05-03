@@ -12,6 +12,7 @@ export interface SinglePracticeTakerProps {
     onLoad?: () => void;
     loading?: boolean;
     updateQuestion?: (newValue: any, id: number) => void;
+    complete?: () => void;
     responses: { [id: number]: string|number };
 }
 export interface SinglePracticeTakerState {
@@ -49,8 +50,12 @@ export class SinglePracticeTaker extends React.Component<SinglePracticeTakerProp
         if (this.state.index + 1 !== this.props.practice!.questions.length) {
             return <RaisedButton label='Next' style={style.nextButton} onClick={()=>this.setState({index: this.state.index+1})}/>;
         } else {
-            return <RaisedButton label='Finish' style={style.nextButton} />;
+            return <RaisedButton label='Finish' style={style.nextButton} onClick={() => this.submitPractice() } />;
         }
+    }
+
+    submitPractice() {
+        if (this.props.complete) this.props.complete();
     }
 
     onValueChange(newValue: any, id: number) {
