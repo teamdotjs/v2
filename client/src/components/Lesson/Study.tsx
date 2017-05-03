@@ -49,7 +49,6 @@ export const Study = (props: StudyProps) => {
                         name='wordinfos'
                         disabled={true}
                         value={props.lesson.wordinfos} />
-                   
                 </Page>
                 <PracticeSelectorContainer lessonId={props.lesson.id}/>
             </div>

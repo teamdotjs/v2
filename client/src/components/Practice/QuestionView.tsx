@@ -15,4 +15,4 @@ export const QuestionView = (props: QuestionViewProps) => {
         case 'mc':
             return <MultipleChoiceView {...props}/>;
     }
-}
+};

@@ -59,10 +59,10 @@ export const PracticeView = (props: PracticeViewProps) => {
                         {section.questions.map(q => {
                         switch (q.type) {
                             case 'fitb':
-                                return <ContextSentence 
+                                return <ContextSentence
                                     question={q} key={q.id + q.type} />;
                             case 'mc':
-                                return <MultipleChoiceView 
+                                return <MultipleChoiceView
                                     question={q} key={q.id + q.type} />;
                         }
                         })}

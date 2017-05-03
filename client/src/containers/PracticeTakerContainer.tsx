@@ -30,7 +30,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
     };
 }
 
-const Paged = (props: SinglePracticeTakerProps) => <Page><SinglePracticeTaker {...props} /></Page>; 
+const Paged = (props: SinglePracticeTakerProps) => <Page><SinglePracticeTaker {...props} /></Page>;
 
 const SinglePracticeTakerContainer = connect(
     mapStateToProps,

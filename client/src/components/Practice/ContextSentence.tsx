@@ -27,10 +27,10 @@ export class ContextSentence extends React.Component<QuestionViewProps, FITBStat
             // search returns position of string found, -1 if not found
             if (cur.search('__________') !== -1) {
                 return <span>
-                    <TextField 
-                        key={this.props.question.id} 
-                        value={this.state.value} 
-                        name={cur} 
+                    <TextField
+                        key={this.props.question.id}
+                        value={this.state.value}
+                        name={cur}
                         style={{width: '150px'}}
                         onChange={ (_: any, value: string) => this.setState({value}) }
                         onBlur={ () => this.onChange() }

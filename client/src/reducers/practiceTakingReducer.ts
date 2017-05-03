@@ -2,7 +2,7 @@ import { UPDATE_QUESTION } from '../actions/practiceTaker';
 export interface TakingState {
   [id: number]: {
     [question: number]: number | string;
-  }
+  };
 };
 
 export const takingReducer = (state: TakingState, action: any): TakingState => {
