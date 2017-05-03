@@ -148,7 +148,7 @@ export function logout(): any {
         })
         .then(errorCheck)
         .then((_res: LogoutCheckResponse) => {
-            dispatch(logoutSuccess());
+            window.location.href = '/';
         })
         .catch((err: Error) => {
             dispatch(logoutFailure(err.message));
