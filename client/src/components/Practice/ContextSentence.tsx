@@ -35,6 +35,7 @@ export class ContextSentence extends React.Component<QuestionViewProps, FITBStat
                         onChange={ (_: any, value: string) => this.setState({value}) }
                         onBlur={ () => this.onChange() }
                     />
+                    {cur.slice(10) + ' '}
                 </span>;
             } else {
                 return cur + ' ';

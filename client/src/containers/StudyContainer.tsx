@@ -7,14 +7,10 @@ import { isLoading } from '../actions/util';
 import { push } from 'react-router-redux';
 
 function mapStateToProps(state: State, props: any): Partial<StudyProps>  {
-    const practices = state.lesson[props.params.id] === undefined ? [] :
-        state.lesson[props.params.id].practices.map((id: number) => state.practice[id])
-                                               .filter(p => p !== undefined);
     return {
         lesson: state.lesson[props.params.id],
         loading: isLoading('LESSON', state.loading),
         userId: state.session.user === undefined ? undefined : state.session.user.id,
-        practices
     };
 }
 
