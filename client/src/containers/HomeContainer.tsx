@@ -3,6 +3,7 @@ import Home, { HomeProps } from '../components/Home';
 import { State } from '../reducers/index';
 import { push } from 'react-router-redux';
 import { isLoading } from '../actions/util';
+import { createCourse } from '../actions/course';
 
 function mapStateToProps(state: State): HomeProps {
     return {
@@ -11,10 +12,15 @@ function mapStateToProps(state: State): HomeProps {
     };
 }
 
+
+
 function mapDispatchToProps(dispatch: any): {} {
     return {
         onClickCourse: (id: number) => {
             dispatch(push('/course/' + id));
+        },
+        onCreateCourseClick: () => {
+            dispatch(createCourse());
         }
     };
 }

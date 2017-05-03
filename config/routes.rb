@@ -30,7 +30,9 @@ Rails.application.routes.draw do
     scope '/grade' do
       match '/' => 'grades#index', via: [:get]
       match '/' => 'grades#create', via: [:post]
+      match '/summaries' => 'grades#index_summaries', via: [:get]
       match '/course/:id' => 'grades#course', via: [:get]
+      match '/course/:id/summaries' => 'grades#course_summaries', via: [:get]
     end
 
     scope '/course' do
