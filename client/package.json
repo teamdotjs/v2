@@ -50,6 +50,5 @@
     "redux-thunk": "^2.1.0",
     "tslint": "^3.15.1",
     "tslint-loader": "^2.1.5",
-    "webpack-dev-server": "1.16.4"
   }
 }
