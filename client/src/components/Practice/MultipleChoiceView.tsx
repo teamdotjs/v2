@@ -17,13 +17,30 @@ const styles = {
   },
 };
 
-export class MultipleChoiceView extends React.Component<QuestionViewProps, {}> {
+interface MultiState {
+    value?: any;
+}
+
+export class MultipleChoiceView extends React.Component<QuestionViewProps, MultiState> {
+
+    constructor(props: QuestionViewProps) {
+        super(props);
+        this.state = { value: props.value };
+    }
+
+    onChange(value: any) {
+        if (this.props.onChange) this.props.onChange(value, this.props.question.id);
+        this.setState({value});
+    }
 
     render(): JSX.Element {
         const question: Question = this.props.question;
         return <div>
             <h3>{question.prompts[0]} </h3>
-            <RadioButtonGroup name='response' valueSelected={this.props.value}>
+            <RadioButtonGroup 
+                name='response' 
+                valueSelected={this.state.value}
+                onChange={ (_: any, newOpt: any) => this.onChange(newOpt) }>
                 {question.options.map((opt) => {
                     return <RadioButton
                             style={styles.radioButton}
