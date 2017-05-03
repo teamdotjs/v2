@@ -1,7 +1,7 @@
 import * as React from 'react';
 import WordCreator from './WordCreator/WordCreator';
 import { Practice } from '../../reducers/practiceReducer';
-import { PracticeTaker } from './PracticeTaker';
+import PracticeSelectorContainer from '../../containers/PracticeSelectorContainer';
 import Page from '../util/Page';
 import {Lesson} from '../../reducers/lessonReducer';
 import {
@@ -12,6 +12,7 @@ export interface StudyProps {
     lesson: Lesson;
     loading: boolean;
     onClickEdit: () => void;
+    takePractice: (id: number) => void;
     userId: number;
     practices: Practice[];
 }
@@ -50,9 +51,7 @@ export const Study = (props: StudyProps) => {
                         value={props.lesson.wordinfos} />
                    
                 </Page>
-                 <PracticeTaker
-                        /* FIX ME */
-                        practices={props.practices || []} />
+                <PracticeSelectorContainer lessonId={props.lesson.id}/>
             </div>
         );
     }

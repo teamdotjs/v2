@@ -1,24 +1,25 @@
 import * as React from 'react';
 import {
-    SinglePracticeTaker
-} from './SinglePracticeTaker';
-import {
     Practice, practiceTypes
 } from '../../reducers/practiceReducer';
 
 import {
-    Tabs, Tab, Paper, Toolbar, ToolbarTitle, Subheader
+    Tabs, Tab, Paper, Toolbar, ToolbarTitle, Subheader, RaisedButton
 } from 'material-ui';
 
-export interface PracticeViewProps {
+export interface PracticeSelectorProps {
     practices: Practice[];
+    loading?: boolean;
+    onLoad: () => void;
+    takePractice: (id: number) => void;
 };
 
 const tabContentStyle = {
     padding: '40px',
+    textAlign: 'center',
 };
 
-export const PracticeTaker = (props: PracticeViewProps) => {
+export const PracticeSelector = (props: PracticeSelectorProps) => {
     let content = undefined;
     let availableTypes = practiceTypes;
 
@@ -34,7 +35,9 @@ export const PracticeTaker = (props: PracticeViewProps) => {
                     </span>
                 } value={i}>
                     <div style={tabContentStyle}>
-                        <SinglePracticeTaker practice={section} />
+                        <RaisedButton 
+                            label="Begin Practice"
+                            onClick={ () => props.takePractice(section.id) }/>
                     </div>
                 </Tab>
             )}

@@ -8,7 +8,7 @@ import {
 } from 'material-ui';
 
 export interface SinglePracticeTakerProps {
-    practice: Practice
+    practice: Practice;
 }
 export interface SinglePracticeTakerState {
     index: number;

@@ -21,10 +21,12 @@ function mapStateToProps(state: State, props: any): Partial<StudyProps>  {
 function mapDispatchToProps(dispatch: any, ownProps: any): any {
     dispatch(loadLesson(ownProps.params.id));
     dispatch(loadPractice(ownProps.params.id));
-
     return {
         onClickEdit() {
             dispatch(push(`/lesson/${ownProps.params.id}/edit`));
+        },
+        takePractice(id: number) {
+            dispatch(push(`/lesson/${ownProps.params.id}/take/${id}`));
         }
     };
 }

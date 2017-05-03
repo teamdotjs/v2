@@ -5,9 +5,12 @@ var webpack = require('webpack');
 var WebpackFailPlugin = require('webpack-fail-plugin');
 
 module.exports = {
-    entry: "./src/index.tsx",
+    entry: {
+        app: ["./src/index.tsx"],
+    },
     output: {
-        filename: "./dist/bundle.js",
+        path: __dirname + "/dist/",
+        filename: "bundle.js",
     },
 
     // Enable sourcemaps for debugging webpack's output.

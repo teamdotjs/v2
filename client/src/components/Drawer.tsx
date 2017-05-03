@@ -10,6 +10,7 @@ let dummy = new MUIDrawer();
 type MUIDrawerProps = typeof dummy.props;
 
 export interface DrawerProps extends MUIDrawerProps {
+  docked: boolean
   courses: {id: number, title: string}[];
   onClickCourse?: (id: number) => void;
   onLoad: () => void;
