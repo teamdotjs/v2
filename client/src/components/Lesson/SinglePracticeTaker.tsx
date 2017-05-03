@@ -8,7 +8,8 @@ import {
 } from 'material-ui';
 
 export interface SinglePracticeTakerProps {
-    practice: Practice;
+    practice?: Practice;
+    onLoad?: () => void;
     loading?: boolean;
 }
 export interface SinglePracticeTakerState {
@@ -26,7 +27,15 @@ export class SinglePracticeTaker extends React.Component<SinglePracticeTakerProp
         this.state = {index: -1};
     }
 
+    componentWillMount() {
+        if (this.props.onLoad) this.props.onLoad();
+    }
+
     render() {
+        if (this.props.practice === undefined) {
+            return <div>Problem loading practice</div>;
+        }
+
         if (this.state.index == -1) {
             return <div style={{textAlign: 'center'}}>
                 <RaisedButton label='Begin Practice' onClick={()=> this.setState({index: 0})}/>
