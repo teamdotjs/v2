@@ -6,6 +6,7 @@ import { isLoading } from '../actions/util';
 import Page from '../components/util/Page';
 import { loadPractice } from '../actions/practice';
 import { updateLocalAnswer, submitPractice } from '../actions/practiceTaker';
+import { push } from 'react-router-redux';
 
 function mapStateToProps(state: State, props: any): Partial<SinglePracticeTakerProps> {
     return {
@@ -26,6 +27,7 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
         },
         complete() {
             dispatch(submitPractice(ownProps.params.pid));
+            dispatch(push(`/lesson/${ownProps.params.id}`));
         },
     };
 }
