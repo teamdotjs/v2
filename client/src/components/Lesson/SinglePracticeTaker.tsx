@@ -9,6 +9,7 @@ import {
 
 export interface SinglePracticeTakerProps {
     practice: Practice;
+    loading?: boolean;
 }
 export interface SinglePracticeTakerState {
     index: number;

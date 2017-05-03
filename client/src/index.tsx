@@ -13,7 +13,7 @@ import { loginCheck } from './actions/user';
 import HomeContainer from './containers/HomeContainer';
 import CourseContainer from './containers/CourseContainer';
 import StudyContainer from './containers/StudyContainer';
-// import PracticeTakerContainer from './containers/PracticeTakerContainer';
+import PracticeTakerContainer from './containers/PracticeTakerContainer';
 
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -38,7 +38,7 @@ ReactDOM.render(
                     <Route component={DashboardContainer}>
                         <IndexRoute component={HomeContainer} />
                         <Route path='lesson/:id' component={StudyContainer} />
-                        {/*<Route path='lesson/:id/take/:pid' component={PracticeTakerContainer} />*/}
+                        <Route path='lesson/:id/take/:pid' component={PracticeTakerContainer} />
                         <Route path='lesson/:id/edit' component={LessonCreatorContainer} />
                         <Route path='course/:id' component={CourseContainer} />
                     </Route>
