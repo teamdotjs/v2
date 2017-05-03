@@ -11,6 +11,8 @@ export interface SinglePracticeTakerProps {
     practice?: Practice;
     onLoad?: () => void;
     loading?: boolean;
+    updateQuestion?: (newValue: any, id: number) => void;
+    responses: { [id: number]: string|number };
 }
 export interface SinglePracticeTakerState {
     index: number;
@@ -21,7 +23,7 @@ const style = {
         float: 'right',
     },
     progress: {
-        
+        color: 'darkgrey',
     },
     container: {
         paddingBottom: '15px',
@@ -44,11 +46,15 @@ export class SinglePracticeTaker extends React.Component<SinglePracticeTakerProp
     }
 
     continueAction() {
-        if (this.state.index + 1 != this.props.practice!.questions.length) {
+        if (this.state.index + 1 !== this.props.practice!.questions.length) {
             return <RaisedButton label='Next' style={style.nextButton} onClick={()=>this.setState({index: this.state.index+1})}/>;
         } else {
             return <RaisedButton label='Finish' style={style.nextButton} />;
         }
+    }
+
+    onValueChange(newValue: any, id: number) {
+        if (this.props.updateQuestion) this.props.updateQuestion(newValue, id);
     }
 
     render() {
@@ -65,8 +71,8 @@ export class SinglePracticeTaker extends React.Component<SinglePracticeTakerProp
         const total = this.props.practice.questions.length;
         const q = this.props.practice.questions[this.state.index];
 
-        return <div style={style.container} >
-            <QuestionView question={q} />
+        return <div style={style.container} key={q.id + '' + this.props.practice.id} >
+            <QuestionView question={q} value={this.props.responses[q.id]} onChange={this.onValueChange.bind(this)}/>
             <div style={style.progress} >{this.state.index + 1}/{total}</div>
             {this.continueAction()}
         </div>;

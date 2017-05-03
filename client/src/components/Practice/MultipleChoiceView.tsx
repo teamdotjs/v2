@@ -21,10 +21,9 @@ export class MultipleChoiceView extends React.Component<QuestionViewProps, {}> {
 
     render(): JSX.Element {
         const question: Question = this.props.question;
-
         return <div>
             <h3>{question.prompts[0]} </h3>
-            <RadioButtonGroup name='response'>
+            <RadioButtonGroup name='response' valueSelected={this.props.value}>
                 {question.options.map((opt) => {
                     return <RadioButton
                             style={styles.radioButton}

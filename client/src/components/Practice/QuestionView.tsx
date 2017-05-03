@@ -4,13 +4,15 @@ import { ContextSentence } from './ContextSentence';
 import { MultipleChoiceView } from './MultipleChoiceView';
 export interface QuestionViewProps {
     question: Question;
+    onChange?: (newValue: string, id: number) => void;
+    value?: string|number;
 }
 
 export const QuestionView = (props: QuestionViewProps) => {
     switch (props.question.type) {
         case 'fitb':
-            return <ContextSentence question={props.question} />;
+            return <ContextSentence {...props}/>;
         case 'mc':
-            return <MultipleChoiceView question={props.question} />;
+            return <MultipleChoiceView {...props}/>;
     }
 }

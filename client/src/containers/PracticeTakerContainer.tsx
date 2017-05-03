@@ -5,11 +5,13 @@ import { State } from '../reducers/index';
 import { isLoading } from '../actions/util';
 import Page from '../components/util/Page';
 import { loadPractice } from '../actions/practice';
+import { updateLocalAnswer } from '../actions/practiceTaker';
 
 function mapStateToProps(state: State, props: any): Partial<SinglePracticeTakerProps> {
     return {
         practice: state.practice[props.params.pid],
         loading: isLoading('PRACTICE', state.loading),
+        responses: state.practiceTaking[props.params.pid] || [],
     };
 }
 
@@ -18,7 +20,10 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
         onLoad() {
             // Load in the lessons practices
             dispatch(loadPractice(ownProps.params.id));
-        }
+        },
+        updateQuestion(newValue: any, id: number) {
+            dispatch(updateLocalAnswer(ownProps.params.pid, newValue, id));
+        },
     };
 }
 
