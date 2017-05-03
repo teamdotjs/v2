@@ -36,7 +36,7 @@ export const PracticeSelector = (props: PracticeSelectorProps) => {
                 } value={i}>
                     <div style={tabContentStyle}>
                         <RaisedButton 
-                            label="Begin Practice"
+                            label="Take Practice"
                             onClick={ () => props.takePractice(section.id) }/>
                     </div>
                 </Tab>
