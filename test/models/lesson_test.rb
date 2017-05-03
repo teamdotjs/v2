@@ -15,7 +15,7 @@ class LessonTest < ActiveSupport::TestCase
 
   test 'lesson as json custom options' do
     lesson = lessons(:english101)
-    pattern = { id: 318230600, title: 'English 101' }
+    pattern = { id: 318230600, title: 'English 101', course_ids: [393749808] }
     assert_json_match pattern, lesson.as_json(only: [:id, :title])
   end
 end

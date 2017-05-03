@@ -12,7 +12,7 @@ let SelectableList = (listUtil as any).makeSelectable(List);
 export interface WordCreatorProps {
     name: string;
     value: WordInfo[];
-    onChange: (w: WordInfo[]) => void;
+    onChange?: (w: WordInfo[]) => void;
     disabled?: boolean;
 }
 
@@ -39,11 +39,13 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
     }
 
     onWordChanged(i: number, word_info: WordInfo) {
-        const wordInfos = Object.assign(this.props.value, {
-            [i]: word_info
-        });
+        if (this.props.onChange !== undefined) {
+            const wordInfos = Object.assign(this.props.value, {
+                [i]: word_info
+            });
 
-        this.props.onChange(wordInfos);
+            this.props.onChange(wordInfos);
+        }
     }
 
     onWordSelect(_: any, i: number) {
@@ -59,10 +61,12 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
     }
 
     deleteWord() {
-        const wordInfos = this.props.value.filter((_: any, i: number) => i !== this.state.currentWordIndex);
-        this.setState({ currentWordIndex: -1 });
+        if (this.props.onChange !== undefined) {
+            const wordInfos = this.props.value.filter((_: any, i: number) => i !== this.state.currentWordIndex);
+            this.setState({ currentWordIndex: -1 });
 
-        this.props.onChange(wordInfos);
+            this.props.onChange(wordInfos);
+        }
     }
 
     onNewWordKeyPress(ev: any) {
@@ -88,7 +92,9 @@ export class WordCreator extends React.Component<WordCreatorProps, WordCreatorSt
             inputText: '',
             error: undefined,
         }, () => {
-            this.props.onChange(wordInfos);
+            if (this.props.onChange !== undefined) {
+                this.props.onChange(wordInfos);
+            }
         });
         return true;
     }

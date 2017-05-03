@@ -36,6 +36,7 @@ module ActiveSupport
       {
         id: 318230600,
         title: 'English 101',
+        owner_id: 965022582,
         wordinfos: [
           {
             word: 'probably',
@@ -48,7 +49,8 @@ module ActiveSupport
             sentences: ['This is probably the best test ever']
           }
         ],
-        practices: [907223594]
+        practices: [907223594],
+        course_ids: [393749808]
       }
     end
 
@@ -103,6 +105,16 @@ module ActiveSupport
         value: 'likely',
         duration: 0,
         is_correct: true
+      }
+    end
+
+    def grade_summaries_pattern
+      {
+        id: 318230600,
+        title: 'English 101',
+        grade_summaries: [
+          { type: 'synonym', total_correct: 1, total_questions: 1 }
+        ]
       }
     end
 

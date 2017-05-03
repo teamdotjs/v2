@@ -25,28 +25,28 @@ export class WordDetails extends BindingComponent<WordDetailsProps, {}> {
             : <h1>{this.props.wordInfo.word}</h1>;
 
         const synonyms = this.props.wordInfo.synonyms.length > 0
-            ? this.props.wordInfo.synonyms.map((s) =>
-                <Chip key={s} style={{margin: '4px'}}>{s}</Chip>)
+            ? this.props.wordInfo.synonyms.map((s, i) =>
+                <Chip key={'synonym' + i} style={{margin: '4px'}}>{s}</Chip>)
             : <p>There are no synonyms to display.</p>;
 
         const antonyms = this.props.wordInfo.antonyms.length > 0
-            ? this.props.wordInfo.antonyms.map((a) =>
-                <Chip key={a} style={{margin: '4px'}}>{a}</Chip>)
+            ? this.props.wordInfo.antonyms.map((a, i) =>
+                <Chip key={'antonym' + i} style={{margin: '4px'}}>{a}</Chip>)
             : <p>There are no antonyms to display.</p>;
 
         const roots = this.props.wordInfo.roots.length > 0
-            ? this.props.wordInfo.roots.map((root) =>
-                <p><b>{root.root}</b>: {root.meaning}</p>)
+            ? this.props.wordInfo.roots.map((root, i) =>
+                <p key={'root' + i}><b>{root.root}</b>: {root.meaning}</p>)
             : <p>There are no roots to display.</p>;
 
         const forms = this.props.wordInfo.forms.length > 0
-            ? this.props.wordInfo.forms.map((form) =>
-                <p>{form.word} ({form.part_of_speech})</p>)
+            ? this.props.wordInfo.forms.map((form, i) =>
+                <p key={'form' + i}>{form.word} ({form.part_of_speech})</p>)
             : <p>There are no forms to display.</p>;
 
         const sentences = this.props.wordInfo.sentences.length > 0
-            ? this.props.wordInfo.sentences.map((s) =>
-                <p>{s}</p>)
+            ? this.props.wordInfo.sentences.map((s, i) =>
+                <p key={'sentence' + i}>{s}</p>)
             : <p>There are no sentences to display.</p>;
 
         return (<div style={{paddingLeft: '20px'}}>

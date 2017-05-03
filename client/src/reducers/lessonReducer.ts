@@ -28,6 +28,7 @@ export class WordInfo {
 export interface Lesson {
     id: number;
     title: string;
+    owner_id: number;
     wordinfos: WordInfo[];
     practices: number[];
 }
