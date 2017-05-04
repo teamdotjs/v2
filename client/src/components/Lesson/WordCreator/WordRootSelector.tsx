@@ -52,7 +52,7 @@ const WordRootSelector = (props: WordRootSelectorProps) => {
             props.onChange(newRoots);
         };
 
-        return (<div key={root.root} style={{ display: 'flex' }}>
+        return (<div key={`root.${index}`} style={{ display: 'flex' }}>
             <TextField
                 name={root.root}
                 value={root.root}
