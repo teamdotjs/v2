@@ -13,7 +13,7 @@ export interface AppProps {
 }
 
 const App = (props: AppProps) => {
-    let title = <Link style={{ color: 'white', textDecoration: 'none' }} to='/'>NTID Vocab</Link>;
+    let title = <Link style={{ color: 'white', textDecoration: 'none' }} to='/'>AVA</Link>;
     return (
         <div style={{ position: 'absolute', width: '100%', margin: 0 }}>
             <ErrorContainer />
