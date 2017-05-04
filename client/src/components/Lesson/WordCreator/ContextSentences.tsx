@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     TextField
 } from 'material-ui';
-import{WordInfo, WordForm} from '../../../reducers/lessonReducer';
+import { WordInfo } from '../../../reducers/lessonReducer';
 import {
     ChangeEvent
 } from '../../util/ChangeEvent';
@@ -46,37 +46,32 @@ export class ContextSentences extends React.Component<ContextSentencesProps, Con
             newVal = newVal.filter((sentence, i) =>
                 sentence !== '' || i === this.props.value.length);
             this.props.onChange(newVal);
-            if (ev.target) {
-                const result: number[] = [];
-                if (newVal[i] !== undefined) {
-                    result.push(newVal[i].search(this.props.wordInfo.word));
-                    this.props.wordInfo.forms.forEach((item: WordForm) => {result.push(newVal[i].search(item.word)); });
-                    if ( result.find((value: number) => value !== -1 ) !== undefined) {
-                        const error = Object.assign(this.state.error, {[i]: '',
-                        });
-                        this.props.onChangeError(error);
-                    }
-                    else {
-                        const error = Object.assign(this.state.error,
-                        {[i]: 'Sentence does not contain: '.concat(this.props.wordInfo.word).concat(' or one of its forms')
-                            });
-                        this.props.onChangeError(error);
-                    }
-                }
-                else {
-                    const error = Object.assign(this.state.error, {[i]: ''
-                        });
-                    this.props.onChangeError(error);
-                }
-            }
             return true;
         };
     }
-
+    validateSentence(sentence: string, i: number) {
+        const reg = new RegExp('\\b(' + this.props.wordInfo.word.toLocaleLowerCase() + '|' + this.props.wordInfo.forms.map(f => f.word.toLocaleLowerCase()).join('|') + ')\\b');
+        if (sentence !== undefined ) {
+            if (reg.test(sentence.toLocaleLowerCase())) {
+                const error = Object.assign(this.state.error, {
+                [i]: '',
+                });
+                this.props.onChangeError(error);
+            }
+            else {
+                const error = Object.assign(this.state.error,
+                    {
+                    [i]: 'Sentence does not contain: '.concat(this.props.wordInfo.word).concat(' or one of its forms')
+                    });
+                this.props.onChangeError(error);
+            }
+        }
+    }
     render() {
+        this.props.value.forEach((sentence, i) => this.validateSentence(sentence, i));
         const inputs = this.props.value.concat(['']).map((sentence, i) =>
-            <TextField fullWidth={true} name={'' + i} value={sentence} onChange={this.textFieldonChange(i)} key={i} hintText='New Context Sentence' errorText={(this.state.error[i] !== undefined) ? this.state.error[i] : ''}/>
-        );
+            <TextField fullWidth={true} name={'' + i} value={sentence} onChange={this.textFieldonChange(i)} key={i} hintText='New Context Sentence' errorText={(this.state.error[i] !== undefined) ? this.state.error[i] : ''} />
+       );
         return (
             <div>
                 {inputs}
