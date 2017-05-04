@@ -57,14 +57,15 @@ export const Course = (props: CourseProps) => {
                                     label='View Grades' />
                                 : undefined}
                         </div>
-
-                        <FloatingActionButton
-                            mini={true}
-                            style={{float: 'right'}}
-                            label='New Lesson'
-                            onClick={props.onCreateLessonClick}>
-                            <ContentAdd />
-                        </FloatingActionButton>
+                        {props.is_instructor
+                            ? <FloatingActionButton
+                                mini={true}
+                                style={{float: 'right'}}
+                                label='New Lesson'
+                                onClick={props.onCreateLessonClick}>
+                                <ContentAdd />
+                            </FloatingActionButton>
+                        : undefined }
 
                         {content}
                     </Page>
