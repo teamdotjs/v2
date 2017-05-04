@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import { Router, IndexRoute, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import store from './store/exampleStore';
-import App from './components/App';
+import AppContainer from './containers/AppContainer';
 import DashboardContainer from './containers/DashboardContainer';
 import RegistrationFormContainer from './containers/RegistrationFormContainer';
 import LessonCreatorContainer from './containers/LessonCreatorContainer';
@@ -30,7 +30,7 @@ ReactDOM.render(
     <MuiThemeProvider>
         <Provider store={store}>
             <Router history={history}>
-                <Route path='/' component={App}>
+                <Route path='/' component={AppContainer}>
                     <Route path='register' component={RegistrationFormContainer} />
                     <Route component={DashboardContainer}>
                         <IndexRoute component={HomeContainer} />
