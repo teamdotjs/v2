@@ -13,6 +13,7 @@ import { loginCheck } from './actions/user';
 import HomeContainer from './containers/HomeContainer';
 import CourseContainer from './containers/CourseContainer';
 import StudyContainer from './containers/StudyContainer';
+import PracticeTakerContainer from './containers/PracticeTakerContainer';
 import UserGradesContainer from './containers/UserGradesContainer';
 import CourseGradesContainer from './containers/CourseGradesContainer';
 
@@ -21,6 +22,10 @@ import * as injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
+
+// Webpack
+declare var module: any;
+if (module.hot) module.hot.accept();
 
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -35,6 +40,7 @@ ReactDOM.render(
                     <Route component={DashboardContainer}>
                         <IndexRoute component={HomeContainer} />
                         <Route path='lesson/:id' component={StudyContainer} />
+                        <Route path='lesson/:id/take/:pid' component={PracticeTakerContainer} />
                         <Route path='lesson/:id/edit' component={LessonCreatorContainer} />
                         <Route path='course/:id' component={CourseContainer} />
                         <Route path='grades' component={UserGradesContainer} />
