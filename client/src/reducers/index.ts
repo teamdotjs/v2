@@ -7,8 +7,10 @@ import { ErrorState, errorReducer } from './errorReducer';
 import { LoadingState, loadingReducer } from './loadingReducer';
 import { CourseState, courseReducer } from './courseReducer';
 import { DrawerState, drawerReducer } from './drawerReducer';
+import { TakingState, takingReducer} from './practiceTakingReducer';
 import { LessonGradeSummaryState, lessonGradeSummaryReducer } from './lessonGradeSummaryReducer';
 import { CourseGradeSummaryState, courseGradeSummaryReducer } from './courseGradeSummaryReducer';
+
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
@@ -23,6 +25,7 @@ export interface State {
     loading: LoadingState;
     course: CourseState;
     drawer: DrawerState;
+    practiceTaking: TakingState;
     lessonGradeSummary: LessonGradeSummaryState;
     courseGradeSummary: CourseGradeSummaryState;
 }
@@ -38,6 +41,7 @@ export const app = combineReducers({
     loading: loadingReducer,
     course: courseReducer,
     drawer: drawerReducer,
+    practiceTaking: takingReducer,
     lessonGradeSummary: lessonGradeSummaryReducer,
     courseGradeSummary: courseGradeSummaryReducer
 });
