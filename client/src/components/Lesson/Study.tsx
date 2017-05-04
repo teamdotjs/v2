@@ -1,5 +1,6 @@
 import * as React from 'react';
 import WordCreator from './WordCreator/WordCreator';
+import PracticeSelectorContainer from '../../containers/PracticeSelectorContainer';
 import Page from '../util/Page';
 import {Lesson} from '../../reducers/lessonReducer';
 import {
@@ -21,6 +22,7 @@ export const Study = (props: StudyProps) => {
     } else if (props.lesson === undefined) {
         content = 'Lesson Not Found';
     } else {
+        const isOwner = props.lesson.owner_id === props.userId;
         content = (
             <div style={{marginTop: '40px'}}>
                 <Page
@@ -29,7 +31,7 @@ export const Study = (props: StudyProps) => {
                         <div>
                             <Toolbar>
                                 <ToolbarTitle text={props.lesson.title}/>
-                                {props.lesson.owner_id === props.userId
+                                {isOwner
                                     ? <ToolbarGroup>
                                         <FlatButton
                                             onClick={props.onClickEdit}
@@ -46,6 +48,9 @@ export const Study = (props: StudyProps) => {
                         disabled={true}
                         value={props.lesson.wordinfos} />
                 </Page>
+                { !isOwner
+                  ? <PracticeSelectorContainer lessonId={props.lesson.id} />
+                  : undefined }
             </div>
         );
     }

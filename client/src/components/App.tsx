@@ -10,6 +10,7 @@ import store from '../store/exampleStore';
 
 export interface AppProps {
     children?: Element[];
+    isLoggedIn?: boolean;
 }
 
 const App = (props: AppProps) => {
@@ -17,7 +18,7 @@ const App = (props: AppProps) => {
     return (
         <div style={{ position: 'absolute', width: '100%', margin: 0 }}>
             <ErrorContainer />
-            <DrawerContainer />
+            {props.isLoggedIn ? <DrawerContainer /> : null }
             <AppBar
                 title={title}
                 iconElementRight={<AppBarRight />}

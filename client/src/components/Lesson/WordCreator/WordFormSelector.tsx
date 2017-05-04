@@ -54,18 +54,17 @@ const WordFormSelector = (props: WordFormSelectorProps) => {
             props.onChange(newForms);
         };
 
-        return (<div key={form.word} style={{ display: 'flex' }}>
+        return (<div key={`form-${index}`} style={{ display: 'flex' }}>
             <TextField
-                name={form.word}
-                value={form.word}
-                style={{ width: '65%' }}
+                name={`form-name-${index}`}
+                defaultValue={form.word}
                 onChange={changeHandleInput} />
             <SelectField
                 style={{ width: '30%', marginLeft: '5%' }}
                 value={form.part_of_speech}
                 onChange={changeHandleSelection}>
                 {parts_of_speech.map(part =>
-                    <MenuItem key={part + form.word} value={part} primaryText={part}/>
+                    <MenuItem key={part + `form-${index}`} value={part} primaryText={part}/>
                 )}
             </SelectField>
             <IconButton iconClassName='material-icons'

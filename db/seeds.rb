@@ -12,6 +12,8 @@ lesson = Lesson.create(title: 'A\'s', owner: user)
 course = Course.create(title: 'English 101', instructor: user)
 course.lessons << lesson
 
+user = User.create(email: 'exlnce@rit.edu', name: 'Євген Лилак', password: 'password', birthday: 35.years.ago)
+
 atheist = Wordinfo.create(word: 'atheist', definition: 'One who does not believe in God', part_of_speech: 'noun', user: user, lesson: lesson)
 Root.create(root: 'the', meaning: 'God', wordinfo: atheist)
 Form.create(word: 'atheistic', part_of_speech: 'adjective', wordinfo: atheist)

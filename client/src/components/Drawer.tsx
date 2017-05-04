@@ -10,6 +10,7 @@ let dummy = new MUIDrawer();
 type MUIDrawerProps = typeof dummy.props;
 
 export interface DrawerProps extends MUIDrawerProps {
+  docked: boolean;
   courses: {id: number, title: string}[];
   onClickCourse?: (id: number) => void;
   onLoad: () => void;
@@ -28,13 +29,13 @@ class DrawerContainer extends React.Component<DrawerProps, {}> {
           }
         }}/>;
       });
-      return (<MUIDrawer docked={false} {...this.props}>
+      return (<MUIDrawer docked={false} {...this.props as MUIDrawerProps}>
         <AppBar onLeftIconButtonTouchTap={() => {
           if(this.props.onRequestChange !== undefined) {
             this.props.onRequestChange(false, '');
           }
         }} />
-        <Menu>
+        <Menu disableAutoFocus={true}>
           <Subheader>Your Courses</Subheader>
           {courses}
         </Menu>

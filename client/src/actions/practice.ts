@@ -1,6 +1,8 @@
 import 'whatwg-fetch';
 import {
-    errorCheck
+    errorCheck,
+    createSuccess,
+    createLoading,
 } from './util';
 import { SectionType } from '../reducers/practiceReducer';
 import { PRACTICE_ERROR } from '../reducers/errorReducer';
@@ -10,12 +12,16 @@ const headers = {
     'Content-Type': 'application/json'
 };
 
+const success = createSuccess('PRACTICE');
+const loading = createLoading('PRACTICE');
+
 export function generatePractice(id: number, type: SectionType) {
     return (dispatch: any) => {
         dispatch({
             type: 'error_pin',
             pin: PRACTICE_ERROR,
         });
+        dispatch(loading('practice_save_local'));
         dispatch({ type: 'practice_generate', id });
         fetch(`/api/lesson/${id}/practice`, {
             method: 'POST',
@@ -28,7 +34,7 @@ export function generatePractice(id: number, type: SectionType) {
         })
         .then(errorCheck)
         .then((practice: JSON) => {
-            dispatch({ type: 'practice_save_local', practice, id });
+            dispatch(success({ type: 'practice_save_local', practice, id }));
         })
         .catch((err: Error) => {
             console.log(err);
