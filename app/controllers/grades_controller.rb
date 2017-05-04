@@ -157,7 +157,10 @@ class GradesController < ApplicationController
         summaries << lesson_summary
       end
     end
-    Grade.where(user: user).each do |grade|
+    grades = Grade.includes(question: [:options, :prompts, { practice: :lesson }])
+                  .references(:question)
+                  .where(user: user)
+    grades.each do |grade|
       practice = grade.question.practice
       lesson = summaries.find { |l| l[:id] == practice.lesson.id }
       grade_summary = lesson[:grade_summaries].find { |g| g[:type] == practice.type }
