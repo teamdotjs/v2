@@ -34,7 +34,7 @@ class DrawerContainer extends React.Component<DrawerProps, {}> {
             this.props.onRequestChange(false, '');
           }
         }} />
-        <Menu>
+        <Menu disableAutoFocus={true}>
           <Subheader>Your Courses</Subheader>
           {courses}
         </Menu>
