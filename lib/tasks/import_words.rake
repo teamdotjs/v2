@@ -2,7 +2,9 @@ desc 'Import words from old system'
 task import_words: :environment do
   user = User.find_by_email('exlnce@rit.edu')
   abort('User does not exist') if user.nil?
+  course = Course.create(instructor: user, title: 'Imported Lessons')
   lesson = Lesson.create(title: 'A-ANTI', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "atheist", definition: "a person who doesn't believe in God.", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Stalin, the infamous leader of the communist party, was an ATHEIST.", wordinfo: wordinfo)
   Synonym.create(word: "non-believer", wordinfo: wordinfo)
@@ -151,6 +153,7 @@ task import_words: :environment do
   Synonym.create(word: "opposition", wordinfo: wordinfo)
   Antonym.create(word: "similarity", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'AFRICANQ', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "barren", definition: "Unable to produce children or young animals", user: user, lesson: lesson)
   Sentence.create(context_sentence: "They lived in a BARREN wasteland where nothing grew and there was no rain for months on end", wordinfo: wordinfo)
   Synonym.create(word: "empty", wordinfo: wordinfo)
@@ -245,6 +248,7 @@ task import_words: :environment do
   Synonym.create(word: "daze", wordinfo: wordinfo)
   Synonym.create(word: "delusion", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'ALIEN', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "option", definition: "The freedom to choose; One of a number of choices", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Their only OPTION was to close down the school for the day because of the snowstorm.", wordinfo: wordinfo)
   Synonym.create(word: "alternative", wordinfo: wordinfo)
@@ -330,6 +334,7 @@ task import_words: :environment do
   Synonym.create(word: "explode", wordinfo: wordinfo)
   Synonym.create(word: "ignite", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'AUTO-BIO', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "autocrat", definition: "an absolute ruler, a domineering, self-willed person", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The twentieth century's worst AUTOCRAT was Stalin, the leader of Russia's communist party for over 30 years.", wordinfo: wordinfo)
   Synonym.create(word: "despot", wordinfo: wordinfo)
@@ -422,6 +427,7 @@ task import_words: :environment do
   Synonym.create(word: "mutual benefit", wordinfo: wordinfo)
   Synonym.create(word: "advantage", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'BODYHEAT', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "ingenious", definition: "Having great skill and imagination, brilliant", part_of_speech: "adjective", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Her answer to the math problem was INGENIOUS. No one else got it right.", wordinfo: wordinfo)
   Synonym.create(word: "clever", wordinfo: wordinfo)
@@ -513,6 +519,7 @@ task import_words: :environment do
   Synonym.create(word: "mate", wordinfo: wordinfo)
   Synonym.create(word: "marriage partner", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'CHINATWN', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "operative", definition: "A person who works on secret assignments or missions; spy.", part_of_speech: "noun", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Jake Gittes, the private detective, sent his OPERATIVE, Walsh, to photograph Mr. Mulwray.", wordinfo: wordinfo)
   Synonym.create(word: "agent", wordinfo: wordinfo)
@@ -599,6 +606,7 @@ task import_words: :environment do
   Synonym.create(word: "principal actor", wordinfo: wordinfo)
   Antonym.create(word: "villain", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'CHRN-DEM', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "anachronism", definition: "anything that appears to be in the wrong period of time", user: user, lesson: lesson)
   Sentence.create(context_sentence: "To show a computer in a movie about the Civil War would be an ANACHRONISM.", wordinfo: wordinfo)
   Synonym.create(word: "error", wordinfo: wordinfo)
@@ -725,6 +733,7 @@ task import_words: :environment do
   Synonym.create(word: "extensive", wordinfo: wordinfo)
   Antonym.create(word: "isolated", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'DAYEARTH', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "hysteria", definition: "Wild uncontrollable excitement, especially by crowd of people", user: user, lesson: lesson)
   Sentence.create(context_sentence: "There was mass HYSTERIA when the crowd of people saw the spaceship land in the parking lot of the shopping plaza.", wordinfo: wordinfo)
   Synonym.create(word: "panic", wordinfo: wordinfo)
@@ -832,6 +841,7 @@ task import_words: :environment do
   Synonym.create(word: "distrustful", wordinfo: wordinfo)
   Synonym.create(word: "fearful", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'DEFENSE', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "self-deception", definition: "trying to lie to yourself; self deception; self delusion", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Many people suffer from SELF-DECEPTION. They lie to themselves. They convince themselves that everything is fine, but they are really hurting.", wordinfo: wordinfo)
   Synonym.create(word: "self-delusion", wordinfo: wordinfo)
@@ -992,6 +1002,7 @@ task import_words: :environment do
   Synonym.create(word: "clumsy", wordinfo: wordinfo)
   Antonym.create(word: "graceful", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'DICT-EU', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "abdicate", definition: "to formally give up a throne or high office", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The king ABDICATEd.", wordinfo: wordinfo)
   Synonym.create(word: "resign", wordinfo: wordinfo)
@@ -1120,6 +1131,7 @@ task import_words: :environment do
   Synonym.create(word: "discharge", wordinfo: wordinfo)
   Synonym.create(word: "emanate", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'DRSSKILL', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "incredible", definition: "To strange to be believed or very hard to believe.", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Tom said he did not do his homework because his dog died; that is the most INCREDIBLE excuse the teacher had ever heard.", wordinfo: wordinfo)
   Synonym.create(word: "unbelievable", wordinfo: wordinfo)
@@ -1205,6 +1217,7 @@ task import_words: :environment do
   Synonym.create(word: "beginning", wordinfo: wordinfo)
   Synonym.create(word: "origin", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'EX-LOG', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "ebullient", definition: "full of life and happiness", user: user, lesson: lesson)
   Sentence.create(context_sentence: "She was in an EBULLIENT mood, telling jokes and buying drinks for everyone.", wordinfo: wordinfo)
   Synonym.create(word: "buoyant", wordinfo: wordinfo)
@@ -1344,12 +1357,14 @@ task import_words: :environment do
   Synonym.create(word: "introduction", wordinfo: wordinfo)
   Antonym.create(word: "epilogue", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'HANGING', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "sodden", definition: "to make wet with rain, or full of water", user: user, lesson: lesson)
   Sentence.create(context_sentence: "He died in Burma, now Mayanmar, on a SODDEN, dreary morning. The ground was wet, damp, and steamy from the week long rain.", wordinfo: wordinfo)
   Synonym.create(word: "soaked", wordinfo: wordinfo)
   Synonym.create(word: "saturated", wordinfo: wordinfo)
   Antonym.create(word: "dry", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'HEALTH', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "varsity", definition: "the main team that represents a university in a sport", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Rit has VARSITY teams in lacrosse, hockey, and basketball. These teams represent RIT in competitions with other universities.", wordinfo: wordinfo)
   Synonym.create(word: "university team", wordinfo: wordinfo)
@@ -1496,6 +1511,7 @@ task import_words: :environment do
   Synonym.create(word: "disfigured", wordinfo: wordinfo)
   Antonym.create(word: "well formed", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'KIDS', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "solitary", definition: "spending a lot of time alone", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Learning to play video games can be a SOLITARY experience most of the time. Solitary is an adjective that explains how a person works by himself.", wordinfo: wordinfo)
   Synonym.create(word: "alone", wordinfo: wordinfo)
@@ -1654,6 +1670,7 @@ task import_words: :environment do
   Synonym.create(word: "slaughter", wordinfo: wordinfo)
   Synonym.create(word: "butchery", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'LOGY-MIT', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "astrology", definition: "pseudo-science claiming to foretell the future", user: user, lesson: lesson)
   Sentence.create(context_sentence: "ASTROLOGY has twelve signs. My sign is Virgo. What's yours?", wordinfo: wordinfo)
   Synonym.create(word: "horoscope", wordinfo: wordinfo)
@@ -1773,6 +1790,7 @@ task import_words: :environment do
   Synonym.create(word: "pompous", wordinfo: wordinfo)
   Synonym.create(word: "extravagant", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'MANKING', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "bureaucrat", definition: "An official who works in the administration of the government", user: user, lesson: lesson)
   Sentence.create(context_sentence: "He was a BUREAUCRAT in a small governmental office that granted licenses.", wordinfo: wordinfo)
   Synonym.create(word: "official", wordinfo: wordinfo)
@@ -1864,6 +1882,7 @@ task import_words: :environment do
   Synonym.create(word: "a god", wordinfo: wordinfo)
   Synonym.create(word: "divine being", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'MONO-PED', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "monarchy", definition: "a government with one hereditary ruler", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The MONARCHY in England has lasted for hundreds of years.", wordinfo: wordinfo)
   Synonym.create(word: "kingdom", wordinfo: wordinfo)
@@ -1985,6 +2004,7 @@ task import_words: :environment do
   Synonym.create(word: "view", wordinfo: wordinfo)
   Synonym.create(word: "vista", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'NEIGHBOR', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "admonish", definition: "to warn about something; to speak to with gentle disapproval", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The instructor had to ADMONISH one of the students for not doing the homework.", wordinfo: wordinfo)
   Synonym.create(word: "warn", wordinfo: wordinfo)
@@ -2119,6 +2139,7 @@ task import_words: :environment do
   Synonym.create(word: "fervent", wordinfo: wordinfo)
   Synonym.create(word: "eager", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'NOTORIOS', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "custody", definition: "The act or right of caring for someone, often given by law.", part_of_speech: "noun", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The child was left in the CUSTODY of his mother after the divorce.", wordinfo: wordinfo)
   Synonym.create(word: "care", wordinfo: wordinfo)
@@ -2205,6 +2226,7 @@ task import_words: :environment do
   Synonym.create(word: "threat", wordinfo: wordinfo)
   Synonym.create(word: "danger", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'PHIL-PRE', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "bibliophile", definition: "a person who loves books; a book collector", user: user, lesson: lesson)
   Sentence.create(context_sentence: "We discovered a small bookstore owned by a true BIBLIOPHILE.", wordinfo: wordinfo)
   Synonym.create(word: "book-lover", wordinfo: wordinfo)
@@ -2330,6 +2352,7 @@ task import_words: :environment do
   Synonym.create(word: "to dominate", wordinfo: wordinfo)
   Antonym.create(word: "fail", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'PLMBING', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "anticipate", definition: "to guess or imagine in advance that something will happen", user: user, lesson: lesson)
   Sentence.create(context_sentence: "I had to ANTICIPATE the kind of questions people would ask me at the job interview.", wordinfo: wordinfo)
   Synonym.create(word: "foresee", wordinfo: wordinfo)
@@ -2418,6 +2441,7 @@ task import_words: :environment do
   Synonym.create(word: "relentless", wordinfo: wordinfo)
   Synonym.create(word: "unremitting", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'POSTMAN', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "ambitious", definition: "Having a stong desire for power, wealth, etc.", part_of_speech: "adjective", user: user, lesson: lesson)
   Sentence.create(context_sentence: "She was so AMBITIOUS that she worked extra hours every day for almost six months to get her promotion early.", wordinfo: wordinfo)
   Synonym.create(word: "wanting success", wordinfo: wordinfo)
@@ -2507,6 +2531,7 @@ task import_words: :environment do
   Synonym.create(word: "earliest", wordinfo: wordinfo)
   Antonym.create(word: "copy", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'PRO-SPEC', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "proclivity", definition: "a strong natural liking towards something bad", user: user, lesson: lesson)
   Sentence.create(context_sentence: "His PROCLIVITY to tell lies got him into trouble with the police", wordinfo: wordinfo)
   Synonym.create(word: "tendency", wordinfo: wordinfo)
@@ -2629,6 +2654,7 @@ task import_words: :environment do
   Synonym.create(word: "guess", wordinfo: wordinfo)
   Synonym.create(word: "wonder", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'PROPTECH', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "adherent", definition: "person who supports a particular idea, person, political party", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Michael was an ADHERENT of the Republican party platform that wanted to reduce the size of government and support free trade with all countries.", wordinfo: wordinfo)
   Synonym.create(word: "supporter", wordinfo: wordinfo)
@@ -2763,6 +2789,7 @@ task import_words: :environment do
   Synonym.create(word: "satisfied", wordinfo: wordinfo)
   Synonym.create(word: "pleased", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'SEX', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "skimpy", definition: "not providing enough of something, e.g. clothing, food, meals", user: user, lesson: lesson)
   Sentence.create(context_sentence: "Fashion models often wear SKIMPY clothing when advertise alcohol and other products.", wordinfo: wordinfo)
   Synonym.create(word: "insufficient", wordinfo: wordinfo)
@@ -2888,6 +2915,7 @@ task import_words: :environment do
   Synonym.create(word: "perfect", wordinfo: wordinfo)
   Synonym.create(word: "flawless", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'SHAME', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "narrate", definition: "to tell a story; describe events in order", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The author will NARRATE two painful childhood experiences during the lecture.", wordinfo: wordinfo)
   Synonym.create(word: "tell", wordinfo: wordinfo)
@@ -3008,6 +3036,7 @@ task import_words: :environment do
   Synonym.create(word: "waif", wordinfo: wordinfo)
   Synonym.create(word: "street urchin", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'SPELLBND', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "induce", definition: "To bring about or stimulate the occurrence of something.", part_of_speech: "verb", user: user, lesson: lesson)
   Sentence.create(context_sentence: "His wife went to the hospital early but after ten hours, the doctors had to INDUCE labor because she was in great pain.", wordinfo: wordinfo)
   Synonym.create(word: "cause", wordinfo: wordinfo)
@@ -3097,6 +3126,7 @@ task import_words: :environment do
   Synonym.create(word: "persevering", wordinfo: wordinfo)
   Synonym.create(word: "relentless", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'SUB-TORT', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "subjugate", definition: "to defeat and make obedient", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The communists SUBJUGATEd many Eastern European countries between 1920 and 1990.", wordinfo: wordinfo)
   Synonym.create(word: "conquer", wordinfo: wordinfo)
@@ -3226,6 +3256,7 @@ task import_words: :environment do
   Synonym.create(word: "punishment", wordinfo: wordinfo)
   Synonym.create(word: "torment", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'TARGET', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "newcomer", definition: "someone who only recently has arrived at a place", user: user, lesson: lesson)
   Sentence.create(context_sentence: "She was a NEWCOMER to the city; her parents and whole family still lived on a small farm in the middle of Iowa.", wordinfo: wordinfo)
   Synonym.create(word: "new arrival", wordinfo: wordinfo)
@@ -3374,6 +3405,7 @@ task import_words: :environment do
   Synonym.create(word: "blacklist", wordinfo: wordinfo)
   Synonym.create(word: "blackball", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'TO_CATCH', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "rumor", definition: "Unofficial information, maybe untrue, spread by people", part_of_speech: "noun", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The students have been talking about their relationship for a long time and the RUMOR is they will be married before the end of the quarter.", wordinfo: wordinfo)
   Synonym.create(word: "heresay", wordinfo: wordinfo)
@@ -3467,6 +3499,7 @@ task import_words: :environment do
   Synonym.create(word: "rarely", wordinfo: wordinfo)
   Antonym.create(word: "often", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'TURNOFF', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "fresh", definition: "rudely confident about sex, being smart-alecky", user: user, lesson: lesson)
   Sentence.create(context_sentence: "He was behaving badly by talking back to his teacher; he was so FRESH that Miss Blake had to send him to the principal's office for the rest of the day.", wordinfo: wordinfo)
   Synonym.create(word: "brazen", wordinfo: wordinfo)
@@ -3590,6 +3623,7 @@ task import_words: :environment do
   Synonym.create(word: "passivity", wordinfo: wordinfo)
   Antonym.create(word: "activity", wordinfo: wordinfo)
   lesson = Lesson.create(title: 'UNTOUCH', owner: user)
+  course.lessons << lesson
   wordinfo = Wordinfo.create(word: "prohibition", definition: "Prevention of the manufacture and sale of alcoholic drinks.", part_of_speech: "noun", user: user, lesson: lesson)
   Sentence.create(context_sentence: "The era of PROHIBITION lasted for 14 years, from 1919-1933. The 18th amendment to the U.S. Constitution made it illegal to sell or produce liquor.", wordinfo: wordinfo)
   Synonym.create(word: "Voldstead Act", wordinfo: wordinfo)
