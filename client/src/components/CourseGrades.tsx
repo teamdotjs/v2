@@ -11,10 +11,15 @@ export interface CourseGradesProps {
     loading: boolean;
 }
 
+const styles = {
+    width: 60,
+    whiteSpace: 'normal'
+};
+
 export const CourseGrades = (props: CourseGradesProps) => {
     function displayTotalGrade(lesson: LessonGradeSummary) {
         if (lesson.grade_summaries.length === 0) {
-            return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>
+            return <TableRowColumn key={lesson.id + 'grade'} style={styles}>
                 - / -
             </TableRowColumn>;
         } else {
@@ -29,11 +34,11 @@ export const CourseGrades = (props: CourseGradesProps) => {
                 num_questions += grade_summary.total_questions;
             });
             if (practice_taken) {
-                return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>
+                return <TableRowColumn key={lesson.id + 'grade'} style={styles}>
                     {num_correct} / {num_questions}
                 </TableRowColumn>;
             } else {
-                return <TableRowColumn key={lesson.id + 'grade'} style={{width: '50px'}}>
+                return <TableRowColumn key={lesson.id + 'grade'} style={styles}>
                     - / {num_questions}
                 </TableRowColumn>;
             }
@@ -50,7 +55,7 @@ export const CourseGrades = (props: CourseGradesProps) => {
                         {props.grades[0].lessons.map((lesson: LessonGradeSummary) =>
                             <TableHeaderColumn
                                 key={lesson.id + lesson.title}
-                                style={{whiteSpace: 'normal', width: '50px'}}>
+                                style={styles}>
                                 {lesson.title}
                             </TableHeaderColumn>
                         )}

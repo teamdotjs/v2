@@ -32,6 +32,9 @@ function mapDispatchToProps(dispatch: any, ownProps: any): any {
         },
         onClickGrades() {
             dispatch(push(`/course/${ownProps.params.id}/grades`));
+        },
+        onClickStudents() {
+            dispatch(push(`/course/${ownProps.params.id}/students`));
         }
     };
 }

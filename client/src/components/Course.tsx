@@ -17,6 +17,7 @@ export interface CourseProps {
     onClickLesson?: (id: number) => void;
     onCreateLessonClick: () => void;
     onClickGrades: () => void;
+    onClickStudents: () => void;
     loading?: boolean;
 }
 
@@ -50,6 +51,12 @@ export const Course = (props: CourseProps) => {
                     <Page style={{marginTop: 0}}>
                         <div>
                             <h2 style={{display: 'inline-block'}}>{props.title}</h2>
+                            {props.is_instructor
+                                ? <FlatButton
+                                    onClick={props.onClickStudents}
+                                    primary={true}
+                                    label='View Students' />
+                                : undefined}
                             {props.is_instructor
                                 ? <FlatButton
                                     onClick={props.onClickGrades}

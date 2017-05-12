@@ -9,7 +9,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    bDay: Date;
+    birthday: Date;
 }
 
 export const sessionReducer = (state: SessionState, action: any): SessionState => {

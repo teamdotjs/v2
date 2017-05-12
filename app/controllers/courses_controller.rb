@@ -176,7 +176,7 @@ class CoursesController < ApplicationController
   # PATCH /api/course/:id/student
   # Desc: adds student to course specified by id
   # Request body params:
-  #   student_id (int)
+  #   email (string)
   # Success response:
   #   Code: 200
   #   Content: [{ id: int, name: string, email: string, birthday: date }]
@@ -196,7 +196,7 @@ class CoursesController < ApplicationController
   #              error_message: 'Student can't be the same as instructor' }
   def add_student
     begin
-      @course.students << User.find(params[:student_id])
+      @course.students << User.find_by_email!(params[:email].downcase)
     rescue ActiveRecord::RecordInvalid => error
       message =
         if error.record.errors['student']&.include?('has already been taken')
