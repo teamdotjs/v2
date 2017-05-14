@@ -16,6 +16,7 @@ import StudyContainer from './containers/StudyContainer';
 import PracticeTakerContainer from './containers/PracticeTakerContainer';
 import UserGradesContainer from './containers/UserGradesContainer';
 import CourseGradesContainer from './containers/CourseGradesContainer';
+import CourseStudentsContainer from './containers/CourseStudentsContainer';
 
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -45,6 +46,7 @@ ReactDOM.render(
                         <Route path='course/:id' component={CourseContainer} />
                         <Route path='grades' component={UserGradesContainer} />
                         <Route path='course/:id/grades' component={CourseGradesContainer} />
+                        <Route path='course/:id/students' component={CourseStudentsContainer} />
                     </Route>
                 </Route>
             </Router>

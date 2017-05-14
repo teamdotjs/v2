@@ -279,16 +279,16 @@ class CoursesControllerTest < ActionController::TestCase
 
   test 'PATCH /api/course/:id/student student not found' do
     login_as_testuser
-    patch :add_student, params: { id: courses(:testcourse).id, student_id: 1 }
+    patch :add_student, params: { id: courses(:testcourse).id, email: '' }
     assert_response :not_found
-    error_response = { errors: ['Couldn\'t find User with \'id\'=1'],
+    error_response = { errors: ['Couldn\'t find User'],
                        error_message: 'User could not be found' }
     assert_json_match error_response, @response.body
   end
 
   test 'PATCH /api/course/:id/student student already in course' do
     login_as_testuser
-    patch :add_student, params: { id: courses(:testcourse).id, student_id: users(:seconduser).id }
+    patch :add_student, params: { id: courses(:testcourse).id, email: users(:seconduser).email }
     assert_response :conflict
     error_response = { errors: ['Student already added to this course'],
                        error_message: 'Student already added to this course' }
@@ -297,7 +297,7 @@ class CoursesControllerTest < ActionController::TestCase
 
   test 'PATCH /api/course/:id/student add instructor as student' do
     login_as_testuser
-    patch :add_student, params: { id: courses(:testcourse).id, student_id: users(:testuser).id }
+    patch :add_student, params: { id: courses(:testcourse).id, email: users(:testuser).email }
     assert_response :conflict
     error_response = { errors: ['Student can\'t be the same as instructor'],
                        error_message: 'Student can\'t be the same as instructor' }
@@ -307,7 +307,7 @@ class CoursesControllerTest < ActionController::TestCase
   test 'PATCH /api/course/:id/student success' do
     login_as_testuser
     delete :remove_student, params: { id: courses(:testcourse).id, s_id: users(:seconduser).id }
-    patch :add_student, params: { id: courses(:testcourse).id, student_id: users(:seconduser).id }
+    patch :add_student, params: { id: courses(:testcourse).id, email: users(:seconduser).email }
     assert_response :ok
     assert_json_match [seconduser_pattern], @response.body
   end

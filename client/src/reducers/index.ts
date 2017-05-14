@@ -10,6 +10,7 @@ import { DrawerState, drawerReducer } from './drawerReducer';
 import { TakingState, takingReducer} from './practiceTakingReducer';
 import { LessonGradeSummaryState, lessonGradeSummaryReducer } from './lessonGradeSummaryReducer';
 import { CourseGradeSummaryState, courseGradeSummaryReducer } from './courseGradeSummaryReducer';
+import { CourseStudentState, courseStudentReducer } from './courseStudentReducer';
 
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
@@ -28,6 +29,7 @@ export interface State {
     practiceTaking: TakingState;
     lessonGradeSummary: LessonGradeSummaryState;
     courseGradeSummary: CourseGradeSummaryState;
+    courseStudent: CourseStudentState;
 }
 
 export const app = combineReducers({
@@ -43,5 +45,6 @@ export const app = combineReducers({
     drawer: drawerReducer,
     practiceTaking: takingReducer,
     lessonGradeSummary: lessonGradeSummaryReducer,
-    courseGradeSummary: courseGradeSummaryReducer
+    courseGradeSummary: courseGradeSummaryReducer,
+    courseStudent: courseStudentReducer
 });
